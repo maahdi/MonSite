@@ -1,0 +1,169 @@
+﻿html
+{
+    width : 100%;
+    height: 100%;
+}
+body
+{
+    width:100%;
+    height:100%;
+    background-color:#2a4674;
+}
+
+#corps
+{
+    position:relative;
+    /*top:3.2em;*/
+    /*background-color:#d9f9ae;*/
+    width:100%;
+    height:100%;
+    color:#23252d;
+    top:16em;
+    z-index:0;
+}
+
+
+.marge
+{
+    padding-left:3%;
+    padding-right:3%;
+    padding-top:2%;
+}
+
+.article
+{
+    border-top:2px solid transparent;
+    position:relative;
+    width: 95%;
+    height : 18em;
+    background-color: white;
+    margin-left:2em;
+    margin-bottom: 5em;
+    text-align : justify;
+}
+
+.lienSuite a:before
+{
+    content: '>> ';
+}
+
+.lienSuite a:after
+{
+    content:' <<';
+}
+
+.lienSuite a
+{
+    width:100%;
+}
+.lienSuite
+{
+    width:20%;
+    padding-left:2.5em;
+    position:relative;
+    float:right;
+    /*margin-left:3%;*/
+}
+.lienSuite, .art-end a
+{
+    display:inline-block;
+}
+.art-img img
+{
+    margin-top:0.4em;
+    position:relative;
+    float:left;
+    margin-right:1.5em;
+    width:100%;
+    height:auto;
+}
+.art-img
+{
+    width:20%;
+    height:10%;
+    top:-0.9em;
+    position:relative;
+}
+.border-article
+{
+    -webkit-border-radius:0px 0px 3px 3px;
+    -moz-border-radius:0px 0px 3px 3px;
+    border-radius:27px 0px 3px 3px;
+}
+
+.art-titre
+{
+    top:-2.3em;
+    line-height:2em;
+    color: white;
+    left:0;
+    background-color:#c24141;
+    padding-left:3%;
+    width:100%;
+    -webkit-border-radius:0px 3px 0px 0px;
+    -moz-border-radius:0px 3px 0px 0px;
+    border-radius:0px 3px 0px 0px;
+}
+.art-content
+{
+    font-size:0.9em;
+    position:relative;
+    top:-0.9em;
+}
+.art-png, .art-titre
+{
+    display:inline-block;
+    position:absolute;
+}
+.art-png
+{
+    border:2px solid #c24141;
+    width:4em;
+    top:-2.3em;
+    height:4em;
+    left:-4em;
+    margin-bottom:0;
+    -webkit-border-radius:2px 0px 0px 0px;
+    -moz-border-radius:2px 0px 0px 0px;
+    border-radius:2px 0px 0px 0px;
+}
+.art-date
+{
+    display:block;
+    top:-0.9em;
+    position:relative;
+    line-height:2em;
+}
+
+.art-triangle
+{
+    width:4em;
+    height:2em;
+    position:absolute;
+    left:-4em;
+    top:1.7em;
+    border-top:2em solid #c24141;
+    border-left:4em solid transparent;
+}
+.art-pdf
+{
+    height:90em!important;
+}
+.art-pdf embed
+{
+    width:100%;
+    height:80em;
+    margin-top:3em;
+}
+.art-end
+{
+    border-top:2px solid black;
+    position:absolute;
+    bottom:0;
+    line-height:3em;
+    width:94%;
+}
+.italique
+{
+    font-style:italic;
+}

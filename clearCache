@@ -1,0 +1,6 @@
+﻿#!/bin/bash
+
+php app/console cache:clear
+chown -R http app/cache
+chgrp -R http app/cache
+chmod -R +rw app/cache

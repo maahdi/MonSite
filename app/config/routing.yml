@@ -1,0 +1,4 @@
+yomaah:
+    resource: "@yomaahBundle/Resources/config/routing.php"
+    prefix:   /
+

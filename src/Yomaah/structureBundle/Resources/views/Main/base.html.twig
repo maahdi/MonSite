@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>{%block title %}JOSIEN Lionel's website{%endblock%}</title>
+        <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/foundation.min.css')}}" />
+        <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/normalize.css')}}" />
+        <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/main-bar.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/main-style.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/banniere.css') }}" />
+        {%block stylesheets%}{%endblock%}
+    </head> 
+
+    <body>
+    {% include 'yomaahBundle:Main:main-bar1.html.twig' %}
+        <div id="banniere">
+            <img src="{{ asset('bundles/yomaah/images/fond-etoile.jpg')}}"></img>
+        </div>
+        <div class="row">
+            <div id="prez1" class="prez">JOSIEN Lionel</div>
+            <div id="prez4" class="prez">Développeur Logiciel</div>
+        </div>
+    <div id="corps" class="row border-radius">
+        {%block body %}{%endblock%}
+    </div>
+    {%block javascript %}{%endblock%}
+    </body>
+</html>

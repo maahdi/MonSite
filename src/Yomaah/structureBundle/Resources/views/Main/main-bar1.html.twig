@@ -1,0 +1,13 @@
+﻿    <div id="main-bar">
+        <div class="row">
+            <ul class="menu" id="menu-left">
+            {%for menu in menuleft%}
+                <li><a href="{{path(menu.path)}}">{{menu.name}}</a></li>
+            {%endfor%}
+            </ul>
+            <ul class="menu" id="menu-right">
+            {%for menu in menuright%}
+                <li><a href="{{path(menu.path)}}">{{menu.name}}</a></li>
+            {%endfor%}
+        </div>
+    </div>
