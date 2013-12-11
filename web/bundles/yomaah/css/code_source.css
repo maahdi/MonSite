@@ -1,0 +1,120 @@
+﻿.srcPath ul
+{
+    display:inline-block;
+    list-style : none;
+}
+
+.srcPath li
+{
+    display:block;
+    position :relative;
+    height : 3em;
+}
+
+.srcPath a
+{
+    color :black;
+    display:block;
+    height:3em;
+    position:relative;
+}
+
+.fic
+{
+    height : 40em;
+}
+.srcPath a:after
+{
+    content :' / ';
+    color :black;
+}
+
+.directories:last-child
+{
+    border-bottom:none;
+}
+
+.directories
+{
+    line-height : 3em;
+    padding-left : 2em;
+    border-bottom : 1px solid black;
+    background-color :#eee;
+}
+
+.directories a
+{
+    display:block;
+    line-height:3em;
+    vertical-align:middle;
+    padding-left : 2.5em;
+    width : 100%;
+    color :black;
+}
+
+.directories a:before
+{
+    content : '';
+    background : url('../images/dossier.png') no-repeat;
+    background-size : 110%;
+    width : 2em;
+    position:absolute;
+    display:inline-block;
+    height : 3em;
+    left : 1em;
+    margin-top : 0.5em;
+}
+
+.cs
+{
+    min-height : 20em;
+}
+
+.files:last-child
+{
+    border-bottom : none;
+}
+
+
+.files
+{
+    background-color :#eed9d9;
+    border-bottom : 1px solid black;
+    padding-left: 2em;
+    line-height : 3em;
+    width : 100%;
+}
+
+.files a
+{
+    color : black;
+    display:block;
+    line-height:3em;
+    vertical-align:middle;
+    padding-left : 2.5em;
+}
+
+.files a:before
+{
+    content : '';
+    background : url('../images/fichier.png') no-repeat;
+    background-size : 100%;
+    width : 2em;
+    position:absolute;
+    display:inline-block;
+    height : 3em;
+    left : 1em;
+    margin-top:0.5em;
+}
+
+.tabSource
+{
+    border : 1px solid black;
+}
+
+.art-content pre
+{
+    height :100%;
+    width : 100%;
+    border : 1px solid black;
+}

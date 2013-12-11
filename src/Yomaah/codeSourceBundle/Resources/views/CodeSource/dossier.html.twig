@@ -1,0 +1,26 @@
+
+<link rel="stylesheet" href="{{ asset('bundles/yomaah/css/code_source.css') }}" />
+
+<article class="art-titre">Code Source</article>
+<figure class="art-png"><img src="{{asset('bundles/yomaah/images/fichierTitre.png')}}"></img></figure>
+<article>
+    <section class="srcPath">
+        {%for key,path in paths%}
+            <ul>
+                <li><a href="{{path('code_source',{ 'path' : path})}}">{{ key }}</a></li>
+            </ul>
+        {%endfor%}
+    </section>
+    <section class="tabSource art-content">
+        {%if directories is defined%}
+            {% for dir in directories%}
+                <article class="directories"><a href="{{path('code_source',{ 'path' : entirePath ~ '/' ~ dir })}}">{{dir}}</a></article>
+            {%endfor%}
+        {%endif%}
+        {%if files is defined%}
+            {%for file in files%}
+                <article class="files"><a href="{{path('code_source',{ 'path' : entirePath ~ '/' ~ file })}}">{{file}}</a></article>
+            {%endfor%}
+        {%endif%}
+    </section>
+</article>

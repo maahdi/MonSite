@@ -1,0 +1,18 @@
+
+{%extends 'yomaahBundle:Main:base.html.twig' %}
+
+{%block body%}
+<div class="small-12 columns marge">
+    <div class="article border-article marge cs">
+        <article class="art-titre">Code Source</article>
+        <figure class="art-png"><img src="{{asset('bundles/yomaah/images/fichierTitre.png')}}"></img></figure>
+        <article class="art-content">
+            <section class="lol"></section>
+        </article>
+        {# include template#}
+    </div>
+</div>
+<script src="{{asset('bundles/yomaah/js/repo.js')}}"></script>
+<script>$('.lol').repo({ user: 'maahdi', name: 'MonSite' });</script>
+
+{%endblock%}
