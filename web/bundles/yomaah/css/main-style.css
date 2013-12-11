@@ -35,13 +35,16 @@ body
     border-top:2px solid transparent;
     position:relative;
     width: 95%;
-    height : 18em;
+    /*height : 18em;*/
     background-color: white;
     margin-left:2em;
     margin-bottom: 5em;
     text-align : justify;
 }
-
+.rss
+{
+    height : 18em;
+}
 .lienSuite a:before
 {
     content: '>> ';

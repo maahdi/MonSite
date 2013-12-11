@@ -12,4 +12,9 @@ use Doctrine\ORM\EntityRepository;
  */
 class articleRepo extends EntityRepository
 {
+    public function findByPage($pageUrl)
+    {
+        $query = $this->getEntityManager()->createQuery('select a, p from yomaahBundle:Article a join a.page p where p.pageUrl = :url')->setParameter('url',$pageUrl);
+        return $query->getResult();
+    }
 }

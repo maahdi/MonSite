@@ -14,10 +14,16 @@ $collection->add('cv', new Route('/cv', array(
 )));
 
 $collection->add('projet', new Route('/projets', array(
-    '_controller' => 'yomaahBundle:Main:index',
+    '_controller' => 'yomaahBundle:Main:projet',
 )));
 
 $collection->add('espace_client', new Route('/espace_client', array(
     '_controller' => 'yomaahBundle:Main:espaceClient',
 )));
+
+$collection->add('code_source', new Route('/code_source/{path}', array(
+    '_controller' => 'yomaahBundle:Main:codeSource',
+    ),array('path'=> '.+')
+));
+
 return $collection;

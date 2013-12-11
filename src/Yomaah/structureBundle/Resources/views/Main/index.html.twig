@@ -6,18 +6,18 @@
 <div class="small-12 columns marge">
     {%for article in articles%}
         <input type="hidden" name="artId" value="{{article.artId}}"/>
-        <div class="article border-article marge">
-            <div class="art-titre">{{article.artTitle}}</div>
+        <div class="article rss border-article marge">
+            <article class="art-titre">{{article.artTitle}}</article>
             <figure class="art-png"><img src="{{asset('bundles/yomaah/images/'~article.png.pngUrl)}}"></img></figure>
-                <div class="art-triangle"></div>
-                <div class="art-date">{{article.artDate}}</div>
+                <article class="art-triangle"></article>
+                <article class="art-date">{{article.artDate}}</article>
                 <article>
                     <figure class="art-img"><img src="{{article.artImgUrl}}"></img></figure>
                     <section class="art-content">{{ article.artContent|raw }}</section>
                 </article>
-                <div class="art-end">Source : <a href="{{"http://"~article.artSource}}">{{article.artSource}}</a>
-                    <div class="lienSuite"><a href="{{ article.artLien}}">Lire la suite</a></div>
-                </div>
+                <article class="art-end">Source : <a href="{{"http://"~article.artSource}}">{{article.artSource}}</a>
+                    <section class="lienSuite"><a href="{{ article.artLien}}">Lire la suite</a></section>
+                </article>
         </div>
     {%endfor%}
 </div>
