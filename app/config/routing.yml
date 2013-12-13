@@ -1,3 +1,7 @@
+yomaahconnexion:
+    resource: "@YomaahconnexionBundle/Resources/config/routing.php"
+    prefix:   /
+
 yomaah:
     resource: "@yomaahBundle/Resources/config/routing.php"
     prefix:   /

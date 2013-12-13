@@ -1,7 +1,6 @@
 <?php
 namespace Yomaah\codeSourceBundle\Controller;
 
-use Yomaah\codeSourceBundle\Classes\LigneRepo;
 use Symfony\Component\Finder\Finder;
 
 class CodeSourceController
@@ -11,11 +10,6 @@ class CodeSourceController
     private $init = false;
     private $repo;
     private $rootDir = '';
-
-    public function __construct()
-    {
-        $this->repo = new LigneRepo();
-    }
 
     public function init($path)
     {
@@ -53,6 +47,7 @@ class CodeSourceController
     {
         if ($this->init)
         {
+            $return = array();
             if (preg_match('/\./',$this->path))
             {
                 return array_merge($this->getTemplate(),array('entirePath' => $this->path,'paths' => $this->explodePath(),'file' => $this->getFile()));

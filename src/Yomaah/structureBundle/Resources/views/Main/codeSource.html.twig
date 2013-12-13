@@ -4,15 +4,19 @@
 {%block body%}
 <div class="small-12 columns marge">
     <div class="article border-article marge cs">
-        <article class="art-titre">Code Source</article>
+        <article class="art-titre"><h1>Code Source</h1></article>
         <figure class="art-png"><img src="{{asset('bundles/yomaah/images/fichierTitre.png')}}"></img></figure>
+        <article class="art-triangle"></article>
         <article class="art-content">
+        {%if git is defined%}
             <section class="lol"></section>
+            <script src="{{asset('bundles/yomaah/js/repo.js')}}"></script>
+            <script>$('.lol').repo({ user: 'maahdi', name: 'MonSite' });</script>
+        {%else%}
+            {% include template%}
+        {%endif%}
         </article>
-        {# include template#}
     </div>
 </div>
-<script src="{{asset('bundles/yomaah/js/repo.js')}}"></script>
-<script>$('.lol').repo({ user: 'maahdi', name: 'MonSite' });</script>
 
 {%endblock%}

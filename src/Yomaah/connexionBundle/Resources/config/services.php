@@ -7,9 +7,9 @@ use Symfony\Component\DependencyInjection\Parameter;
 /*
 
 $container->setDefinition(
-    'yomaah.example',
+    'yomaahconnexion.example',
     new Definition(
-        'Yomaah\structureBundle\Example',
+        'Yomaah\connexionBundle\Example',
         array(
             new Reference('service_id'),
             "plain_value",
@@ -18,9 +18,4 @@ $container->setDefinition(
     )
 );
 
-
- */
-$container->setDefinition(
-    'gestionMenu',
-    new Definition ('Yomaah\structureBundle\Classes\GestionMenu',array(new Reference('doctrine.orm.entity_manager'),new Reference('security.context')))
-);
+*/

@@ -8,7 +8,12 @@
         <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/main-bar.css') }}" />
         <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/main-style.css') }}" />
         <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/banniere.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/jquery-ui.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/fontawesome/css/font-awesome.css') }}" />
         <script src="{{asset('bundles/yomaah/js/jquery-2.0.3.min.js')}}"></script>
+        <script src="{{asset('bundles/yomaah/js/jquery-ui.min.js')}}"></script>
+        <script src="{{asset('bundles/yomaah/js/rangy-core.js')}}"></script>
+        <script src="{{asset('bundles/yomaah/js/hallo.js')}}"></script>
         {%block stylesheets%}{%endblock%}
     </head> 
 
@@ -26,4 +31,7 @@
     </div>
     {%block javascript %}{%endblock%}
     </body>
+    {%if admin is defined and admin%}
+        <script type="text/javascript" src="{{asset('bundles/yomaah/js/monHallo.js')}}"></script>
+    {%endif%}
 </html>

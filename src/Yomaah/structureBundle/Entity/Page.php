@@ -2,7 +2,7 @@
 namespace Yomaah\structureBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\CollectionsArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  *@ORM\Entity(repositoryClass="pageRepo")

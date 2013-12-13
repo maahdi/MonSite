@@ -4,7 +4,7 @@ namespace Yomaah\structureBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- *@ORM\Entity(repositoryClass="menuRepo")
+ *@ORM\Entity(repositoryClass="MenuRepo")
  *@ORM\Table(name="menu")
  */
 class Menu

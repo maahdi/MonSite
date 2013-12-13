@@ -1,0 +1,39 @@
+<?php
+namespace Yomaah\connexionBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\Role\RoleInterface;
+
+/**
+ *@ORM\Entity
+ *@ORM\Table(name="groupes")
+ **/
+class Group implements RoleInterface
+{
+    /**
+     *@ORM\Id
+     *@ORM\Column(type="integer")
+     */
+    protected $idGroup;
+
+    /**
+     *@ORM\Column(type="string")
+     **/
+    protected $nomGroupe;
+
+    /**
+     *@ORM\OneToMany(targetEntity="User", mappedBy="group")
+     */
+    protected $users;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
+
+    public function getRole()
+    {
+        return $this->nomGroupe;
+    }
+}

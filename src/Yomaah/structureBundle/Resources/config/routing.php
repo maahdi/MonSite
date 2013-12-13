@@ -26,4 +26,29 @@ $collection->add('code_source', new Route('/code_source/{path}', array(
     ),array('path'=> '.+')
 ));
 
+$collection->add('code_source_git',new Route('/code_source_git', array(
+    '_controller' => 'yomaahBundle:Main:codeSourceGit',)
+));
+
+$collection->add('admin_yomaah_homepage', new Route('/admin_homepage', array(
+    '_controller' => 'yomaahBundle:Main:index',
+)));
+
+
+$collection->add('admin_cv', new Route('/admin_cv', array(
+    '_controller' => 'yomaahBundle:Main:cv',
+)));
+
+$collection->add('admin_projet', new Route('/admin_projets', array(
+    '_controller' => 'yomaahBundle:Main:projet',
+)));
+
+$collection->add('admin_code_source', new Route('/admin_code_source/{path}', array(
+    '_controller' => 'yomaahBundle:Main:codeSource',
+    ),array('path'=> '.+')
+));
+
+$collection->add('admin_code_source_git',new Route('/admin_code_source_git', array(
+    '_controller' => 'yomaahBundle:Main:codeSourceGit',)
+));
 return $collection;

@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Yomaah\structureBundle\yomaahBundle(),
             new Yomaah\codeSourceBundle\YomaahcodeSourceBundle(),
+            new Yomaah\connexionBundle\YomaahconnexionBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
