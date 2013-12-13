@@ -5,8 +5,7 @@ security:
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
-        administrateur : ROLE_ADMIN
-
+        administrateur : ROLE_SUPER_ADMIN
     providers:
         main:
             entity: { class : Yomaah\connexionBundle\Entity\User, property : login }
@@ -17,13 +16,13 @@ security:
     #                admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
 
     firewalls:
-        dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+      # dev:
+      #      pattern:  ^/(_(profiler|wdt)|css|images|js)/
+      #      security: false
 
-        login:
-            pattern:  ^/demo/secured/login$
-            security: false
+      #  login:
+      #      pattern:  ^/demo/secured/login$
+      #      security: false
 
         secured_area:
             pattern:    ^/
@@ -38,6 +37,5 @@ security:
             #    realm: "Secured Demo Area"
 
     access_control:
-        - { path: ^/demo/secured/hello/admin/, roles: ROLE_ADMIN }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin*, roles: ROLE_ADMIN }
+        - { path: ^/admin*, roles: ROLE_SUPER_ADMIN }

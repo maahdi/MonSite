@@ -9,8 +9,8 @@ class ConnexionController extends Controller
 {
     public function loginAction()
     {
-        $mLeft = $this->getMenu('left');
-        $mRight = $this->getMenu('right');
+        $menu = $this->get('gestionMenu')->getAllMenu();
+
         $request = $this->getRequest();
         $session = $request->getSession();
         // get the login error if there is one
@@ -24,12 +24,12 @@ class ConnexionController extends Controller
         // last username entered by the user
         'last_username' => $session->get(SecurityContext::LAST_USERNAME),
         'error'   => $error,
-        'menuleft' => $mLeft,
-        'menuright' => $mRight
+        'menuleft' => $menu['left'],
+        'menuright' => $menu['right']
         ));
     }
 
-    private function getMenu($position)
+    private function getMenu()
     {
         if ($position == 'left')
         {

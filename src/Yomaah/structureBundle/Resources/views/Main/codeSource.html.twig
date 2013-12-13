@@ -9,9 +9,9 @@
         <article class="art-triangle"></article>
         <article class="art-content">
         {%if git is defined%}
-            <section class="lol"></section>
+            <section class="git"></section>
             <script src="{{asset('bundles/yomaah/js/repo.js')}}"></script>
-            <script>$('.lol').repo({ user: 'maahdi', name: 'MonSite' });</script>
+            <script>$('.git').repo({ user: 'maahdi', name: 'MonSite' });</script>
         {%else%}
             {% include template%}
         {%endif%}

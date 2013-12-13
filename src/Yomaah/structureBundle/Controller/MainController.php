@@ -12,8 +12,10 @@ class MainController extends Controller
     public function indexAction()
     {
         $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('accueil');
+
         $menu = $this->getMenu();
         $admin = $this->get('gestionMenu')->isGranted();
+
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:index.html.twig',
             array('articles' => $articles,'menuleft' => $menu['left'],'menuright' => $menu['right'],'admin' => $admin));
     }
@@ -31,6 +33,7 @@ class MainController extends Controller
         $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('projet');
         $menu = $this->getMenu();
         $admin = $this->get('gestionMenu')->isGranted();
+
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:projet.html.twig',
             array('articles' => $articles, 'menuleft' => $menu['left'],'menuright' => $menu['right'],'admin' => $admin));
     }

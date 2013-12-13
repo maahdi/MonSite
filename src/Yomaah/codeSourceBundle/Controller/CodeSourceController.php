@@ -31,7 +31,7 @@ class CodeSourceController
     {
         if ($this->init)
         {
-            if (preg_match('/.php/',$this->path))
+            if (preg_match('/\./',$this->path))
             {
                 return array('template' => 'YomaahcodeSourceBundle:CodeSource:fichier.html.twig'); 
             }else
@@ -139,20 +139,24 @@ class CodeSourceController
     private function getFile()
     {
         $fichier = fopen($this->rootDir.$this->path,'r');
-        fseek($fichier,1);
         $i = 0;
         $chaine ='';
         while (!feof($fichier))
         {
             $buffer = fgets($fichier,4096);
-            if ($i == 0)
-            {
-                $i++;
-                $chaine = '<?php'."\n";
-            }else
-            {
+            //if ($i == 0 && preg_match('/\?php/',$buffer))
+            //{
+                //$i++; 
+                //$chaine = '<?php'."\n";
+            //}else
+            //if ($i = 0 )
+            //{
+                //$i++;
+                //$chaine .= $buffer;
+            //}else
+            //{
                 $chaine .= $buffer;
-            } 
+            //} 
         } 
         fclose($fichier);
         return $chaine;

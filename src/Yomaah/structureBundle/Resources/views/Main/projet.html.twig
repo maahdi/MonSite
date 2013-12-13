@@ -5,7 +5,7 @@
 
 <div class="small-12 columns marge">
     {%for article in articles%}
-        <input type="hidden" name="artId" value="{{article.artId}}"/>
+        <input type="hidden" id="id" name="id" value="{{article.artId}}"/>
         <div class="article rss border-article marge">
             <article class="art-titre"><h1>{{ article.artTitle }}</h1></article>
             <figure class="art-png"><img src="{{asset('bundles/yomaah/images/'~article.png.pngUrl)}}"></img></figure>
