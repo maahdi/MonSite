@@ -167,12 +167,21 @@ function makeUrl()
         var url = loc.toString().split('app_dev.php', 2);
         url[0] = url[0] + 'app_dev.php/';
         return url;
-    }else if (loc.toString().match('/app.php/'))
+    }else
     {
-        var url = loc.toString().split('app.php', 2);
-        url[0] = url[0] + 'app_dev.php/';
+        var url = new Array();
+        url[0] = loc.toString();
         return url;
     }
+    //
+    //URL vide après www.yomaah.fr/symfony/web
+    //
+    //else if (loc.toString().match('/app.php/'))
+    //{
+        //var url = loc.toString().split('app.php', 2);
+        //url[0] = url[0] + 'app_dev.php/';
+        //return url;
+    //}
 }
 
 function createNewArticle()

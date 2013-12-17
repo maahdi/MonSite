@@ -68,7 +68,7 @@ class MainController extends Controller
     private function deleteTestEnvironnement()
     {
         $db = $this->get('database_connection');
-        $sql = array('drop table menuTest','drop table pageTest','drop table articleTest');
+        $sql = array('truncate table menuTest','truncate table pageTest','truncate table articleTest');
         foreach ($sql as $query)
         {
             $db->query($query);
