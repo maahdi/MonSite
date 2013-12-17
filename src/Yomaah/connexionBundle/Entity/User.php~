@@ -159,27 +159,4 @@ class User implements AdvancedUserInterface
     {
         return $this->group;
     }
-
-    /**
-     * Set id
-     *
-     * @param integer $id
-     * @return User
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    
-        return $this;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 }

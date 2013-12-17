@@ -5,10 +5,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- *@ORM\Entity(repositoryClass="PageRepo")
- *@ORM\Table(name="page")
+ *@ORM\Entity(repositoryClass="PageTestRepo")
+ *@ORM\Table(name="pageTest")
  */
-class Page
+class PageTest
 {
     public function __construct()
     {
@@ -26,7 +26,7 @@ class Page
     protected $pageUrl;
 
     /**
-     *@ORM\OneToMany(targetEntity="Article", mappedBy="page")
+     *@ORM\OneToMany(targetEntity="ArticleTest", mappedBy="page")
      */
     protected $articles;
 

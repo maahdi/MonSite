@@ -3,9 +3,9 @@
 
 {%block body%}
 
-<div class="small-12 columns marge">
+<div class="articles no-add small-12 columns marge">
     {%for article in articles%}
-        <input type="hidden" name="artId" value="{{article.artId}}"/>
+        <input type="hidden" name="artId" value="{{article.id}}"/>
         <div class="article rss border-article marge">
                 <article class="art-titre not-editable"><h1>{{article.artTitle}}</h1></article>
                 <figure class="art-png"><img src="{{asset('bundles/yomaah/images/'~article.png.pngUrl)}}"></img></figure>
@@ -13,7 +13,7 @@
                 <article class="art-date">{{article.artDate}}</article>
                 <article>
                     <figure class="art-img"><img src="{{article.artImgUrl}}"></img></figure>
-                    <section class="art-content not-editable">{{ article.artContent|raw }}</section>
+                    <section class="art-content">{{ article.artContent|raw }}</section>
                 </article>
                 <article class="art-end">Source : <a href="{{"http://"~article.artSource}}">{{article.artSource}}</a>
                     <section class="lienSuite"><a href="{{ article.artLien}}">Lire la suite</a></section>

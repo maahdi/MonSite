@@ -1,0 +1,14 @@
+﻿        <input type="hidden" name="artId" value="{{article.id}}"/>
+        <div class="article border-article marge">
+                <input type="hidden" id="id" name="id" value="{{article.id}}"/>
+                <article class="art-titre"><h1>{{article.artTitle}}</h1></article>
+                <figure class="art-png"><img src="{{asset('bundles/yomaah/images/'~article.png.pngUrl)}}"></img></figure>
+                <article class="art-triangle"></article>
+                <article class="art-date">{{article.artDate}}</article>
+                <article>
+                    <section class="art-content">{{ article.artContent|raw }}</section>
+                </article>
+                {#<article class="art-end">Source : <a href="{{"http://"~article.artSource}}">{{article.artSource}}</a>
+                    <section class="lienSuite"><a href="{{ article.artLien}}">Lire la suite</a></section>
+                </article>#}
+        </div>

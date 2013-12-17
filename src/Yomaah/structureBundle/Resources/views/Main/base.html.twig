@@ -9,18 +9,27 @@
         <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/main-style.css') }}" />
         <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/banniere.css') }}" />
         <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/jquery-ui.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/jquery-ui-1.10.3.custom.min.css') }}" />
         <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/fontawesome/css/font-awesome.css') }}" />
         <script src="{{asset('bundles/yomaah/js/jquery-2.0.3.min.js')}}"></script>
         <script src="{{asset('bundles/yomaah/js/jquery-ui.min.js')}}"></script>
         <script src="{{asset('bundles/yomaah/js/rangy-core.js')}}"></script>
         <script src="{{asset('bundles/yomaah/js/hallo.js')}}"></script>
         {%block stylesheets%}{%endblock%}
+<!--[if gte IE 9]>
+  <style type="text/css">
+    .gradient {
+       filter: none;
+    }
+  </style>
+<![endif]-->
     </head> 
 
     <body>
+
     {% include 'yomaahBundle:Main:main-bar1.html.twig' %}
         <div id="banniere">
-            <img src="{{ asset('bundles/yomaah/images/fond-etoile.jpg')}}"></img>
+            <img src="{{ asset('bundles/yomaah/images/ban.jpg')}}"></img>
         </div>
         <div class="row">
             <div id="prez1" class="prez">JOSIEN Lionel</div>
@@ -30,8 +39,14 @@
         {%block body %}{%endblock%}
     </div>
     {%block javascript %}{%endblock%}
-    </body>
     {%if admin is defined and admin%}
+        {% include 'yomaahBundle:Toolbar:toolbar.html.twig' %}
+        {% include 'yomaahBundle:Toolbar:addArticleToolBar.html.twig' %}
         <script type="text/javascript" src="{{asset('bundles/yomaah/js/monHallo.js')}}"></script>
+        <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/bootstrap.icons.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/jquery.toolbars.css') }}" />
+        <script type="text/javascript" src="{{asset('bundles/yomaah/js/jquery.toolbar.js')}}"></script>
+        <script>setAdminToolbar()</script>
     {%endif%}
+    </body>
 </html>

@@ -6,6 +6,9 @@ security:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
         administrateur : ROLE_SUPER_ADMIN
+        visiteur : ROLE_USER
+        client : ROLE_ADMIN
+
     providers:
         main:
             entity: { class : Yomaah\connexionBundle\Entity\User, property : login }
@@ -38,4 +41,4 @@ security:
 
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin*, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/admin*, roles: ROLE_USER }

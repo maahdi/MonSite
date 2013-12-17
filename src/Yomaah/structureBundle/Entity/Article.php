@@ -4,7 +4,7 @@ namespace Yomaah\structureBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- *@ORM\Entity(repositoryClass="articleRepo")
+ *@ORM\Entity(repositoryClass="ArticleRepo")
  *@ORM\Table(name="article")
  */
 class Article
@@ -12,6 +12,12 @@ class Article
     /**
      *@ORM\Id
      *@ORM\Column(type="integer")
+     *@ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     *@ORM\Column(type="integer", unique=true)
      */
     protected $artId;
 
@@ -47,7 +53,7 @@ class Article
 
 //Champ clé étrangère
     /**
-     *@ORM\ManyToOne(targetEntity="Page",inversedBy="articles")
+     *@ORM\ManyToOne(targetEntity="Page",inversedBy="articles",cascade="persist")
      *@ORM\JoinColumn(name="artPageId", referencedColumnName="pageId")
      */
     protected $page;
@@ -263,5 +269,15 @@ class Article
     public function getArtTitle()
     {
         return $this->artTitle;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

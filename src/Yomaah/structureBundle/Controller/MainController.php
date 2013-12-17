@@ -12,43 +12,33 @@ class MainController extends Controller
     public function indexAction()
     {
         $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('accueil');
-
-        $menu = $this->getMenu();
-        $admin = $this->get('gestionMenu')->isGranted();
-
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:index.html.twig',
-            array('articles' => $articles,'menuleft' => $menu['left'],'menuright' => $menu['right'],'admin' => $admin));
+            array('articles' => $articles));
     }
 
     public function cvAction()
     {
-        $menu = $this->getMenu();
-        $admin = $this->get('gestionMenu')->isGranted();
-        return $this->container->get('templating')->renderResponse('yomaahBundle:Main:cv.html.twig',
-            array('menuleft' => $menu['left'],'menuright' => $menu['right'],'admin' => $admin));
+        $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('cv');
+        return $this->container->get('templating')->renderResponse('yomaahBundle:Main:cv.html.twig',array('articles' => $articles));
     }
 
     public function projetAction()
     {
-        $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('projet');
-        $menu = $this->getMenu();
-        $admin = $this->get('gestionMenu')->isGranted();
-
+        $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('projets');
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:projet.html.twig',
-            array('articles' => $articles, 'menuleft' => $menu['left'],'menuright' => $menu['right'],'admin' => $admin));
+            array('articles' => $articles));
     }
 
     public function codeSourceGitAction()
     {
-        $menu = $this->getMenu();
-        $admin = $this->get('gestionMenu')->isGranted();
-
+        $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('code_source');
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:codeSource.html.twig',
-            array('git' => true, 'menuleft' => $menu['left'],'menuright' => $menu['right'],'admin' => $admin));
+            array('git' => true,'articles' => $articles));
     }
 
     public function codeSourceAction($path)
     {
+        $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('code_source');
         $codeSourceController =$this->get('codeSource');
         $codeSourceController->init($path);
 
@@ -57,22 +47,32 @@ class MainController extends Controller
         //soit le contenu du fichier demandé
         //Mergé le tableau avec n'importe quel tableau qui doit être passer à la vue
         $variable = $codeSourceController->getVariable();
-
-        $menu = $this->getMenu();
-        $admin = $this->get('gestionMenu')->isGranted();
-
-        return $this->container->get('templating')->renderResponse('yomaahBundle:Main:codeSource.html.twig',
-            array_merge($variable,array('menuleft' => $menu['left'],'menuright' => $menu['right'],'admin' => $admin)));
+        return $this->container->get('templating')->renderResponse('yomaahBundle:Main:codeSource.html.twig', 
+            array_merge($variable,array('articles'=> $articles)));
     }
 
-    
-    private function getMenu()
+    public function postLogoutAction()
     {
-        return $this->get('gestionMenu')->getAllMenu();
+        $role = $this->get('security.context')->getToken()->getUser()->getRoles();
+        if ($role[0] == 'visiteur')
+        {
+            $this->deleteTestEnvironnement();
+        }
+        return $this->redirect($this->generateUrl('logout'),301);
     }
 
     public function espaceClientAction()
     {
+    }
+
+    private function deleteTestEnvironnement()
+    {
+        $db = $this->get('database_connection');
+        $sql = array('drop table menuTest','drop table pageTest','drop table articleTest');
+        foreach ($sql as $query)
+        {
+            $db->query($query);
+        }
     }
 
 

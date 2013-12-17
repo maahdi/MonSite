@@ -9,8 +9,6 @@ class ConnexionController extends Controller
 {
     public function loginAction()
     {
-        $menu = $this->get('gestionMenu')->getAllMenu();
-
         $request = $this->getRequest();
         $session = $request->getSession();
         // get the login error if there is one
@@ -20,23 +18,16 @@ class ConnexionController extends Controller
             $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
             $session->remove(SecurityContext::AUTHENTICATION_ERROR);
         }
+        if ($session->get(SecurityContext::LAST_USERNAME) == 'root' || $session->get(SecurityContext::LAST_USERNAME) == '')
+        {
+            $username = "test";
+        }else
+        {
+            $username = $session->get(SecurityContext::LAST_USERNAME);
+        }
         return $this->render('YomaahconnexionBundle:Default:login.html.twig', array(
         // last username entered by the user
-        'last_username' => $session->get(SecurityContext::LAST_USERNAME),
-        'error'   => $error,
-        'menuleft' => $menu['left'],
-        'menuright' => $menu['right']
-        ));
-    }
-
-    private function getMenu()
-    {
-        if ($position == 'left')
-        {
-            return $this->getDoctrine()->getRepository('yomaahBundle:Menu')->getLeftMenu();
-        }else if ($position == 'right')
-        {
-            return $this->getDoctrine()->getRepository('yomaahBundle:Menu')->getRightMenu();
-        }
+        'last_username' => $username,
+        'error'   => $error));
     }
 }

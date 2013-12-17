@@ -6,9 +6,9 @@
             {%endfor%}
             </ul>
             <ul class="menu" id="menu-right">
-            {%for menu in menuright%}
-                {%if admin is defined and admin and menu.path == 'admin_login'%}
-                    <li><a href="{{path('logout')}}">Se Déconnecter</a></li>
+            {%for menu in menuright  %}
+                {%if (connect is defined and connect) or menu == false%}
+                    <li><a href="{{path('post_log')}}">Se Déconnecter</a></li>
                 {%else%}
                     <li><a href="{{path(menu.path)}}">{{menu.name}}</a></li>
                 {%endif%}

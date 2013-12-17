@@ -4,10 +4,10 @@ namespace Yomaah\structureBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- *@ORM\Entity(repositoryClass="ArticleRepo")
- *@ORM\Table(name="article")
+ *@ORM\Entity(repositoryClass="ArticleTestRepo")
+ *@ORM\Table(name="articleTest")
  */
-class Article
+class ArticleTest
 {
     /**
      *@ORM\Id
@@ -53,7 +53,7 @@ class Article
 
 //Champ clé étrangère
     /**
-     *@ORM\ManyToOne(targetEntity="Page",inversedBy="articles",cascade="persist")
+     *@ORM\ManyToOne(targetEntity="PageTest",inversedBy="articles",cascade="persist")
      *@ORM\JoinColumn(name="artPageId", referencedColumnName="pageId")
      */
     protected $page;
@@ -205,10 +205,10 @@ class Article
     /**
      * Set page
      *
-     * @param \Yomaah\structureBundle\Entity\Page $page
+     * @param \Yomaah\structureBundle\Entity\PageTest $page
      * @return Article
      */
-    public function setPage(\Yomaah\structureBundle\Entity\Page $page = null)
+    public function setPage(\Yomaah\structureBundle\Entity\PageTest $page = null)
     {
         $this->page = $page;
     
@@ -218,7 +218,7 @@ class Article
     /**
      * Get page
      *
-     * @return \Yomaah\structureBundle\Entity\Page 
+     * @return \Yomaah\structureBundle\Entity\PageTest 
      */
     public function getPage()
     {
@@ -269,5 +269,15 @@ class Article
     public function getArtTitle()
     {
         return $this->artTitle;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

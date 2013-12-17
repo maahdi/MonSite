@@ -1,4 +1,10 @@
-﻿html
+﻿
+@font-face
+{
+    font-family:'fonty';
+    src:url('../Fontin-Regular.ttf');
+}
+html
 {
     width : 100%;
     height: 100%;
@@ -8,6 +14,7 @@ body
     width:100%;
     height:100%;
     background-color:#2a4674;
+    font-family :"fonty";
 }
 
 #corps
@@ -36,11 +43,22 @@ body
     position:relative;
     width: 95%;
     /*height : 18em;*/
-    background-color: white;
+    /*background-color: white;*/
     margin-left:2em;
     margin-bottom: 5em;
     text-align : justify;
     max-width : 100%;
+    min-height : 18em;
+    background: #feffff; /* Old browsers */
+    /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZlZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjY1JSIgc3RvcC1jb2xvcj0iI2RkZjFmOSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNhMGQ4ZWYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(left, #feffff 0%, #ddf1f9 65%, #a0d8ef 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#feffff), color-stop(65%,#ddf1f9), color-stop(100%,#a0d8ef)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, #feffff 0%,#ddf1f9 65%,#a0d8ef 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, #feffff 0%,#ddf1f9 65%,#a0d8ef 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, #feffff 0%,#ddf1f9 65%,#a0d8ef 100%); /* IE10+ */
+    background: linear-gradient(to right, #feffff 0%,#ddf1f9 65%,#a0d8ef 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#a0d8ef',GradientType=1 ); /* IE6-8 */
 }
 .rss
 {
@@ -59,13 +77,15 @@ body
 .lienSuite a
 {
     width:100%;
+    font-size : 0.9em;
 }
 .lienSuite
 {
     width:20%;
-    padding-left:2.5em;
+    padding-left:1.5em;
     position:relative;
     float:right;
+    /*margin-right : 2.5em;*/
     /*margin-left:3%;*/
 }
 .lienSuite, .art-end a
@@ -116,12 +136,34 @@ body
     padding-left:3%;
     font-size : 1.0em;
     width : 100%;
+    font-family : "fonty";
 }
 .art-content
 {
     font-size:0.9em;
     position:relative;
     top:-0.9em;
+    text-align : justify;
+}
+.art-content p
+{
+    display:block;
+    margin : 0.2em;
+    padding-left : 1.8em;
+
+}
+.art-content h2
+{
+    font-size : 1.5em;
+    font-family : "fonty";
+    color : #2a4674;
+}
+.art-content h3
+{
+    font-size : 1.3em;
+    font-family : "fonty";
+    padding-left : 1em;
+    color : #2a4674;
 }
 .art-png, .art-titre
 {
@@ -150,6 +192,7 @@ body
     top:-0.9em;
     position:relative;
     line-height:2em;
+    color :#c24141;
 }
 
 .art-triangle
@@ -185,4 +228,26 @@ body
 .italique
 {
     font-style:italic;
+}
+
+#bar
+{
+    position : absolute;
+}
+
+.art-bar
+{
+    /*width :50%;*/
+    padding-right :6em;
+    position : relative;
+    display : block;
+    float :right;
+    top :-6em;
+    left : 2.2em;
+}
+.addArt-bar
+{
+    position :fixed;
+    display:block;
+    margin-top : -5em;
 }

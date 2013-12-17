@@ -2257,6 +2257,7 @@
         buttonize("Left");
         buttonize("Center");
         buttonize("Right");
+        buttonize("Justify");
         buttonset.hallobuttonset();
         return toolbar.append(buttonset);
       }
@@ -2813,7 +2814,7 @@
         if (this.options.parentElement !== 'body') {
           return;
         }
-        this.toolbar.css('position', 'absolute');
+        this.toolbar.css('position', 'fixed');
         this.toolbar.css('top', this.element.offset().top - this.toolbar.outerHeight());
         if (this.options.affix) {
           scrollTop = jQuery(window).scrollTop();

@@ -16,14 +16,43 @@ class GestionMenu
 
     public function getAllMenu()
     {
-        $mLeft = $this->getMenu('left');
-        $mRight = $this->getMenu('right');
-        if ($this->isGranted())
+        $user = $this->secure->getToken()->getUser();
+        if ($user == "anon.")
         {
-            $this->setAdminMenu($mLeft);
-            $this->setAdminMenu($mRight);
-        }   
-        return array('left' => $mLeft,'right' => $mRight);
+            $mLeft = $this->getMenu('left','Menu');
+            $mRight = $this->getMenu('right','Menu');
+            $admin = false;
+            $connect = false;
+            
+        }else
+        {
+            $role = $user->getRoles();
+            if ($role[0] == 'visiteur')
+            {
+                $mLeft = $this->getMenu('left','MenuTest');
+                $mRight = array(false);
+                $admin = false;
+                if ($this->isGranted('ROLE_USER'))
+                {
+                    $this->setTestMenu($mLeft);
+                    //$this->setTestMenu($mRight);
+                    $admin = $this->isGranted('ROLE_USER');
+                }   
+            }else
+            {
+                $mLeft = $this->getMenu('left','Menu');
+                $mRight = $this->getMenu('right','Menu');
+                $admin = false;
+                if ($this->isGranted('ROLE_SUPER_ADMIN'))
+                {
+                    $this->setAdminMenu($mLeft);
+                    $admin = $this->isGranted('ROLE_SUPER_ADMIN');
+                    $this->setAdminMenu($mRight);
+                }   
+            }
+        }
+        $connect = $this->isGranted('ROLE_USER');
+        return array('menuleft' => $mLeft,'menuright' => $mRight,'admin' => $admin,'connect' => $connect);
     }
 
     private function setAdminMenu($menu)
@@ -34,9 +63,18 @@ class GestionMenu
         }
     }
 
-    public function isGranted()
+    private function setTestMenu($menu)
     {
-        if ($this->secure->isGranted('ROLE_ADMIN'))
+        foreach ($menu as $m)
+        {
+            $m->setPath('test_'.$m->getPath());
+        }
+        
+    }
+
+    public function isGranted($role)
+    {
+        if ($this->secure->isGranted($role))
         {
             return true;
         }else
@@ -44,14 +82,14 @@ class GestionMenu
             return false;
         }
     }
-    private function getMenu($position)
+    private function getMenu($position,$menu)
     {
         if ($position == 'left')
         {
-            return $this->entityManager->getRepository('yomaahBundle:Menu')->getLeftMenu();
+            return $this->entityManager->getRepository('yomaahBundle:'.$menu)->getLeftMenu();
         }else if ($position == 'right')
         {
-            return $this->entityManager->getRepository('yomaahBundle:Menu')->getRightMenu();
+            return $this->entityManager->getRepository('yomaahBundle:'.$menu)->getRightMenu();
         }
     }
 }

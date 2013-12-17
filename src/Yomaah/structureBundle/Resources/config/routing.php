@@ -51,4 +51,12 @@ $collection->add('admin_code_source', new Route('/admin_code_source/{path}', arr
 $collection->add('admin_code_source_git',new Route('/admin_code_source_git', array(
     '_controller' => 'yomaahBundle:Main:codeSourceGit',)
 ));
+
+$collection->add('test_accueil',new Route('/test_accueil', array(
+    '_controller' => 'yomaahBundle:Test:accueil',)
+));
+
+$collection->add('post_log',new Route('/post_log', array(
+    '_controller' => 'yomaahBundle:Main:postLogout',)
+));
 return $collection;

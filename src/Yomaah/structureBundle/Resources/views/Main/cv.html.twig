@@ -4,15 +4,24 @@
 
 {%block body%}
 
-<div class="small-12 columns marge">
-    <div class="article art-pdf border-article marge">
-        <article class="art-titre"><h1>Mon C.V.</h1></article>
-        <article class="art-png"><img src="{{asset('bundles/yomaah/images/cv.png')}}"></img></article>
+<div class="articles small-12 columns marge">
+    {% for article in articles%}
+        {%if article.artImgUrl == 'embed' %}
+          <div class="article art-pdf border-article marge">
+        {%else%}
+          <div class="article border-article marge">
+        {%endif%}
+        <input type="hidden" name="id" value="{{article.id}}"/>
+        <article class="art-titre"><h1>{{article.artTitle}}</h1></article>
+        <article class="art-png"><img src="{{asset('bundles/yomaah/images/'~article.png.pngUrl)}}"></img></article>
         <article class="art-triangle"></article>
-        <article class="art-date">25/11/2013</article>
-        <section class="art-content"><br/>Vous trouverez ci-dessous mon Curriculum Vitae :</section>
-        <embed src="{{ asset('bundles/yomaah/images/CV.pdf')}}"></embed>
+        <article class="art-date">{{article.artDate}}</article>
+        <section class="art-content">{{article.artContent | raw}}</section>
+        {%if article.artImgUrl == 'embed' %}
+          <embed src="{{ asset('bundles/yomaah/images/CV.pdf')}}"></embed>
+        {%endif%}
     </div>
+    {%endfor%}
 </div> 
 
 
