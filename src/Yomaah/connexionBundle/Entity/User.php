@@ -33,7 +33,11 @@ class User implements AdvancedUserInterface
      *@ORM\ManyToOne(targetEntity="Group",inversedBy="users")
      *@ORM\JoinColumn(name="idGroup", referencedColumnName="idGroup")
      **/
-     protected $group;
+    protected $group;
+
+    public function __construct()
+    {
+    }
 
     public function getRoles()
     {

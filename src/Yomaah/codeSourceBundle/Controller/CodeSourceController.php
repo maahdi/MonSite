@@ -17,16 +17,22 @@ class CodeSourceController
         $this->constructRootPath();
         $this->init = true;
     }
-
-    //Définis le chemin d'accès du dossier src
-    //pour parser son contenu par défaut
+    /**
+     * Définis le chemin d'accès du dossier src
+     * pour parser son contenu par défaut
+     *
+    **/
     private function constructRootPath()
     {
         $path = preg_split('/\/src/',__DIR__);
         $this->rootDir = $path[0].'/src/';
     }
 
-    //retourne le template associer pour afficher une liste ou un fichier
+    /** 
+     * retourne le template associer pour afficher une liste ou un fichier
+     * Déterminé si le path contient un . == fichier
+     *
+     **/
     private function getTemplate()
     {
         if ($this->init)
@@ -41,8 +47,12 @@ class CodeSourceController
         }
         //else exception
     }
-
-    //retourne soit le chemin d'accès du fichier + template + path entier
+    /**
+     * Retourne :
+     *      - soit le chemin d'accès du fichier décomposé pour faire les liens + template + path entier + le fichier
+     *      - soit la même chose mais sans le fichier
+     *
+     **/
     public function getVariable()
     {
         if ($this->init)
@@ -89,31 +99,15 @@ class CodeSourceController
         //else exception
     }
 
-    private function getFileFromPath()
-    {
-        $tmpPaths = explode ('/', $this->path);
-        $nb = count($tmpPaths);
-        return $tmpPaths[$nb-1];
-    }
 
-    private function explodeFileFromPath()
-    {
-        $tmpPaths = explode ('/', $this->path);
-        $nb = count($tmpPaths);
-        $chaine = '';
-        for ($i = 0; $i < $nb-2; $i++)
-        {
-            if ($i < $nb -3)
-            {
-                $chaine .= $tmpPaths[$i].'/';
-            }else
-            {
-                $chaine .= $tmpPaths[$i];
-            }
-        }
-        return $chaine;
-    }
-
+    /**
+     * Retourne les éléments du path délimités par un /
+     * Associe l'url correspondante
+     * ex : path : Yomaah/structureBundle/fichier.php
+     *      url['Yomaah'] = 'Yomaah'
+     *      url['structureBundle'] = Yomaah/structureBundle
+     *      url['fichier'] = Yomaah/structureBundle/fichier.php
+     **/
     private function explodePath()
     {
         $tmpPaths = explode('/',$this->path);
@@ -144,19 +138,7 @@ class CodeSourceController
         while (!feof($fichier))
         {
             $buffer = fgets($fichier,4096);
-            //if ($i == 0 && preg_match('/\?php/',$buffer))
-            //{
-                //$i++; 
-                //$chaine = '<?php'."\n";
-            //}else
-            //if ($i = 0 )
-            //{
-                //$i++;
-                //$chaine .= $buffer;
-            //}else
-            //{
-                $chaine .= $buffer;
-            //} 
+            $chaine .= $buffer;
         } 
         fclose($fichier);
         return $chaine;

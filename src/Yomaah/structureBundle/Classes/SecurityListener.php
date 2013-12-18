@@ -9,22 +9,31 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Util\SecureRandom;
 
-
-
+/**
+ * Le listener est utilisé quand un utilisateur se log
+ * Si l'utilisateur est du groupe visiteur
+ * il est basculé sur la page de test
+ * Cette classe crée aussi l'environnement de test
+ * en prenant compte des multiples accès en même temps
+ *
+ **/
 class SecurityListener implements EventSubscriberInterface
 {
     private $secure;
     private $router;
     private $dispatcher;
-    private $db;
+    private $session;
 
-    public function __construct(SecurityContextInterface $secure, Router $router, EventDispatcher $dispatch, $db)
+    public function __construct(SecurityContextInterface $secure, Router $router, EventDispatcher $dispatch, \Doctrine\DBAL\Connection $db, Session $session)
     {
         $this->db = $db;
         $this->secure = $secure;
         $this->dispatcher = $dispatch;
         $this->router = $router;
+        $this->session = $session;
     }
 
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
@@ -39,31 +48,70 @@ class SecurityListener implements EventSubscriberInterface
             if ($role != "anon."){
                 if ($role[0] == "visiteur")
                 {
-                    $this->createTestEnvironnement();
+                    /**
+                     * Cette portion de code définit un token générique si la base est vide
+                     * ou un nouveau si quelqu'un est en train de tester
+                     *
+                     **/
+                    $sql = 'select max(token) as token from menuTest';
+                    $result = $this->db->query($sql);
+                    $result->setFetchMode(\PDO::FETCH_OBJ);
+                    if ($result->rowCount() > 0)
+                    {
+                        foreach ($result as $r)
+                        {
+                            if ($r->token != null)
+                            {
+                                $token = $r->token + 1;
+                            }else
+                            {
+                                $token = 10;
+                            }
+                        }
+                    }
+                    $this->session->set('testToken' , $token);
+                    $this->createTestEnvironnement($token);
                     $response = new RedirectResponse($this->router->generate('test_accueil'));
                     $event->setResponse($response);
-                }
+                }           
             }
         }
     }
+
     public static function getSubscribedEvents()
     {
         return array('security.interactive_login' => array(array('onSecurityInteractiveLogin',18)));
     }
 
-    private function createTestEnvironnement()
+    private function createTestEnvironnement($token)
     {
+        // Ajouter selection selon session active
+        $test = 'select * from articleTest';
+        $result = $this->db->query($test);
+        if ($result->rowCount() > 0)
+        {
+            /**
+             * Nettoyer la base sur les sessions inactives
+             *
+             **/
+            //$sql = array('delete from menuTest','delete from articleTest','delete from pageTest');
+            //foreach ($sql as $query)
+            //{
+                //$this->db->query($query);
+            //}
+            
+        }
         $sql = array(
-            'INSERT INTO `pageTest` (`pageId`,`pageUrl`) VALUES (1,\'accueil\'),(2,\'default\');',
-            'INSERT INTO `articleTest` (`id`, `artId`, `artTitle`, `artContent`, `artPngId`, `artDate`, `artPageId`, `artImgUrl`, `artSource`, `artLien`) VALUES
-            (1,1,\'Mon Titre\',\'<p>Ceci est un article</p>\',4,Now(),1,NULL,NULL,NULL),
-                (2, 2, \'Mon titre\', \'<p>Mon texte ici ...</p>\', 3, NULL, 2, NULL, NULL, NULL);',
-            'INSERT INTO `menuTest` (`id`, `path`, `name`, `position`) VALUES
-            (1, \'accueil\',\'Accueil\', b\'0\');');
+            'INSERT INTO `pageTest` (`pageUrl`,`token`) VALUES (\'default\',?),(\'accueil\',?);',
+            'INSERT INTO `articleTest` (`artId`, `artTitle`, `artContent`, `artPngId`, `artDate`, `artPageId`, `artImgUrl`, `artSource`, `artLien`,`token`) VALUES
+            (1,\'Mon Titre\',\'<p>Ceci est un article</p>\',4,Now(),(select pageId from pageTest where pageUrl = \'accueil\' and token = '.$token.'),NULL,NULL,NULL,?),
+                (2, \'Mon titre\', \'<p>Mon texte ici ...</p>\', 3, NULL, (select pageId from pageTest where pageUrl = \'default\' and token = '.$token.'), NULL, NULL, NULL,?);');
         foreach($sql as $query)
         {
-            $this->db->query($query);
+            $this->db->executeQuery($query,array($token, $token));
         }
+        $sql = 'INSERT INTO `menuTest` (`path`, `name`, `position`,`token`) VALUES (\'accueil\',\'Accueil\', b\'0\',?);';
+        $this->db->executeQuery($sql, array($token));
     }
 }
 //'CREATE TABLE IF NOT EXISTS `articleTest` (

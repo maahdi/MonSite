@@ -1,6 +1,7 @@
 ﻿#!/bin/bash
 
-php app/console cache:clear
-chown -R http app/cache
+php app/console cache:clear --env=prod
+php app/console cache:clear --env=dev
+chown -R yoshi app/cache
 chgrp -R http app/cache
-chmod -R +rw app/cache
+chmod -R ug+rw app/cache

@@ -11,6 +11,14 @@ class MainController extends Controller
 {
     public function indexAction()
     {
+        /**
+         * Enregistrement d'un utilisateur avec nouveau password
+         *
+         **/
+        //$factory = $this->get('security.encoder_factory');
+        //$user = new \Yomaah\connexionBundle\Entity\User();
+        //$encoder = $factory->getEncoder($user);
+        //$password = $encoder->encodePassword('test',null);
         $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('accueil');
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:index.html.twig',
             array('articles' => $articles));
@@ -51,27 +59,34 @@ class MainController extends Controller
             array_merge($variable,array('articles'=> $articles)));
     }
 
+    /**
+     * Path du lien déconnection envoie ici
+     * Supprime les enregistrements effectués dans les tables de test
+     * et renvoie vers la route logout de connexionBundle
+     *
+     **/
     public function postLogoutAction()
     {
         $role = $this->get('security.context')->getToken()->getUser()->getRoles();
         if ($role[0] == 'visiteur')
         {
             $this->deleteTestEnvironnement();
+        }else if ($role[0] == "administrateur")
+        {
+            //$this->get('yomaah_requete_listener')->incrementCompteur();
         }
+        $this->get('session')->remove('testToken');
         return $this->redirect($this->generateUrl('logout'),301);
-    }
-
-    public function espaceClientAction()
-    {
     }
 
     private function deleteTestEnvironnement()
     {
         $db = $this->get('database_connection');
-        $sql = array('truncate table menuTest','truncate table pageTest','truncate table articleTest');
+        $token = $this->get('session')->get('testToken');
+        $sql = array('delete from menuTest where token = ?','delete from articleTest where token = ?','delete from pageTest where token = ?');
         foreach ($sql as $query)
         {
-            $db->query($query);
+            $db->executeQuery($query, array($token));
         }
     }
 

@@ -29,7 +29,7 @@ $(document).on('hallodeactivated','.art-content', function (event, data){
     edit = null;
 });
 
-$('.icon-remove').click(function(){
+$(document).on('click','.icon-remove',function(){
     var remove = $(this);
     var tabData = { 'dialog' : 'suppressionArticle'};
     sendAjax('ajax/dialog',function(data,textStatus,jqXHR){
@@ -62,7 +62,7 @@ $('.icon-remove').click(function(){
     },tabData);
 });
 
-$('.icon-plus-sign').click(function(){
+$(document).on('click','.icon-plus-sign',function(){
     sendAjax('ajax/dialog', function(data,textStatus,jqXHR){
         var dialog = data;
         var url = makeUrl();
@@ -135,12 +135,14 @@ function setAdminToolbar()
     });
 }
 
-function resetToolBar()
+function resetToolBar(newArt)
 {
-    $('.article').each(function(){
-        if ($(this).children('.art-bar').length)
+    $('.articles').children('.article').each(function(){
+        if ($(this).children('.art-bar').length > 0)
         {
-            $(this).children('.art-bar').remove();
+            $(this).children('.art-bar').each(function(){
+                $(this).remove();
+            });
         }
         setToolbar($(this),'art-bar','tb-art','top');
     
@@ -158,7 +160,7 @@ function setToolbar(art,classToAdd, classOfToolbar,position)
         append : '.'+classToAdd
     });
 }
-
+var baseUrl = 'http://localhost/workspace/Symfony/web/';
 function makeUrl()
 {
     var loc = window.location;
@@ -169,8 +171,9 @@ function makeUrl()
         return url;
     }else
     {
-        var url = new Array();
-        url[0] = loc.toString();
+        
+        var url = loc.toString().split(baseUrl);
+        url[0] = baseUrl;
         return url;
     }
     //
@@ -184,19 +187,19 @@ function makeUrl()
     //}
 }
 
-function createNewArticle()
-{
-    var url = makeUrl();
-    $.ajax({
-        type : 'POST',
-        url : url + 'ajax/newArticle',
-        data : { },
-        success : function (data,textStatus, jqXHR)
-    {
-        $('#articles').append(data);
-    }
-    });
-}
+//function createNewArticle()
+//{
+    //var url = makeUrl();
+    //$.ajax({
+        //type : 'POST',
+        //url : url + 'ajax/newArticle',
+        //data : { },
+        //success : function (data,textStatus, jqXHR)
+    //{
+        //$('#articles').append(data);
+    //}
+    //});
+//}
 function sendAjax(path,successFunction,data)
 {
     var url = makeUrl();

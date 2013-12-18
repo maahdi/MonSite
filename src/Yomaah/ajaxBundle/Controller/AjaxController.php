@@ -4,6 +4,10 @@ namespace Yomaah\ajaxBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Controle les requetes en ajax et renvoie ce qui est démandé
+ *
+ **/
 class AjaxController extends Controller
 {
     public function updateArticleAction ()
@@ -94,13 +98,15 @@ class AjaxController extends Controller
             $page = $this->get('doctrine')->getRepository('yomaahBundle:Page')->findOneBy(array('pageUrl' => $tmp[1]));
             $article = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findDefaultArticle($request->request->get('position'),$tmp[1], $page);
             return $this->container->get('templating')->renderResponse('YomaahajaxBundle:Ajax:layoutArticle.html.twig', array('article' => $article));
+            //return new Response('YomaahajaxBundle:Ajax:layoutArticle.html.twig',array('article' => $article));
         }else if ($this->get('security.context')->isGranted('ROLE_USER'))
         {
+            $token = $this->get('session')->get('testToken');
             $request = $this->get('request');
             $url = $request->request->get('page');
             $tmp = explode('test_',$url);
-            $page = $this->get('doctrine')->getRepository('yomaahBundle:PageTest')->findOneBy(array('pageUrl' => $tmp[1]));
-            $article = $this->getDoctrine()->getRepository('yomaahBundle:ArticleTest')->findDefaultArticle($request->request->get('position'),$tmp[1], $page);
+            $page = $this->get('doctrine')->getRepository('yomaahBundle:PageTest')->findOneBy(array('pageUrl' => $tmp[1],'token' => $token));
+            $article = $this->getDoctrine()->getRepository('yomaahBundle:ArticleTest')->findDefaultArticle($request->request->get('position'),$tmp[1], $page, $token);
             return $this->container->get('templating')->renderResponse('YomaahajaxBundle:Ajax:layoutArticle.html.twig', array('article' => $article));
         }
     }

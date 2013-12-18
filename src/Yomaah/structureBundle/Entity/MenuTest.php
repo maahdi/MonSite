@@ -29,6 +29,33 @@ class MenuTest
      *@ORM\Column(type="integer")
      */
     protected $position;
+    /**
+     *@ORM\Column(type="integer")
+     */
+    protected $token;
+
+    /**
+     * Set token
+     *
+     * @param int $path
+     * @return Menu
+     */
+    public function setToken($path)
+    {
+        $this->token = $path;
+    
+        return $this;
+    }
+
+    /**
+     * Get token
+     *
+     * @return int 
+     */
+    public function getToken()
+    {
+        return $this->Token;
+    }
 
     /**
      * Set path

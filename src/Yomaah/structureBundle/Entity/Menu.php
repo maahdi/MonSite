@@ -30,6 +30,7 @@ class Menu
      */
     protected $position;
 
+    
     /**
      * Set path
      *
