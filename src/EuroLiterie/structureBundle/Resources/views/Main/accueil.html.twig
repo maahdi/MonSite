@@ -1,0 +1,49 @@
+{% extends 'EuroLiteriestructureBundle:Main:layout.html.twig' %}
+{%block body%}
+<div class="row">
+    <div class="small-12 columns">
+        <h2 class="main-titre">Bienvenue sur le site d'Euro Literie<h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="articles small-7 columns">
+        {%for article in articles%}
+            <article class="article">
+                <input type="hidden" name="id" value="{{article.id}}"/>
+                <article class="art-titre"><h1>{{article.artTitle}}</h1></article>
+                <section class="art-content">{{article.artContent | raw }}</section>
+            </article>
+        {%endfor%}
+    </div>
+    <div class="small-5 columns">
+        <div class="slide slider-wrapper futurico-theme">
+            <div id="slider" class="nivoSlider">
+                <img src="{{ asset('bundles/EuroLiteriestructure/images/nue1.png')}}" alt="">
+                <img src="{{ asset('bundles/EuroLiteriestructure/images/nue2.png')}}" alt="">
+                <img src="{{ asset('bundles/EuroLiteriestructure/images/literie1.jpg')}}" alt="">
+                <img src="{{ asset('bundles/EuroLiteriestructure/images/literie2.jpg')}}" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="promotions small-5 columns">
+        <div id="border">
+            <article class="promotion">
+                <article class="promo-titre"><h2>Promotions du moment</h2></article>
+                <article class="promo-date"><h2>Du 17/05/2013 au 20/07/2013</h2></article>
+                <section class="promo-content"><p>Sommier à 1 euros</p>
+                </section>
+                <a class="a-promotion" ref=#>Plus d'infos ...</a>
+            </article> 
+            <article class="promotion">
+                <article class="promo-titre"><h2>Promotions à venir</h2></article>
+                <article class="promo-date"><h2>Du 17/05/2013 au 20/07/2013</h2></article>
+                <section class="promo-content">
+                <p>Tout à -90% !!!</p>
+                </section>
+                <a class="a-promotion" ref=#>Plus d'infos ...</a>
+            </article> 
+        </div>
+    </div>
+</div>
+{%endblock%}

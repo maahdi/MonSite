@@ -1,3 +1,7 @@
+EuroLiteriestructure:
+    resource: "@EuroLiteriestructureBundle/Resources/config/routing.php"
+    prefix:   /
+
 yomaahajax:
     resource: "@YomaahajaxBundle/Resources/config/routing.php"
     prefix:   /

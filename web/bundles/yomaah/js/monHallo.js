@@ -61,7 +61,6 @@ $(document).on('click','.icon-remove',function(){
         });
     },tabData);
 });
-
 $(document).on('click','.icon-plus-sign',function(){
     sendAjax('ajax/dialog', function(data,textStatus,jqXHR){
         var dialog = data;
@@ -160,7 +159,6 @@ function setToolbar(art,classToAdd, classOfToolbar,position)
         append : '.'+classToAdd
     });
 }
-var baseUrl = 'http://localhost/workspace/Symfony/web/';
 function makeUrl()
 {
     var loc = window.location;
@@ -171,9 +169,8 @@ function makeUrl()
         return url;
     }else
     {
-        
-        var url = loc.toString().split(baseUrl);
-        url[0] = baseUrl;
+        var url = loc.toString().split('/web/');
+        url[0] = url[0] + '/web/';
         return url;
     }
     //

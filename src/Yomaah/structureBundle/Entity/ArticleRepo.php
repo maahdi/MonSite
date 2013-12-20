@@ -13,17 +13,36 @@ use Yomaah\structureBundle\Entity\Page;
  */
 class ArticleRepo extends EntityRepository
 {
-    public function findByPage($pageUrl)
+    public function findByPage($pageUrl, $site = null)
     {
-        $query = $this->getEntityManager()->createQuery('select a, p from yomaahBundle:Article a join a.page p where p.pageUrl = :url order by a.artId asc')->setParameter('url',$pageUrl);
+        if ($site == null)
+        {
+            $query = $this->getEntityManager()
+                ->createQuery('select a, p from yomaahBundle:Article a join a.page p where p.pageUrl = :url and p.site is null order by a.artId asc')
+                ->setParameter('url',$pageUrl);
+        }else
+        {
+            $query = $this->getEntityManager()
+                ->createQuery('select a, p from yomaahBundle:Article a join a.page p where p.pageUrl = :url and p.site = :site order by a.artId asc')
+                ->setParameters(array('url' => $pageUrl,'site' => $site));
+            
+        }
         return $query->getResult();
     }
 
     public function findDefaultArticle($position, $pageUrl, \Yomaah\structureBundle\Entity\Page $page)
     {
         $em = $this->getEntityManager();
-        $query = $em->createQuery('select a from yomaahBundle:Article a join a.page p where p.pageUrl = \'default\'');
-        $article = $query->getSingleResult();
+        if ($page->getSite() == null)
+        {
+            $query = $em->createQuery('select a from yomaahBundle:Article a join a.page p where p.pageUrl = \'default\'');
+            $article = $query->getSingleResult();
+        }else
+        {
+            $query = $em->createQuery('select a from yomaahBundle:Article a join a.page p where p.pageUrl = \'default\' and p.site = :idSite')
+                ->setParameter('idSite', $page->getSite());
+            $article = $query->getSingleResult();
+        }
         $new = new Article();
         $new->setArtTitle($article->getArtTitle());
         $new->setArtContent($article->getArtContent());

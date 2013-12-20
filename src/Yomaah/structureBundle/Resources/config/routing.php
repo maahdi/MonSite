@@ -59,4 +59,6 @@ $collection->add('test_accueil',new Route('/test_accueil', array(
 $collection->add('post_log',new Route('/post_log', array(
     '_controller' => 'yomaahBundle:Main:postLogout',)
 ));
+
+
 return $collection;

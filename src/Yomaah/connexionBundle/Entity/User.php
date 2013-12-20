@@ -4,19 +4,20 @@ namespace Yomaah\connexionBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  *@ORM\Entity
- *@ORM\Table(name="utilisateurs")
+ *@ORM\Table(name="utilisateur")
  **/
-class User implements AdvancedUserInterface
+class User implements AdvancedUserInterface, \Serializable
 {
 
     /**
      *@ORM\Id
      *@ORM\Column(type="integer")
      */
-    protected $id;
+    protected $idUser;
 
 
     /**
@@ -35,8 +36,48 @@ class User implements AdvancedUserInterface
      **/
     protected $group;
 
+    /**
+     *@ORM\OneToMany(targetEntity="\Yomaah\structureBundle\Entity\Site", mappedBy="user")
+     */
+    protected $sites;
+    protected $salt;
+
+    /**
+     * Add sites
+     *
+     * @param \Yomaah\structureBundle\Entity\Site $site
+     * @return User
+     */
+    public function addSite(\Yomaah\structureBundle\Entity\Site $site)
+    {
+        $this->sites[] = $site;
+    
+        return $this;
+    }
+
+    /**
+     * Remove sites
+     *
+     * @param \Yomaah\connexionBundle\Entity\Site $sites
+     */
+    public function removeSite(\Yomaah\structureBundle\Entity\Site $site)
+    {
+        $this->users->removeElement($site);
+    }
+
+    /**
+     * Get sites
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSites()
+    {
+        return $this->sites;
+    }
+
     public function __construct()
     {
+        $this->sites = new ArrayCollection();
     }
 
     public function getRoles()
@@ -49,9 +90,8 @@ class User implements AdvancedUserInterface
         return $this->password;
     }
 
-    public function getSalt()
-    {
-        return null;
+    public function getSalt(){
+        return $this->salt;
     }
 
     public function getUsername()
@@ -83,26 +123,26 @@ class User implements AdvancedUserInterface
     {
         return true;
     }
-    public function equals(UserInterface $user)
-    {
-        if (!$user instanceof WebserviceUser) {
-            return false;
-        }
+    //public function equals(UserInterface $user)
+    //{
+        //if (!$user instanceof WebserviceUser) {
+            //return false;
+        //}
 
-        if ($this->password !== $user->getPassword()) {
-            return false;
-        }
+        //if ($this->password !== $user->getPassword()) {
+            //return false;
+        //}
 
-        if ($this->getSalt() !== $user->getSalt()) {
-            return false;
-        }
+        //if ($this->getSalt() !== $user->getSalt()) {
+            //return false;
+        //}
 
-        if ($this->username !== $user->getUsername()) {
-            return false;
-        }
+        //if ($this->username !== $user->getUsername()) {
+            //return false;
+        //}
 
-        return true;
-    }
+        //return true;
+    //}
     
 
     /**
@@ -167,23 +207,44 @@ class User implements AdvancedUserInterface
     /**
      * Set id
      *
-     * @param integer $id
+     * @param integer $idUser
      * @return User
      */
-    public function setId($id)
+    public function setIdUser($id)
     {
-        $this->id = $id;
+        $this->idUser = $id;
     
         return $this;
     }
 
     /**
-     * Get id
+     * Get idUser
      *
      * @return integer 
      */
-    public function getId()
+    public function getIdUser()
     {
-        return $this->id;
+        return $this->idUser;
     }
+
+    /**
+     * @see \Serializable::serialize()
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->idUser,
+        ));
+    }
+
+    /**
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->idUser,
+        ) = unserialize($serialized);
+    }
+
 }

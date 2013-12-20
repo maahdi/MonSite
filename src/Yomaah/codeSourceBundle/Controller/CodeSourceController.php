@@ -25,7 +25,8 @@ class CodeSourceController
     private function constructRootPath()
     {
         $path = preg_split('/\/src/',__DIR__);
-        $this->rootDir = $path[0].'/src/';
+        //$this->rootDir = $path[0].'/src/';
+        $this->rootDir = '/srv/http/workspace/yomaah/Projet/';
     }
 
     /** 

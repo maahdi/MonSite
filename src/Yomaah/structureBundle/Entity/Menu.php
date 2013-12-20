@@ -2,6 +2,7 @@
 namespace Yomaah\structureBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  *@ORM\Entity(repositoryClass="MenuRepo")
@@ -13,7 +14,7 @@ class Menu
      *@ORM\Id
      *@ORM\Column(type="integer")
      */
-    protected $id;
+    protected $idMenu;
 
     /**
      *@ORM\Column(type="string")
@@ -30,7 +31,76 @@ class Menu
      */
     protected $position;
 
+    /**
+     *@ORM\Column(type="integer")
+     */
+    protected $site;
     
+    /**
+     *@ORM\OneToMany(targetEntity="SousMenu", mappedBy="menu")
+     */
+    protected $sousMenu;
+
+    /**
+     * Add sousMenu
+     *
+     * @param \Yomaah\connexionBundle\Entity\User $sousMenu
+     * @return Group
+     */
+    public function addSousMenu(\Yomaah\structureBundle\Entity\SousMenu $sousMenu)
+    {
+        $this->sousMenu[] = $sousMenu;
+    
+        return $this;
+    }
+
+    /**
+     * Remove sousMenu
+     *
+     * @param \Yomaah\connexionBundle\Entity\User $sousMenu
+     */
+    public function removeSousMenu(\Yomaah\structureBundle\Entity\SousMenu $sousMenu)
+    {
+        $this->sousMenu->removeElement($sousMenu);
+    }
+
+    /**
+     * Get sousMenu
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSousMenu()
+    {
+        return $this->sousMenu;
+    }
+
+    public function __construct()
+    {
+        $this->sousMenu = new ArrayCollection();
+    }
+
+    /**
+     * Set site
+     *
+     * @param string $site
+     * @return Menu
+     */
+    public function setSite($site)
+    {
+        $this->site = $site;
+    
+        return $this;
+    }
+
+    /**
+     * Get site
+     *
+     * @return string 
+     */
+    public function getSite()
+    {
+        return $this->site;
+    }
     /**
      * Set path
      *
@@ -106,9 +176,9 @@ class Menu
      * @param integer $id
      * @return Menu
      */
-    public function setId($id)
+    public function setIdMenu($id)
     {
-        $this->id = $id;
+        $this->idMenu = $id;
     
         return $this;
     }
@@ -118,8 +188,8 @@ class Menu
      *
      * @return integer 
      */
-    public function getId()
+    public function getIdMenu()
     {
-        return $this->id;
+        return $this->idMenu;
     }
 }

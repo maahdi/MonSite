@@ -12,13 +12,30 @@ use Doctrine\ORM\EntityRepository;
  */
 class MenuRepo extends EntityRepository
 {
-    public function getLeftMenu()
+    public function getLeftMenu($site = null)
     {
-        return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=0')->getResult();
+        if ($site == null)
+        {
+            return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=0 and m.site is NULL')->getResult();
+            
+        }else
+        {
+            return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=0 and m.site = :site')
+                ->setParameter('site', $site)
+                ->getResult();
+        }
     }
 
-    public function getRightMenu()
+    public function getRightMenu($site = null)
     {
-        return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=1')->getResult();
+        if ($site == null)
+        {
+            return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=1 and m.site is NULL')->getResult();
+        }else
+        {
+            return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=1 and m.site = :site')
+                ->setParameter('site', $site)
+                ->getResult();
+        }
     }
 }

@@ -14,7 +14,6 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  **/
 class RequeteListener
 {
-
     private $db;
     private $secure;
 
@@ -24,6 +23,12 @@ class RequeteListener
         $this->secure = $secure;
     }
 
+    /**
+     * Implémenter une erreur si $this->secure->getToken() == null
+     * Car a chaque fois sa le fait sur une page sans route
+     * Comme c la page avec la première erreur
+     * L'appli doit passer d'abord par ce code
+     **/
     public function onKernelRequest(GetResponseEvent $event)
     {
         $sql = 'select max(dateConnexion) as date,adresseIp from visites where adresseIp = ?';
@@ -50,12 +55,16 @@ class RequeteListener
             }
         }else if ($this->secure->isGranted('ROLE_SUPER_ADMIN'))
         {
-            $id = $this->secure->getToken()->getUser()->getId();
+            $id = $this->secure->getToken()->getUser()->getIdUser();
             $sql = 'update visites set idUser = ? where adresseIp = ?';
             $this->db->executeQuery($sql, array($id, $ip));
         }else        
         {
-            $id = $this->secure->getToken()->getUser()->getId();
+            /**
+             * Cette partie pour enregistrer les utilisateurs test
+             * A enlever aussi
+             **/
+            $id = $this->secure->getToken()->getUser()->getIdUser();
             $sql = 'update visites set idUser = ? where adresseIp = ? and dateConnexion = ?';
             $this->db->executeQuery($sql, array($id, $ip, $date->format('Y-m-d H:i:s')));
         }
@@ -76,7 +85,7 @@ class RequeteListener
         
     }
 
-    /**
+    /*
      * Pas de compteur dans un fichier
      * Enregistrement de tous les ip et dates de connexion différentes
      * Comptage au moment de l'affichage
