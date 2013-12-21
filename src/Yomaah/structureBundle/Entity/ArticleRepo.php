@@ -33,21 +33,24 @@ class ArticleRepo extends EntityRepository
     public function findDefaultArticle($position, $pageUrl, \Yomaah\structureBundle\Entity\Page $page)
     {
         $em = $this->getEntityManager();
-        if ($page->getSite() == null)
-        {
-            $query = $em->createQuery('select a from yomaahBundle:Article a join a.page p where p.pageUrl = \'default\'');
-            $article = $query->getSingleResult();
-        }else
-        {
-            $query = $em->createQuery('select a from yomaahBundle:Article a join a.page p where p.pageUrl = \'default\' and p.site = :idSite')
-                ->setParameter('idSite', $page->getSite());
-            $article = $query->getSingleResult();
-        }
+        //if ($page->getSite() == null)
+        //{
+        /**
+            * Erreur pas tester p.site is NULL
+         */
+            //$query = $em->createQuery('select a from yomaahBundle:Article a join a.page p where p.pageUrl = \'default\' and p.site is null');
+            //$article = $query->getSingleResult();
+        //}else
+        //{
+            //$query = $em->createQuery('select a from yomaahBundle:Article a join a.page p where p.pageUrl = \'default\' and p.site = :idSite')
+                //->setParameter('idSite', $page->getSite());
+            //$article = $query->getSingleResult();
+        //}
         $new = new Article();
-        $new->setArtTitle($article->getArtTitle());
-        $new->setArtContent($article->getArtContent());
+        $new->setArtTitle('Mon titre');
+        $new->setArtContent('<p>Ceci est un article</p>');
         $new->setArtDate(new \Datetime());
-        $new->setPng($article->getPng());
+        $new->setPng($em->getRepository('yomaahBundle:Png')->find(3));
         $new->setPage($page);
         $new->setArtId($this->getNewId($position, $pageUrl, $em));
         $em->persist($new);
@@ -61,6 +64,9 @@ class ArticleRepo extends EntityRepository
         $id = $query->getSingleResult(); 
         $maxId = (int) $id[1] + 1;
 
+        /**
+         * Début == 0
+         */
         if ($position == "0")
         {
             $query = $em->createQuery('select a from yomaahBundle:Article a join a.page p where p.pageUrl = :url order by a.artId asc')
@@ -80,7 +86,7 @@ class ArticleRepo extends EntityRepository
                 }
             }
             $j = $nb - 1;
-            for ($i = 0; $i < $nb; $i++)
+            foreach ($articles as $a)
             {
                 $em->createQuery('update yomaahBundle:Article a set a.artId = :artId where a.id = :id')
                     ->setParameters(array('artId' => $articles[$j]->getArtId(),'id' => $articles[$j]->getId()))

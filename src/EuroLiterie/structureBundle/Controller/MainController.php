@@ -29,12 +29,12 @@ class MainController extends Controller
 
     public function magasinAction()
     {
-        return $this->get('templating')->renderResponse('EuroLiteriestructureBundle:Main:accueil.html.twig');
+        return $this->get('templating')->renderResponse('EuroLiteriestructureBundle:Main:magasin.html.twig',array('position' => 'Notre magasin'));
     }
 
     public function contactAction()
     {
-        return $this->get('templating')->renderResponse('EuroLiteriestructureBundle:Main:accueil.html.twig');
+        return $this->get('templating')->renderResponse('EuroLiteriestructureBundle:Main:accueil.html.twig', array('position' => 'Nous trouver'));
     }
     /**
      * Remplace fonction de login

@@ -172,9 +172,9 @@ article
 {
     text-align:justify;
     font-size:0.9em;
-    margin-left:3%;
+    margin-left:2%;
     overflow-x:hidden!important;
-    margin-right:2%;
+    padding-right:2%;
 }
 
 .art-content p

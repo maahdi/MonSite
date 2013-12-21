@@ -2,7 +2,16 @@
         <div class="row">
             <ul class="menu" id="menu-left">
             {%for menu in menuleft%}
-                <li><a href="{{path(menu.path)}}">{{menu.name}}</a></li>
+                <li><a href="{{path(menu.path)}}">{{menu.name}}</a>
+                    {%if menu.sousMenu is defined%}
+                        <ul>
+                        {%for ss in menu.sousMenu%}
+                        <li><a href="{{ path(ss.path,{'path': 'lit'})}}">{{ ss.name}}</a></li>
+                        {%endfor%}
+                        </ul></li>
+                    {%else%}
+                        </li>
+                    {%endif%}
             {%endfor%}
             </ul>
             <ul class="menu" id="menu-right">

@@ -73,11 +73,16 @@
     font-family : "Volkhov";
     font-size : 1em;
 }
+.marque-content p:first-child
+{
+    margin-top : 0.5em;
+}
 .marque-content p
 {
     display:block;
     position :relative;
-    margin : 0.2em;
+    font-size : 0.8em;
+    margin-bottom : 0.2em;
     padding-left : 0.8em;
     color : black;
 }

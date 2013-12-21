@@ -31,53 +31,92 @@ class RequeteListener
      **/
     public function onKernelRequest(GetResponseEvent $event)
     {
-        $sql = 'select max(dateConnexion) as date,adresseIp from visites where adresseIp = ?';
-        //$sql = 'select dateConnexion as date,adresseIp from visites where adresseIp = ? and dateConnexion = (select max(dateConnexion) from visites)';
-        $request = $event->getRequest();
-        $ip = $request->getClientIp();
-        $result = $this->db->executeQuery($sql,array($ip));
-        $result->setFetchMode(\PDO::FETCH_OBJ);
-        foreach ($result as $r)
-        {
-            $date = new \Datetime($r->date);
-        }
-        if (($this->secure->getToken()->getUser() == "anon.") && ($result->rowCount() == 0))
-        {
-            $insert = 'insert into visites (adresseIp, dateConnexion) values (?,Now())';
-            $this->db->executeQuery($insert, array($ip));
-        }else if (($this->secure->getToken()->getUser() == "anon.") && ($result->rowCount() == 1))
-        {
-            $date = $this->testDate($date);
-            if (!($date === false))
-            {
-                $insert = 'insert into visites (adresseIp, dateConnexion) values (?,?)';
-                $this->db->executeQuery($insert, array($ip, $date),array('string', 'datetime'));
-            }
-        }else if ($this->secure->isGranted('ROLE_SUPER_ADMIN'))
-        {
-            $id = $this->secure->getToken()->getUser()->getIdUser();
-            $sql = 'update visites set idUser = ? where adresseIp = ?';
-            $this->db->executeQuery($sql, array($id, $ip));
-        }else        
-        {
-            /**
-             * Cette partie pour enregistrer les utilisateurs test
-             * A enlever aussi
-             **/
-            $id = $this->secure->getToken()->getUser()->getIdUser();
-            $sql = 'update visites set idUser = ? where adresseIp = ? and dateConnexion = ?';
-            $this->db->executeQuery($sql, array($id, $ip, $date->format('Y-m-d H:i:s')));
-        }
+		$request = $event->getRequest();
+		
+		/*
+		* Passe 2 fois par ce script je pense lors de l'envoi de la toolbar symfony
+		*/
+		if (!($request->getSession()->has('secondPass')))
+		{
+			$request->getSession()->set('secondPass',true);
+			$this->setVisite($request);
+		}else if (!($request->getSession()->get('secondPass')))
+		{
+			$this->setVisite($request);
+			$request->getSession()->set('secondPass',true);
+		}else if ($request->getSession()->has('secondPass'))
+		{
+			$request->getSession()->set('secondPass',false);   
+		}
     } 
 
+	public function setVisite($request)
+	{
+		$sql = 'select max(dateConnexion) as date,adresseIp from visites where adresseIp = ?';
+	    //$sql = 'select dateConnexion as date,adresseIp from visites where adresseIp = ? and dateConnexion = (select max(dateConnexion) from visites)';
+	    
+	    $ip = $request->getClientIp();
+	    $result = $this->db->executeQuery($sql,array($ip));
+	    $result->setFetchMode(\PDO::FETCH_OBJ);
+	    foreach ($result as $r)
+	    {
+			$test = $r->date;
+
+	        //$date = new \Datetime($r->date);
+	    }
+/*if ($this->secure->getToken() != null)
+{*/
+		$date = new \Datetime($test);
+
+		/**
+		* Si visite d'adresse ip inconnu
+		*/
+
+	    if (($this->secure->getToken()->getUser() == "anon.") && ($test == null))
+	    {
+	        $insert = 'insert into visites (adresseIp, dateConnexion) values (?,Now())';
+	        $this->db->executeUpdate($insert, array($ip));
+		/**
+		* Si visite ip connu mais date > 12h
+		*/
+	    }else if (($this->secure->getToken()->getUser() == "anon.") && ($this->testDate($date)))
+	    {
+	        $insert = 'insert into visites (adresseIp, dateConnexion) values (?,Now())';
+	        $this->db->executeUpdate($insert, array($ip));
+		/**
+		* Si adresse connu dans tous les cas on associe la visite avec l'admin
+		*/
+	    }else if ($this->secure->isGranted('ROLE_SUPER_ADMIN'))
+	    {
+	        $id = $this->secure->getToken()->getUser()->getIdUser();
+	        $sql = 'update visites set idUser = ? where adresseIp = ? and dateConnexion = ?';
+	        $this->db->executeUpdate($sql, array($id, $ip, $date->format('Y-m-d H:i:s')));
+		/**
+		*	Adresse connu et role_user restant
+		*	Si la date est supérieure (pas obligatoire car pas de cookie remember me
+		*	ie première visite en anonyme forcément enregistré dans le second if)
+		*/
+	    }else if ($this->testDate($date))
+	    {
+	        /**
+	         * Cette partie pour enregistrer les utilisateurs test
+	         * A enlever aussi
+	         **/
+			$date = new \Datetime($test);
+	        $id = $this->secure->getToken()->getUser()->getIdUser();
+	        $sql = 'update visites set idUser = ? where adresseIp = ? and dateConnexion = ?';
+	        $this->db->executeUpdate($sql, array($id, $ip, $date->format('Y-m-d H:i:s')));
+	    }
+	}
+	
 
     public function testDate($date)
     {
         $dateNow = new \Datetime();
         $diff = $date->diff($dateNow);
-        if ($diff->h >= 12 || $diff->d > 1)
+        if ($diff->h >= 12 || $diff->d >= 1)
         {
-            return $dateNow;
+            return true;
         }else
         {
             return false;

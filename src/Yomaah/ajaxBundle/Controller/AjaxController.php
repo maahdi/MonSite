@@ -92,17 +92,20 @@ class AjaxController extends Controller
         // Ne gère pas exception page not found
         if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
         {
+ 			$request = $this->get('request');
+            $url = $request->request->get('page');
+            $tmp = explode('admin_',$url);
             $template = 'layoutArticle.html.twig';
             if ($this->get('session')->get('idSite') != null)
             {
                 $idSite = $this->get('session')->get('idSite');
                 $site = $this->get('doctrine')->getRepository('yomaahBundle:Site')->find($idSite);
                 $template = 'layoutArticle'.$site->getNomSite().'.html.twig';
-            }
-            $request = $this->get('request');
-            $url = $request->request->get('page');
-            $tmp = explode('admin_',$url);
-            $page = $this->get('doctrine')->getRepository('yomaahBundle:Page')->findOneBy(array('pageUrl' => $tmp[1],'site' => $idSite));
+	            $page = $this->get('doctrine')->getRepository('yomaahBundle:Page')->findOneBy(array('pageUrl' => $tmp[1],'site' => $idSite));
+			}else
+			{
+				$page = $this->get('doctrine')->getRepository('yomaahBundle:Page')->findOneBy(array('pageUrl' => $tmp[1]));
+			}
             $article = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findDefaultArticle($request->request->get('position'),$tmp[1], $page);
             return $this->container->get('templating')->renderResponse('YomaahajaxBundle:Ajax:'.$template, array('article' => $article));
             //return new Response('YomaahajaxBundle:Ajax:layoutArticle.html.twig',array('article' => $article));

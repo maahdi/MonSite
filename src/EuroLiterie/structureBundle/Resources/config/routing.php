@@ -22,7 +22,7 @@ $collection->add('literie_contact', new Route('/literie/contact', array(
 )));
 
 $collection->add('literie_magasin', new Route('/literie/magasin', array(
-    '_controller' => 'EuroLiteriestructureBundle:Main:accueil'
+    '_controller' => 'EuroLiteriestructureBundle:Main:magasin'
 )));
 $collection->add('admin_literie_accueil', new Route('/literie/admin_accueil', array(
     '_controller' => 'EuroLiteriestructureBundle:Main:accueil'
