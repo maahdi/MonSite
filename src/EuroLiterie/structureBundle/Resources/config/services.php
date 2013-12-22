@@ -21,7 +21,7 @@ $container->setDefinition(
 */
 $container->setDefinition('literie_gestionMenu',
     new Definition ('EuroLiterie\structureBundle\Classes\GestionMenu',
-        array(new Reference('doctrine.orm.entity_manager'),new Reference('security.context'), new Reference('session')))
+        array(new Reference('service_container')))
 );
 
 $mobileDetect = new Definition('EuroLiterie\structureBundle\Classes\MobileDetect',array(new Reference('session'),new Reference('request')));

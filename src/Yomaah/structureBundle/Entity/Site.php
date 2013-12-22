@@ -27,6 +27,44 @@ class Site
     protected $user;
 
     /**
+     *@ORM\OneToMany(targetEntity="Page", mappedBy="site")
+     */
+    protected $page;
+
+    /**
+     * Add page
+     *
+     * @param \Yomaah\structureBundle\Entity\Page $page
+     * @return Page
+     */
+    public function addPage(\Yomaah\structureBundle\Entity\Page $page)
+    {
+        $this->page[] = $page;
+    
+        return $this;
+    }
+
+    /**
+     * Remove page
+     *
+     * @param \Yomaah\structureBundle\Entity\Page $page
+     */
+    public function removePage(\Yomaah\structureBundle\Entity\Page $page)
+    {
+        $this->page->removeElement($page);
+    }
+
+    /**
+     * Get page
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPage()
+    {
+        return $this->page;
+    }
+
+    /**
      * Set idSite
      *
      * @param string $idSite

@@ -23,16 +23,14 @@ class ArticleRepo extends EntityRepository
         }else
         {
             $query = $this->getEntityManager()
-                ->createQuery('select a, p from yomaahBundle:Article a join a.page p where p.pageUrl = :url and p.site = :site order by a.artId asc')
+                ->createQuery('select a, p from yomaahBundle:Article a join a.page p join p.site s where p.pageUrl = :url and s.idSite = :site order by a.artId asc')
                 ->setParameters(array('url' => $pageUrl,'site' => $site));
-            
         }
         return $query->getResult();
     }
 
     public function findDefaultArticle($position, $pageUrl, \Yomaah\structureBundle\Entity\Page $page)
     {
-        $em = $this->getEntityManager();
         //if ($page->getSite() == null)
         //{
         /**
@@ -46,21 +44,31 @@ class ArticleRepo extends EntityRepository
                 //->setParameter('idSite', $page->getSite());
             //$article = $query->getSingleResult();
         //}
+        $em = $this->getEntityManager();
         $new = new Article();
         $new->setArtTitle('Mon titre');
         $new->setArtContent('<p>Ceci est un article</p>');
         $new->setArtDate(new \Datetime());
         $new->setPng($em->getRepository('yomaahBundle:Png')->find(3));
         $new->setPage($page);
-        $new->setArtId($this->getNewId($position, $pageUrl, $em));
+        $new->setArtId($this->getNewId($position, $page, $em));
         $em->persist($new);
         $em->flush();
         return $new;
     }
 
-    public function getNewId($position, $pageUrl, $em)
+    public function getNewId($position, $page, $em)
     {
-        $query = $em->createQuery('select max(a.artId) from yomaahBundle:Article a');
+        if ($page->getSite() == null)
+        {
+            $sql = 'select max(a.artId) from yomaahBundle:Article a join a.page p join p.site s where p.site is null';
+            $query = $em->createQuery($sql);
+        }else
+        {
+            $sql =  'select max(a.artId) from yomaahBundle:Article a join a.page p join p.site s where s.idSite = :site';
+            $query = $em->createQuery($sql)
+                ->setParameter('site', $page->getSite()->getIdSite());
+        }
         $id = $query->getSingleResult(); 
         $maxId = (int) $id[1] + 1;
 
@@ -69,12 +77,11 @@ class ArticleRepo extends EntityRepository
          */
         if ($position == "0")
         {
-            $query = $em->createQuery('select a from yomaahBundle:Article a join a.page p where p.pageUrl = :url order by a.artId asc')
-                        ->setParameter('url',$pageUrl);
+            $query = $this->getEntityManager()->createQuery('select a from yomaahBundle:Article a join a.page p where p.pageUrl = :url order by a.artId asc')
+                        ->setParameter('url',$page->getPageUrl());
             $articles = $query->getResult();
             $nb = count($articles);
             $minId = $articles[0]->getArtId();
-            $lastId = null;
             for ($i = 0; $i < $nb;$i++)
             {
                 if ($i != $nb - 1)
@@ -88,7 +95,7 @@ class ArticleRepo extends EntityRepository
             $j = $nb - 1;
             foreach ($articles as $a)
             {
-                $em->createQuery('update yomaahBundle:Article a set a.artId = :artId where a.id = :id')
+                $this->getEntityManager()->createQuery('update yomaahBundle:Article a set a.artId = :artId where a.id = :id')
                     ->setParameters(array('artId' => $articles[$j]->getArtId(),'id' => $articles[$j]->getId()))
                     ->execute();
                 $j--;
@@ -102,7 +109,6 @@ class ArticleRepo extends EntityRepository
 
     private function changeId($first, $second)
     {
-
         $first->setArtId($second->getArtId());
     }
 }
