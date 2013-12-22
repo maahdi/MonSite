@@ -11,6 +11,7 @@ class MainController extends Controller
 {
     public function indexAction()
     {
+        $this->retourMonSiteEnAdminDepuisSiteClient();
         /**
          * Enregistrement d'un utilisateur avec nouveau password
          *
@@ -26,12 +27,14 @@ class MainController extends Controller
 
     public function cvAction()
     {
+        $this->retourMonSiteEnAdminDepuisSiteClient();
         $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('cv');
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:cv.html.twig',array('articles' => $articles));
     }
 
     public function projetAction()
     {
+        $this->retourMonSiteEnAdminDepuisSiteClient();
         $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('projets');
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:projet.html.twig',
             array('articles' => $articles));
@@ -39,6 +42,7 @@ class MainController extends Controller
 
     public function codeSourceGitAction()
     {
+        $this->retourMonSiteEnAdminDepuisSiteClient();
         $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('code_source');
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:codeSource.html.twig',
             array('git' => true,'articles' => $articles));
@@ -46,6 +50,7 @@ class MainController extends Controller
 
     public function codeSourceAction($path)
     {
+        $this->retourMonSiteEnAdminDepuisSiteClient();
         $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('code_source');
         $codeSourceController =$this->get('codeSource');
         $codeSourceController->init($path);
@@ -57,6 +62,13 @@ class MainController extends Controller
         $variable = $codeSourceController->getVariable();
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:codeSource.html.twig', 
             array_merge($variable,array('articles'=> $articles)));
+    }
+    public function retourMonSiteEnAdminDepuisSiteClient()
+    {
+        if(($this->get('session')->has('idSite')))
+        {
+            $this->get('session')->remove('idSite');
+        }
     }
 
     /**
@@ -75,6 +87,7 @@ class MainController extends Controller
         {
             //$this->get('yomaah_requete_listener')->incrementCompteur();
         }
+        $this->retourMonSiteEnAdminDepuisSiteClient();
         $this->get('session')->remove('testToken');
         return $this->redirect($this->generateUrl('logout'),301);
     }

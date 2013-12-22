@@ -4,3 +4,4 @@
 /app/config/parameters.yml
 /app/logs/
 /web/bundles/*
+/clearCache

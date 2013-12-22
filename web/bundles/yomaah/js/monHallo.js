@@ -187,12 +187,11 @@ function makeUrl()
             var url = loc.toString().split('/');
             url[0] = url[0] + url[2]+'/';
             url[1] = url[3];
-        }else if (cut == '/web/')
+        }else if ((cut == '/web/') || (cut == '/literie/'))
         {
             var url = loc.toString().split(cut);
             url[0] = url[0] + '/';
-        }else
-        {
+        }else        {
             var url = loc.toString().split(cut);
             url[0] = url[0] + cut;
         }
@@ -212,10 +211,10 @@ function makeUrl()
 
 function sendAjax(path,successFunction,data)
 {
-    var url = makeUrl();
+    var iurl = makeUrl();
     $.ajax({
         type : 'POST',
-        url : url[0]+path,
+        url : iurl[0]+path,
         data : data,
         success : successFunction
     });

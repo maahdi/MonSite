@@ -90,7 +90,7 @@ class ArticleRepo extends EntityRepository
             {
                 $query = $this->getEntityManager()
                     ->createQuery('select a from yomaahBundle:Article a join a.page p join p.site s where p.pageUrl = :url and s.idSite =:site order by a.artId asc')
-                    ->setParametesr(array('url' => $page->getPageUrl(),'site' => $page->getSite()->getIdSite()));
+                    ->setParameters(array('url' => $page->getPageUrl(),'site' => $page->getSite()->getIdSite()));
             }
             $articles = $query->getResult();
             $nb = count($articles);
