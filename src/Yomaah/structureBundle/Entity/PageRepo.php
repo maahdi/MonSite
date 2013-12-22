@@ -12,13 +12,5 @@ use Doctrine\ORM\EntityRepository;
  */
 class PageRepo extends EntityRepository
 {
-    public function get($page)
-    {
-        $query = $this->_em->createQuery('select p.pageId from yomaahBundle:Page p where p.pageUrl = :url')->setParameter('url',$page);
-        $id = $query->getSingleResult();
-        $page = new Page();
-        $page->setPageId($id['pageId'])->setPageUrl($page);
-        return $page;
-        //return $query->getResult();
-    }
+ 
 }

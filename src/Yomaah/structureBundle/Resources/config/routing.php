@@ -52,7 +52,7 @@ $collection->add('admin_code_source_git',new Route('/admin_code_source_git', arr
     '_controller' => 'yomaahBundle:Main:codeSourceGit',)
 ));
 
-$collection->add('test_accueil',new Route('/test_accueil', array(
+$collection->add('test_accueil',new Route('/test/test_accueil', array(
     '_controller' => 'yomaahBundle:Test:accueil',)
 ));
 
