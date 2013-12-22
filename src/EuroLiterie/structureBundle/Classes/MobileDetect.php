@@ -1,19 +1,31 @@
 <?php
 namespace EuroLiterie\structureBundle\Classes;
 
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 class MobileDetect
 {
+    private $session;
+    private $request;
+
+    public function __construct( Session $session, Request $request)
+    {
+        
+        $this->session = $session;
+        $this->request = $request;
+    }
+
     public function onKernelRequest(GetResponseEvent $event)
     {
-        $request = $event->getRequest();
-        if (preg_match('/Android/', $request->headers->get('User-Agent')))
+        if (preg_match('/Android/', $this->request->headers->get('User-Agent')))
         {
-            $request->getSession()->set('mobile',true);
+            $this->session->set('mobile',true);
         }else
         {
-            $request->getSession()->set('mobile', false);
+            $this->session->set('mobile', false);
         }
     }
+    
 }

@@ -4,9 +4,6 @@ namespace EuroLiterie\structureBundle\Classes;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
-
 /**
  * Classe pour remplir les menus
  * Utilisé par MenuTwigExtension
@@ -14,51 +11,41 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  **/
 class GestionMenu
 {
-    private $container;
+    private $entityManager;
+    private $secure;
+    private $session;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(\Doctrine\ORM\EntityManager $em,SecurityContextInterface $secure, Session $session)
     {
-        $this->container = $container;
+        $this->entityManager = $em;
+        $this->secure = $secure;
+        $this->session = $session;
     }
+
     public function getAllMenu()
     {
-        $request = $this->container->get('request');
-        if ($request->getRealMethod() == 'GET')
-        {
-            return $this->getMenu($request);
-        }else
-        {
-            return array(false);
-        }
-    }
-
-    public function getMenu($request)
-    {
-        $session = $request->getSession();
-        $secure = $this->container->get('security.context');
-        $user = $secure->getToken()->getUser();
+        $user = $this->secure->getToken()->getUser();
         /**
-         * L'utilisateur doit être connecter
-         * soit un client soit moi
+         * ROLE_ADMIN A REMPLACER PAR ROLE_USER
          **/
         $admin = false;
-        if ((!($user == "anon."))&& $secure->isGranted('ROLE_ADMIN'))
+        if ((!($user == "anon."))&& $this->secure->isGranted('ROLE_ADMIN'))
         {
             /**
              * Partie pour tester le site avec mon identifiant
              * !!!Attention!!! 
              * A enlever
              * en prod mettre : 
-             *     $menus = $this->getMenuFromRepo('left','Menu');
+             *     $menus = $this->getMenu('left','Menu');
              *     $admin = false;
              */
-            if ($secure->isGranted('ROLE_SUPER_ADMIN'))
+            if ($this->secure->isGranted('ROLE_SUPER_ADMIN'))
             {
-                $menus = $this->getMenuFromRepo('left','Menu');
-                if (($session->get('zoneAdmin') != null) && $session->get('zoneAdmin'))
+                $menus = $this->getMenu('left','Menu');
+                if (($this->session->get('zoneAdmin') != null) && $this->session->get('zoneAdmin'))
                 {
                     $this->setAdminMenu($menus);
-                    $session->set('idSite', 1);
+                    $this->session->set('idSite', 1);
                     $admin = true;
                 }
 
@@ -66,49 +53,54 @@ class GestionMenu
             {
                 $sitesAvailables = $user->getSites();
                 $auth = false;
-                /**
-                 * vérifie que le site appartient bien à l'utilisateur qui le visite
-                 */
                 foreach ($sitesAvailables as $site)
                 {
                     if ($site->getNomSite() == 'literie')
                     {
-                        $session->set('idSite', 1);
+                        $this->session->set('idSite', 1);
                         $auth = true;
                     }
                 }
                 $menus = null;
                 if ($auth)
                 {
-                  $menus = $this->getMenuFromRepo('left','Menu');
+                  $menus = $this->getMenu('left','Menu');
                 }
                 $admin = false;
                 /**
-                 * pour simuler connexion à la zone admin
-                 */
-                if (($session->get('zoneAdmin') != null) && $session->get('zoneAdmin'))
+                * Pour Test accès zone admin via session
+                * La aussi à enlever
+                **/
+                if (($this->session->get('zoneAdmin') != null) && $this->session->get('zoneAdmin'))
                 {
                     $this->setAdminMenu($menus);
                     $admin = true;
                 }
             }
-            return array('menus' => $menus,'literie_admin' => $admin);
-        }return array(false);
-         /**
+       /**
+         * Vrai zone admin 
          * A décommenter
-         * pour la prod a la place de ce qu'il y avait avant
          **/
-/**
-        $menus = $this->getMenuFromRepo('left','Menu');
-        $admin = false;
-        if ($this->secure->isGranted('ROLE_ADMIN'))
-        {
-            $admin = true;
-            $this->setAdminMenu($menus);
-        }
-        return array('menus' => $menus,'literie_admin' => $admin);
- */
-       }
+        //}else ($this->secure->isGranted('ROLE_ADMIN'))
+        //{
+            //$menus = $this->getMenu('left','Menu');
+            //$admin = false;
+            //if ($this->isGranted('ROLE_SUPER_ADMIN'))
+            //{
+              //$this->setAdminMenu($mLeft);
+              //$admin = $this->isGranted('ROLE_SUPER_ADMIN');
+              //$this->setAdminMenu($mRight);
+            //}   
+        //}
+            if ($menus == null)
+            {
+                return array('menus' => false);
+            }else
+            {
+                return array('menus' => $menus,'literie_admin' => $admin);
+            }
+        }return array(false);
+    }
 
     private function setAdminMenu($menu)
     {
@@ -137,7 +129,7 @@ class GestionMenu
             return false;
         }
     }
-    private function getMenuFromRepo($position, $menu)
+    private function getMenu($position, $menu, $role = null)
     {
         if ($position == 'left')
         {
@@ -146,12 +138,14 @@ class GestionMenu
         {
             $fn = 'getRight'.$menu;
         }
-        /**
-         * A enlever $site
-         * Et aussi dans MenuRepo
-         */
-        $site = 1;
-        return $this->container->get('doctrine.orm.default_entity_manager')->getRepository('yomaahBundle:'.$menu)->$fn($site);
+        if ($role == null)
+        {
+            $site = 1;
+            return $this->entityManager->getRepository('yomaahBundle:'.$menu)->$fn($site);
+        }else if ($role == 'visiteur')
+        {
+            return $this->entityManager->getRepository('yomaahBundle:'.$menu)->$fn($this->session->get('testToken'));
+        }    
     }
 
 }
