@@ -168,9 +168,33 @@ function makeUrl()
         url[0] = url[0] + 'app_dev.php/';
         return url;
     }else
-    {
-        var url = loc.toString().split('/literie/');
-        url[0] = url[0] + '/';
+    {if (loc.toString().match('/literie/'))
+        {
+            var cut = '/literie/';
+        }else if (loc.toString().match('/test/'))
+        {
+            var cut = '/test/';
+        }else if (loc.toString().match('/web/'))
+        {
+            var cut = '/web/';
+        }else
+        {
+            var cut = false;
+        }
+        if (cut == false)
+        {
+            var url = loc.toString().split('/');
+            url[0] = url[0] +'//'+ url[2] + '/';
+            url[1] = url[3];
+        }else if (cut == '/web/')
+        {
+            var url = loc.toString().split(cut);
+            url[0] = url[0] + cut;
+        }else
+        {
+            var url = loc.toString().split(cut);
+            url[0] = url[0] + '/';
+        }
         return url;
     }
     //
