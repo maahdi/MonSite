@@ -2,5 +2,6 @@
 
 php app/console cache:clear --env=prod
 php app/console cache:clear --env=dev
-chgrp -R http app/cache
+
+sudo chgrp -R www-data app/cache
 sudo chmod -R ug+rw app/cache

@@ -169,33 +169,8 @@ function makeUrl()
         return url;
     }else
     {
-        if (loc.toString().match('/literie/'))
-        {
-            var cut = '/literie/';
-        }else if (loc.toString().match('/test/'))
-        {
-            var cut = '/test/';
-        }else if (loc.toString().match('/web/'))
-        {
-            var cut = '/web/';
-        }else
-        {
-            var cut = false;
-        }
-        if (cut == false)
-        {
-            var url = loc.toString().split('/');
-            url[0] = url[0] + url[2]+'/';
-            url[1] = url[3];
-        }else if (cut == '/web/')
-        {
-            var url = loc.toString().split(cut);
-            url[0] = url[0] + '/';
-        }else
-        {
-            var url = loc.toString().split(cut);
-            url[0] = url[0] + cut;
-        }
+        var url = loc.toString().split('/literie/');
+        url[0] = url[0] + '/';
         return url;
     }
     //
@@ -209,13 +184,25 @@ function makeUrl()
     //}
 }
 
-
+//function createNewArticle()
+//{
+    //var url = makeUrl();
+    //$.ajax({
+        //type : 'POST',
+        //url : url + 'ajax/newArticle',
+        //data : { },
+        //success : function (data,textStatus, jqXHR)
+    //{
+        //$('#articles').append(data);
+    //}
+    //});
+//}
 function sendAjax(path,successFunction,data)
 {
-    var url = makeUrl();
+    var iurl = makeUrl();
     $.ajax({
         type : 'POST',
-        url : url[0]+path,
+        url : iurl[0]+path,
         data : data,
         success : successFunction
     });
