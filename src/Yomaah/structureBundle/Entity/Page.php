@@ -31,8 +31,8 @@ class Page
     protected $articles;
 
     /**
-     *@ORM\Column(type="integer")
-     *
+     *@ORM\ManyToOne(targetEntity="Site",inversedBy="page")
+     *@ORM\JoinColumn(name="idSite", referencedColumnName="idSite")
      **/
     protected $site;
 
@@ -132,6 +132,12 @@ class Page
      */
     public function getArticles()
     {
-        return $this->articles;
+        if (count($this->articles) > 0)
+        {
+            return $this->articles;
+        }else
+        {
+            return null;
+        }
     }
 }
