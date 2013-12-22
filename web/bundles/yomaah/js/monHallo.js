@@ -168,8 +168,7 @@ function makeUrl()
         url[0] = url[0] + 'app_dev.php/';
         return url;
     }else
-    {
-        if (loc.toString().match('/literie/'))
+    {if (loc.toString().match('/literie/'))
         {
             var cut = '/literie/';
         }else if (loc.toString().match('/test/'))
@@ -185,15 +184,16 @@ function makeUrl()
         if (cut == false)
         {
             var url = loc.toString().split('/');
-            url[0] = url[0] + url[2]+'/';
+            url[0] = url[0] +'//'+ url[2] + '/';
             url[1] = url[3];
         }else if ((cut == '/web/') || (cut == '/literie/'))
         {
             var url = loc.toString().split(cut);
             url[0] = url[0] + '/';
-        }else        {
+        }else
+        {
             var url = loc.toString().split(cut);
-            url[0] = url[0] + cut;
+            url[0] = url[0] + '/';
         }
         return url;
     }
@@ -208,7 +208,19 @@ function makeUrl()
     //}
 }
 
-
+//function createNewArticle()
+//{
+    //var url = makeUrl();
+    //$.ajax({
+        //type : 'POST',
+        //url : url + 'ajax/newArticle',
+        //data : { },
+        //success : function (data,textStatus, jqXHR)
+    //{
+        //$('#articles').append(data);
+    //}
+    //});
+//}
 function sendAjax(path,successFunction,data)
 {
     var iurl = makeUrl();
