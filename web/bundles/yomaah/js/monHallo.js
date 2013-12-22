@@ -169,8 +169,8 @@ function makeUrl()
         return url;
     }else
     {
-        var url = loc.toString().split('/web/');
-        url[0] = url[0] + '/web/';
+        var url = loc.toString().split('/literie/');
+        url[0] = url[0] + '/';
         return url;
     }
     //
