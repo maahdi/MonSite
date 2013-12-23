@@ -51,4 +51,16 @@
         {%endfor%}
     </div>
 </div>
+{%if app.session.get('envoie') is defined and app.session.get('envoie')%}
+    <script>
+        var d = '<div><p>Votre email a bien était envoyé !</p><p>Nous répondrons dans les meilleurs délais.</p></div>';
+        $(d).dialog({
+            buttons : {
+                "close" : function(){
+                    $(this).dialog('close');
+                }
+            }
+        });
+    </script>
+{%endif%}
 {%endblock%}

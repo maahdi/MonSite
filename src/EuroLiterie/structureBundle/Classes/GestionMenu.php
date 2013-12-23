@@ -23,7 +23,7 @@ class GestionMenu
     public function getAllMenu()
     {
         $request = $this->container->get('request');
-        if ($request->getRealMethod() == 'GET')
+        if (!(preg_match('/ajax/',$request->getPathInfo())))
         {
             return $this->getMenu($request);
         }else

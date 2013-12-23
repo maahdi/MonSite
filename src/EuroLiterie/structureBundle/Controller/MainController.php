@@ -37,27 +37,37 @@ class MainController extends Controller
     public function contactAction()
     {
         $mail =  new MyMail();
-        $formBuilder = $this->createFormBuilder($mail);
-        $formBuilder->add('Objet','text',array('attr' => array ('placeholder' => 'L\'objet de votre message')))
-                    ->add('De','text',array('attr' => array ('placeholder' => 'Votre adresse email')))
-                    ->add('Message','textarea',array('attr' => array ('placeholder' => 'Votre message ...')));
-        $form = $formBuilder->getForm();
+        $form = $this->getForm($mail);
         $request = $this->get('request');
+        $envoi = false;
         if ($request->getMethod() == 'POST')
         {
             $form->bind($request);
             if ($form->isValid())
             {
                 $m = $mail->getSwiftMailer();
-               $this->get('mailer')->send($m); 
+                $this->get('mailer')->send($m); 
+                $mail =  new MyMail();
+                $form = $this->getForm($mail);
+                $this->get('session')->set('envoie', true);
+                return $this->redirect($this->generateUrl('literie_contact'));
             }
-            
         }
+        $this->get('session')->set('envoie', false);
         $h = new HoraireRepo();
         $horaires = $h->getHoraires();
         $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('contact', 1);
         return $this->get('templating')->renderResponse('EuroLiteriestructureBundle:Main:contact.html.twig', 
             array('position' => 'Nous trouver', 'horaires' =>$horaires, 'articles' => $articles,'form' => $form->createView()));
+    }
+
+    private function getForm($mail)
+    {
+        $formBuilder = $this->createFormBuilder($mail);
+        $formBuilder->add('Objet','text',array('attr' => array ('placeholder' => 'L\'objet de votre message'),'label' => 'Sujet de votre message :'))
+                    ->add('From','text',array('attr' => array ('placeholder' => 'Votre adresse email'),'label' => 'Votre email :'))
+                    ->add('Message','textarea',array('attr' => array ('placeholder' => 'Votre message ...'),'label' => 'Votre message :'));
+        return $formBuilder->getForm();
     }
     /**
      * Remplace fonction de login

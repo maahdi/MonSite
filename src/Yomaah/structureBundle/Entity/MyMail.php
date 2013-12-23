@@ -1,24 +1,24 @@
 <?php
 namespace Yomaah\structureBundle\Entity;
-
-
-
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 class MyMail
 {
-    private $de;
+    
+    private $from;
     private $objet;
     private $message;
     public function __construct()
     {
     }
 
-    public function getDe()
+    public function getFrom()
     {
-        return $this->de;
+        return $this->from;
     }
-    public function setDe($de)
+    public function setFrom($from)
     {
-        $this->de = $de;
+        $this->from = $from;
         return $this;
     }
     
@@ -46,7 +46,15 @@ class MyMail
         $mailer->setSubject($this->objet);
         $mailer->setBody($this->message);
         $mailer->setTo('kokoriko-yoshi@hotmail.fr');
-        $mailer->setFrom('moi@lol.fr');
+        $mailer->setFrom($this->from);
         return $mailer;
+    }
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraint('from', new Regex(array(
+            'pattern' => '/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]{2,}[.][a-zA-Z]{2,4}$/',
+            'message' => 'L\'adresse mail n\'est pas valide !'
+        )));
     }
 }
