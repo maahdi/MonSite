@@ -11,3 +11,8 @@ $(window).ready(function(){
             nextText:'>'
     });
 });
+function scroll(id)
+{
+    $('html, body').animate({ scrollTop : $(id).offset().top}, 600);
+    return false;
+}

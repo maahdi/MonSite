@@ -235,19 +235,4 @@ body
     position : absolute;
 }
 
-.art-bar
-{
-    /*width :50%;*/
-    padding-right :6em;
-    position : relative;
-    display : block;
-    float :right;
-    top :-6em;
-    left : 2.2em;
-}
-.addArt-bar
-{
-    position :fixed;
-    display:block;
-    margin-top : -7em;
-}
+

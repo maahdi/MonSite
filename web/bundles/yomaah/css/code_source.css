@@ -55,15 +55,21 @@
 
 .directories a:before
 {
-    content : '';
     background : url('../images/dossier.png') no-repeat;
     background-size : 110%;
+  }
+
+.directories a:before,
+.files a:before
+{
+    content : '';
     width : 2em;
     position:absolute;
     display:inline-block;
     height : 3em;
     left : 1em;
     margin-top : 0.5em;
+
 }
 
 .cs
@@ -97,15 +103,8 @@
 
 .files a:before
 {
-    content : '';
     background : url('../images/fichier.png') no-repeat;
     background-size : 100%;
-    width : 2em;
-    position:absolute;
-    display:inline-block;
-    height : 3em;
-    left : 1em;
-    margin-top:0.5em;
 }
 
 .tabSource

@@ -184,19 +184,11 @@ article
     padding-left : 0.8em;
     color : black;
 }
-.art-bar
+.articles
 {
-    /*width :50%;*/
-    padding-right :6em;
-    position : relative;
-    display : block;
-    float :right;
-    left : 1.2em;
-    z-index :0;
+    margin-bottom : 5em;
 }
-.addArt-bar
+.article
 {
-    margin-left :-1em;
-    position :fixed;
-    display:block;
+    margin-top : 3em;
 }

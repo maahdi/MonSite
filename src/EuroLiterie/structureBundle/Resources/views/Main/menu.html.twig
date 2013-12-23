@@ -10,11 +10,15 @@
         <ul class="literie-menu">
             {%if menus is defined%}
                 {%for menu in menus%}
-                    <li><a href="{{path(menu.path)}}">{{ menu.name }}</a>
+                    {%if  menu.path == 'literie_marques'%}
+                        <li><a href="{{path(menu.path)}}#Epeda">{{ menu.name }}</a>
+                    {%else%}
+                        <li><a href="{{path(menu.path)}}">{{ menu.name }}</a>
+                    {%endif%}
                     {%if menu.sousMenu is defined%}
                         <ul>
                         {%for ss in menu.sousMenu%}
-                        <li><a href="{{ path(menu.path)}}#{{ss.path}}">{{ ss.name}}</a></li>
+                        <li><a href="{{ path(menu.path)}}#{{ss.path}}" onClick="scroll({{ss.path}})">{{ ss.name}}</a></li>
                         {%endfor%}
                         </ul></li>
                     {%else%}

@@ -51,6 +51,11 @@ class Article
      */
     protected $artImgUrl;
 
+    /**
+     *@ORM\Column(type="string")
+     */
+    protected $tagName;
+
 //Champ clé étrangère
     /**
      *@ORM\ManyToOne(targetEntity="Page",inversedBy="articles",cascade="persist")
@@ -109,6 +114,30 @@ class Article
     {
         return $this->artDate->format('d M Y');
     }
+
+    /**
+     * Set tagName
+     *
+     * @param string $tagName
+     * @return Article
+     */
+    public function setTagName($tagName)
+    {
+        $this->tagName = $tagName;
+    
+        return $this;
+    }
+
+    /**
+     * Get tagName
+     *
+     * @return string 
+     */
+    public function getTagName()
+    {
+        return $this->tagName;
+    }
+
 
     /**
      * Set artContent

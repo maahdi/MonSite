@@ -10,20 +10,23 @@
                 <article class="art-content">{{article.artContent | raw }}</article>
             </article>
         {%endfor%}
-    </div>
-    <div class="marques small-12 columns">
-        <div class="marque horizontal">
-            {%for marque in marques%}
-            <section id="{{marque.NomMarque}}">
-                    <h3><a href="#{{marque.NomMarque}}">{{marque.nomMarque}}</a></h3>
-                <article>
-                    <figure class="marque-img"><img src="{{asset('bundles/EuroLiteriestructure/images/marques/'~marque.pngUrl)}}"></img></figure>
-                    <section class="marque-content">
-                    {{marque.content | raw}}<a href="http://{{marque.marqueLien}}">{{marque.marqueLien}}</section>
-                </article>
-            </section>
-            {%endfor%}
+        <div class="marques small-12 columns">
+            <div class="marque horizontal">
+                {%for marque in marques%}
+                <section id="{{marque.NomMarque}}">
+                        <h3><a href="#{{marque.NomMarque}}">{{marque.nomMarque}}</a></h3>
+                    <article>
+                        <figure class="marque-img"><img src="{{asset('bundles/EuroLiteriestructure/images/marques/'~marque.pngUrl)}}"></img></figure>
+                        <section class="marque-content">
+                        {{marque.content | raw}}<a href="http://{{marque.marqueLien}}">{{marque.marqueLien}}</section>
+                    </article>
+                </section>
+                {%endfor%}
+            </div>
         </div>
     </div>
 </div>
+<script>
+$('html,body').animate({ scrollTop : $('#logo').offset().top}, 'slow');
+</script>
 {%endblock%}

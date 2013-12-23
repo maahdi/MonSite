@@ -49,3 +49,35 @@
     opacity : 0;
     z-index : 2;
 }
+/*.art-bar*/
+/*{*/
+    /*[>width :50%;<]*/
+    /*padding-right :6em;*/
+    /*position : relative;*/
+    /*display : block;*/
+    /*float :right;*/
+    /*top :-6em;*/
+    /*left : 2.2em;*/
+/*}*/
+/*.addArt-bar*/
+/*{*/
+    /*position :fixed;*/
+    /*display:block;*/
+    /*margin-top : -7em;*/
+/*}*/
+.art-bar
+{
+    padding-bottom: -10em;
+    padding-right :6em;
+    position : relative;
+    display : block;
+    float :right;
+    left : 1.2em;
+    z-index :0;
+}
+.addArt-bar
+{
+    margin-left :-1em;
+    position :fixed;
+    display:block;
+}

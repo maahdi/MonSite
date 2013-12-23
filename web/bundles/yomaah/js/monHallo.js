@@ -223,10 +223,10 @@ function makeUrl()
 //}
 function sendAjax(path,successFunction,data)
 {
-    var iurl = makeUrl();
+    var url = makeUrl();
     $.ajax({
         type : 'POST',
-        url : iurl[0]+path,
+        url : url[0]+path,
         data : data,
         success : successFunction
     });
@@ -245,18 +245,19 @@ function sendArticleAjax(champ, content)
 
 function startHallo(edit)
 {
-    article.children('.art-content').hallo({
-        plugins : {
-            'halloformat': {},
-        'halloheadings': { formatBlocks: ["p","h2","h3"]},
-        //'halloblock':{},
-        'hallojustify': {},
-        'hallolists': {},
-        'halloreundo': {}
-        },
-        editable : edit,
-        toolbar : 'halloToolbarFixed'
-    });
+    if (article.children('.art-content').length > 0){
+        article.children('.art-content').hallo({
+            plugins : {
+                'halloformat': {},
+            'halloheadings': { formatBlocks: ["p","h2","h3"]},
+            'hallojustify': {},
+            'hallolists': {},
+            'halloreundo': {}
+            },
+            editable : edit,
+            toolbar : 'halloToolbarFixed'
+        });
+    }
     article.children('.art-titre').hallo({
         plugins : {
             'halloformat': {}
