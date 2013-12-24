@@ -66,4 +66,4 @@ swiftmailer:
 #    password:  %mailer_password%
 #    spool:     { type: memory }
     transport : smtp
-    host : smtp.sfr.fr  
+    host : smtp.sfr.fr
