@@ -42,7 +42,7 @@
                 <input type="hidden" name="id" value="{{article.id}}"/>
                 <article class="art-titre"><h1>{{article.artTitle}}</h1></article>
                 <article class="art-content">{{ article.artContent | raw }}</article>
-                <form method="post" {{ form_enctype(form) }}>
+                <form class="form-email" method="post" {{ form_enctype(form) }}>
                     {{ form_widget(form) }}
                     <input type="submit" class="btn btn-primary" />
                 </form>

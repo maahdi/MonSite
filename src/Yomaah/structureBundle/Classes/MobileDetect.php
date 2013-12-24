@@ -1,5 +1,5 @@
 <?php
-namespace EuroLiterie\structureBundle\Classes;
+namespace Yomaah\structureBundle\Classes;
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 

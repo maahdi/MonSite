@@ -24,9 +24,6 @@ $container->setDefinition('literie_gestionMenu',
         array(new Reference('service_container')))
 );
 
-$mobileDetect = new Definition('EuroLiterie\structureBundle\Classes\MobileDetect',array(new Reference('session'),new Reference('request')));
-$mobileDetect->addTag('kernel.event_listener', array('event' => 'kernel.request', 'method' => 'onKernelRequest'));
-$container->setDefinition('literie_mobile_detect',$mobileDetect)->setScope('request');
 
 $menutwig = new Definition('EuroLiterie\structureBundle\Classes\MenuTwigExtension',array(new Reference('literie_gestionMenu')));
 $menutwig->addTag('twig.extension');

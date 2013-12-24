@@ -38,3 +38,7 @@ $container->setDefinition('yomaah_security_listener',$listenerLog);
 $listenerRequete = new Definition('Yomaah\structureBundle\Classes\RequeteListener',array(new Reference('database_connection'),new Reference('security.context')));
 $listenerRequete->addTag('kernel.event_listener', array('event' => 'kernel.request', 'method' => 'onKernelRequest'));
 $container->setDefinition('yomaah_requete_listener',$listenerRequete);
+
+$mobileDetect = new Definition('Yomaah\structureBundle\Classes\MobileDetect',array(new Reference('session'),new Reference('request')));
+$mobileDetect->addTag('kernel.event_listener', array('event' => 'kernel.request', 'method' => 'onKernelRequest'));
+$container->setDefinition('mobile_detect',$mobileDetect)->setScope('request');
