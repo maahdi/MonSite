@@ -28,17 +28,17 @@ $(window).ready(function(){
         $(this).css({'background-color' : 'transparent'});
         $(this).children('ul,li').css({'color' : 'black'});
     });
-    $('.sectionAdmin').on('click',function(){
-        var fn = function(data,textStatus,jqXHR){
-            $('.barAdmin').append(data);
-            //récupérer l'id de ul pour envoyer ajax
-            //dans ajaxcontroller on utilisera pourutiliser le bon repo
-            //envoi en json et constition de la page
-            //faire fonction qui fait le squelette de la page et on y insère les données dedans
-            //faire animation en incluant la page pour faire un genre de déroulement vers le bas
-        }
-        sendAjax('ajax/barre_admin',)
-    })
+    //$('.sectionAdmin').on('click',function(){
+        //var fn = function(data,textStatus,jqXHR){
+            //$('.barAdmin').append(data);
+            ////récupérer l'id de ul pour envoyer ajax
+            ////dans ajaxcontroller on utilisera pourutiliser le bon repo
+            ////envoi en json et constition de la page
+            ////faire fonction qui fait le squelette de la page et on y insère les données dedans
+            ////faire animation en incluant la page pour faire un genre de déroulement vers le bas
+        //};
+        //sendAjax('ajax/barre_admin',);
+    //})
 });
 function scroll(id)
 {
