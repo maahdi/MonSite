@@ -29,6 +29,9 @@
 </head>
 <html>
 <body>
+    {%if literie_admin is defined and literie_admin%}
+        {% include 'EuroLiteriestructureBundle:Main:barAdmin.html.twig' %}
+    {%endif%}
     {%if app.session.get('mobile') %}
     {%else%}
         {% include 'EuroLiteriestructureBundle:Main:menu.html.twig' %}
@@ -36,12 +39,13 @@
         {% include 'yomaahBundle:Main:main-bar1.html.twig' %}
         {##}
     {%endif%}
-    <div class="row border-radius">
-        <div id="corps" class="small-12 columns">
-            <div class="row">
-                <div class="small-6 columns">
+    <div class="row">
+        <div id="corps" class="border-radius small-12 columns">
+            <div id="div-pos" class="border-radius">
+                {#<div class="small-6 columns">#}
+    
                     <h5 id="position">{{position}}</h1>
-                </div>
+                {#<div>#}
             </div>
     {%block body%}
     {%endblock%}

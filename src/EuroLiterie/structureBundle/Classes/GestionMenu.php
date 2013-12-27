@@ -41,7 +41,6 @@ class GestionMenu
          * L'utilisateur doit être connecter
          * soit un client soit moi
          **/
-        $admin = false;
         if ((!($user == "anon."))&& $secure->isGranted('ROLE_ADMIN'))
         {
             /**
@@ -59,7 +58,10 @@ class GestionMenu
                 {
                     $this->setAdminMenu($menus);
                     $session->set('idSite', 1);
-                    $admin = true;
+                    return $this->getRetour('admin',$menus);
+                }else
+                {
+                    return $this->getRetour('normal',$menus);
                 }
 
             }else
@@ -82,17 +84,18 @@ class GestionMenu
                 {
                   $menus = $this->getMenuFromRepo('left','Menu');
                 }
-                $admin = false;
                 /**
                  * pour simuler connexion à la zone admin
                  */
                 if (($session->get('zoneAdmin') != null) && $session->get('zoneAdmin'))
                 {
                     $this->setAdminMenu($menus);
-                    $admin = true;
+                    return $this->getRetour('admin',$menus);
+                }else
+                {
+                    return $this->getRetour('normal', $menus);
                 }
             }
-            return array('menus' => $menus,'literie_admin' => $admin);
         }return array(false);
          /**
          * A décommenter
@@ -109,6 +112,39 @@ class GestionMenu
         return array('menus' => $menus,'literie_admin' => $admin);
  */
        }
+    
+
+    private function getRetour($retour, $menus)
+    {
+        if ($retour == 'admin')
+        {
+            $visite = $this->getVisite();
+            return array('menus' => $menus,'literie_admin' => true,'visite' => $visite);
+        }else if ($retour == 'normal')
+        {
+            return array('menus' => $menus,'literie_admin' => false);
+        }
+    }
+    private function getVisite()
+    {
+        $db = $this->container->get('database_connection');
+        $sql = 'select count(idVisite) as nb from visites as v left join utilisateur as u on v.idUser = u.idUser where u.idGroup !=1 or v.idUser = 0';
+        $result = $db->query($sql);
+        $result->setFetchMode(\PDO::FETCH_OBJ);
+        foreach ($result as $r)
+        {
+            $visite['total'] = $r->nb;
+        }
+        $sql = 'select count(idVisite) as nb from visites as v left join utilisateur as u on v.idUser = u.idUser where extract( month from current_date) = extract( month from dateConnexion) and (u.idGroup != 1 or v.idUser = 0)';
+        $result = $db->query($sql);
+        $result->setFetchMode(\PDO::FETCH_OBJ);
+        foreach ($result as $r)
+        {
+            $visite['mois'] = $r->nb;
+        }
+        return $visite;
+
+    }
 
     private function setAdminMenu($menu)
     {

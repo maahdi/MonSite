@@ -10,7 +10,9 @@ body
 }
 #corps
 {
-    background-color:#e6d8d8;
+    /*background-color:#e6d8d8;*/
+    margin-top : -1em;
+    background-color : #dbe1e2;
     -webkit-border-radius:3px;
     -moz-border-radius:3px;
     border-radius:3px;
@@ -47,14 +49,25 @@ footer
 {
     content:'>> ';
 }
-
+#div-pos
+{
+    display:block;
+    width : 103%;
+    margin-top:-0.65em;
+    margin-left:-1.5%;
+    background-color : #cdd3ed;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
+}
 #position
 {
+    width : 100%;
+    line-height : 2em;
     font-size:0.9em;
-    padding-top:1%;;
+    padding-left:2%;
     margin-bottom:5%;
-    margin-top:2%;
-    margin-left:2%!important;
+    margin-top:1%;
     text-align:left;
     margin-bottom:1.7%;
 }
@@ -73,7 +86,7 @@ footer
     width : 82%;
     display : block;
     position : relative;
-    margin-top : 2em;
+    margin-top : 4em;
     background-color:#f9e5e5;
     border: 2px solid #2a4674;
     -webkit-border-radius:5px;
@@ -122,6 +135,7 @@ article
     height : auto;
     font-family : "Volkhov";
 }
+
 .promotion:first-child .promo-titre
 {
     border-top:none;
@@ -137,6 +151,15 @@ article
     text-align:center!important;
     font-family : "Volkhov";
 
+}
+.border-left
+{
+    display:block;
+    border-left : 2px solid black;
+}
+.promotions
+{
+    margin-bottom : 2em;
 }
 .promo-titre h2
 {
@@ -190,5 +213,5 @@ article
 }
 .article
 {
-    margin-top : 3em;
+    margin-bottom : 3em;
 }

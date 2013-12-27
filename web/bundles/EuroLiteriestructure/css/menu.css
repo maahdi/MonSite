@@ -143,3 +143,93 @@
     height: 14em;
 }
 
+.barAdmin
+{
+    width : 100%;
+    z-index : 100;
+    height : 5em;
+    position : relative;
+    top : 2em;
+    font-size : 1em;
+}
+.bar
+{
+    position : fixed;
+    width : 100%;
+    height : 5em;
+}
+.visite,
+.gestion
+{
+    display: inline-block;
+    position : relative;
+    height : 5em;
+    overflow : hidden;
+}
+.visite
+{
+    width : 25%;
+    float : left;
+    border-right : 2px solid black;
+    height : 5.2em;
+}
+.gestion h4,
+.visite h4
+{
+    display:block;
+    width : 100%;
+    font-family : "Volkhov";
+    font-size : 0.8em;
+    display:block;
+    top : 0.2em;
+    padding-left : 1em;
+    line-height : 1em;
+    position : relative;
+    float : left;
+}
+.visite section ul li
+{
+    font-family : "Volkhov";
+    padding-left: 20%;
+    width : 100%;
+    list-style : none;
+    font-size : 0.7em;
+}
+.gestion
+{
+    width : 75%;
+    height : 5em;
+
+}
+.gestion div{
+    /*display : block;*/
+    width : 100%;
+    padding : 3%;
+}
+
+.sectionAdmin ul li
+{
+    font-size : 1em;
+    text-align : center;
+    list-style : none;
+    font-family : "Volkhov";
+    padding-top:0.6em;
+    margin-bottom:-0.6em;
+    -webkit-transition: color .1s ease-in-out;
+    -moz-transition: color .1s ease-in-out;
+    -o-transition: color .1s ease-in-out;
+    -ms-transition: color .1s ease-in-out;
+    transition: color .1s ease-in-out;
+}
+.sectionAdmin
+{
+    display : inline-block;
+    width : 20%;
+    border : 1px solid #aaa;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;   
+    border-radius:3px 3px 3px 3px;
+    -moz-box-shadow: 3px 3px 0px #aaa; 
+    -webkit-box-shadow: 3px 3px 0px #aaa; 
+    box-shadow: 3px 3px 0px #555;
+}

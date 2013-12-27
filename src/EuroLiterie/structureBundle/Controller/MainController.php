@@ -53,19 +53,23 @@ class MainController extends Controller
                 return $this->redirect($this->generateUrl('literie_contact'));
             }
         }
-        $this->get('session')->set('envoie', false);
+        if ($this->get('session')->has('envoie'))
+        {
+            $this->get('session')->remove('envoie');
+            $envoi = true;
+        }
         $h = new HoraireRepo();
         $horaires = $h->getHoraires();
         $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('contact', 1);
         return $this->get('templating')->renderResponse('EuroLiteriestructureBundle:Main:contact.html.twig', 
-            array('position' => 'Nous trouver', 'horaires' =>$horaires, 'articles' => $articles,'form' => $form->createView()));
+            array('position' => 'Nous trouver', 'horaires' =>$horaires, 'articles' => $articles,'form' => $form->createView(),'envoie' => $envoi));
     }
 
     private function getForm($mail)
     {
         $formBuilder = $this->createFormBuilder($mail);
         $formBuilder->add('Objet','text',array('attr' => array ('placeholder' => 'L\'objet de votre message'),'label' => 'Sujet de votre message :'))
-                    ->add('From','text',array('attr' => array ('placeholder' => 'Votre adresse email'),'label' => 'Votre email :'))
+                    ->add('From','email',array('attr' => array ('placeholder' => 'Votre adresse email'),'label' => 'Votre email :'))
                     ->add('Message','textarea',array('attr' => array ('placeholder' => 'Votre message ...'),'label' => 'Votre message :'));
         return $formBuilder->getForm();
     }

@@ -17,8 +17,12 @@
                         <h3><a href="#{{marque.NomMarque}}">{{marque.nomMarque}}</a></h3>
                     <article>
                         <figure class="marque-img"><img src="{{asset('bundles/EuroLiteriestructure/images/marques/'~marque.pngUrl)}}"></img></figure>
-                        <section class="marque-content">
-                        {{marque.content | raw}}<a href="http://{{marque.marqueLien}}">{{marque.marqueLien}}</section>
+                        <section class="content">
+                            <article class="marque-content">
+                                {{marque.content | raw}}</article>
+                            <article class="marque-link">
+                                <a href="http://{{marque.marqueLien}}">{{marque.marqueLien}}</a></article>
+                        </section>
                     </article>
                 </section>
                 {%endfor%}
