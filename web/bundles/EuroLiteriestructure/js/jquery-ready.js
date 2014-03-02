@@ -160,6 +160,80 @@ $(document).on('mouseover','.btn-menuI',function(){
         'cursor':'pointer'
         });
 });
+
 $(document).on('mouseleave','.btn-menuI',function(){
     $(this).css({'background-color' : '#f1ecec'});
+});
+
+$(document).on('mouseleave','.btn-logo',function(){
+    $(this).css({'background-color' : '#f1ecec'});
+});
+
+$(document).on('mouseover','.btn-logo',function(){
+    $(this).css(
+        {'-webkit-border-radius': '3px 3px 3px 3px',
+        '-moz-border-radius': '3px 3px 3px 3px',   
+        'border-radius':'3px 3px 3px 3px',
+        'background-color': '#777',
+        'background-color': '-webkit-gradient(linear, left top, left bottom, color-stop(0%, #777), color-stop(93%, #b3b3b3))',
+        'background-color': '-moz-linear-gradient(top, #777 0%, #b3b3b3 93%)',
+        'background-color': '-ms-linear-gradient(top, #777 0%, #b3b3b3 93%)',
+        'background-color': 'linear-gradient(to bottom, #777 0%, #b3b3b3 93%)',
+        'cursor':'pointer'
+        });
+});
+
+$(document).on('mouseover','.btn-admin',function(){
+    $(this).css(
+        {'-webkit-border-radius': '3px 3px 3px 3px',
+        '-moz-border-radius': '3px 3px 3px 3px',   
+        'border-radius':'3px 3px 3px 3px',
+        'background-color': '#777',
+        'background-color': '-webkit-gradient(linear, left top, left bottom, color-stop(0%, #777), color-stop(93%, #b3b3b3))',
+        'background-color': '-moz-linear-gradient(top, #777 0%, #b3b3b3 93%)',
+        'background-color': '-ms-linear-gradient(top, #777 0%, #b3b3b3 93%)',
+        'background-color': 'linear-gradient(to bottom, #777 0%, #b3b3b3 93%)',
+        'cursor':'pointer'
+    });
+});
+
+$(document).on('mouseleave','.btn-admin',function(){
+    $(this).css({'background-color' : '#f1ecec'});
+});
+
+$(document).on('click','.maj',function(){
+
+    var id = $(this).parent().children('input');
+    var input = $(this).parent().children('section').children('article').children('input');
+    if ( $(this).parent().children('section').children('article').children('textarea').length > 0)
+    {
+        var textarea = $(this).parent().children('section').children('article').children('textarea');
+    }
+    console.log(textarea);
+    sendAjax('ajax/dialog',function(data){
+        $(data).dialog({
+            modal : true,
+            buttons : {
+                "Oui" : function(){
+                    var t = $(this);
+
+                    sendAjax('ajax/saveElement',(function(data,textStatus,jqXHR){
+                        t.dialog('close');
+                        var d = '<div>Enregistrement réussi !!</div>';
+                        $(d).dialog({
+                            modal : true,
+                            buttons : {
+                                "Close" : function(){
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    })(t),{'id' : id.val(), 'lien': lien, 'input' : input.serialize(), 'textarea': textarea.serialize()});
+                },
+                "Non" : function(){
+                    $(this).dialog("close");
+                }
+            }
+        });
+    },{ 'dialog' : 'modifElement', 'element' : lien});
 });

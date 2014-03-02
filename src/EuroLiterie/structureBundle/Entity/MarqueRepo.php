@@ -15,24 +15,24 @@ class MarqueRepo extends EntityRepository
     public function getHtml()
     {
         return '<div class="admin-c border">
-                    <input type="hidden" value="%idMarque%">
+                    <input type="hidden" name="id" value="%idMarque%">
                     <section class="contentMarque">
                         <article class="adminMarque">
-                            <label>Nom :</label><input type="text" value="%nomMarque%">
-                            <label>Texte :</label><textarea >%content%</textarea>
-                            <label>Lien :</label><input type="text" value="%marqueLien%">
+                            <label>Nom :</label><input type="text" name="nomMarque" value="%nomMarque%">
+                            <label>Texte :</label><textarea name="content" >%content%</textarea>
+                            <label>Lien :</label><input type="text" name="marqueLien" value="%marqueLien%">
                         </article>
                         <article class="adminLogoMarque">
-                            <label>Logo :</label><figure class="marque-img"><img src="../../bundles/EuroLiteriestructure/images/marques/%pngUrl%"></img></figure>
-                            <section class="btn-logo">
+                            <label>Logo :</label><figure class="adminMarqueLogo"><img src="../../bundles/EuroLiteriestructure/images/marques/%pngUrl%"></img></figure>
+                            <section class="btn-logo modif">
                                 <li>Modifier</li>
                             </section>
                         </article>
                     </section>
-                        <article class="btn-admin">
-                        <li>Mettre à jour</li>
+                        <article class="btn-admin maj">
+                            <li>Mettre à jour</li>
                         </article>
-                        <article class="btn-admin">
+                        <article class="btn-admin sup">
                             <li>Supprimer</li>
                         </article>
                 </div>';

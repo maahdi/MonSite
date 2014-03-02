@@ -7,6 +7,7 @@ use JsonSerializable;
 /**
  *@ORM\Entity(repositoryClass="MarqueRepo")
  *@ORM\Table(name="marques")
+ *@ORM\HasLifecycleCallbacks()
  */
 class Marque implements JsonSerializable
 {
@@ -123,6 +124,13 @@ class Marque implements JsonSerializable
     
         return $this;
     }
+    /**
+     * @ORM\PostLoad
+     */
+    public function setContentDecode()
+    {
+        $this->content = str_replace('</p><p>','\\r\\n',$this->content);
+    }
 
     /**
      * Get content
@@ -131,7 +139,7 @@ class Marque implements JsonSerializable
      */
     public function getContent()
     {
-        return $this->content;
+        return nl2br($this->content);
     }
 
     /**

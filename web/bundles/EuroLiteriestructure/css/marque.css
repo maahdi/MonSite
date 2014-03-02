@@ -4,6 +4,7 @@
     width : 100%;
     height :auto;
 }
+
 .marque
 {
     width:100%;
@@ -24,14 +25,17 @@
     background:#333;
     margin:1.5px;
 }
+
 .marque section:hover
 {
     background:#444;
 }
+
 .marque section h3 a:hover
 {
     color:#0e9c07;
 }
+
 .marque section section
 {
     display:none;
@@ -42,10 +46,12 @@
 {
     background:#fff;
 }
+
 .marque section:target:hover
 {
     background:#fff;
 }
+
 .marque section:target h3
 {
     border-bottom:2px solid #333;
@@ -67,24 +73,18 @@
     margin-top:-1%;
     background:#fff;
 }
+
 .marque-content
 {
     font-family : "Volkhov";
     font-size : 1em;
-}
-.marque-content p:first-child
-{
     margin-top : 0.5em;
-}
-.marque-content p
-{
-    display:block;
-    position :relative;
     font-size : 0.8em;
     margin-bottom : 0.2em;
     padding-left : 0.8em;
     color : black;
 }
+
 .horizontal section
 {
     width:4%;
@@ -94,10 +94,12 @@
     -o-transition: width 0.2s ease-out;
     transition: width 0.2s ease-out;
 }
+
 .horizontal a
 {
     color: #e4f30c;
 }
+
 .horizontal section h3
 {
     font-size : 1.2em;

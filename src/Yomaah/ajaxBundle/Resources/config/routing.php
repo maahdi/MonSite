@@ -33,4 +33,8 @@ $collection->add('ajax_getAdminContentStructure', new Route('/ajax/adminContentS
     '_controller' => 'YomaahajaxBundle:Ajax:getAdminContentStructure'),
     array('_method' => 'POST')));
 
+$collection->add('ajax_saveElement', new Route('/ajax/saveElement', array(
+    '_controller' => 'YomaahajaxBundle:Ajax:saveElement'),
+    array('_method' => 'POST')));
+
 return $collection;

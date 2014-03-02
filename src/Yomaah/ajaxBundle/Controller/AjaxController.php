@@ -4,6 +4,7 @@ namespace Yomaah\ajaxBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
+
 /**
  * Controle les requetes en ajax et renvoie ce qui est démandé
  *
@@ -127,8 +128,19 @@ class AjaxController extends Controller
         if ($this->get('security.context')->isGranted('ROLE_USER'))
         {
             $request = $this->get('request');
-            $template = 'YomaahajaxBundle:Ajax:'.$request->request->get('dialog').'.html.twig';
-            return $this->container->get('templating')->renderResponse($template);
+            if ($request->request->has('element'))
+            {
+                /*
+                 * A changer par un forward automatique selon
+                 */
+                $element = \EuroLiterie\structureBundle\Controller\MainController::getRepoAdminContentList($request->request->get('element'));
+                $template = 'YomaahajaxBundle:Ajax:'.$request->request->get('dialog').$element.'.html.twig';
+                return $this->container->get('templating')->renderResponse($template);
+            }else
+            {
+                $template = 'YomaahajaxBundle:Ajax:'.$request->request->get('dialog').'.html.twig';
+                return $this->container->get('templating')->renderResponse($template);
+            }
         }
     }
     public function getAdminMenuAction()
@@ -182,6 +194,21 @@ class AjaxController extends Controller
         }
     }
 
+    public function saveElementAction()
+    {
+        if ($this->get('security.context')->isGranted('ROLE_USER'))
+        {
+            $request = $this->get('request');
+            /*
+             * Forward correct
+             */
+            //$this->forward($bundle[0].'ajaxBundle:Ajax:getAdminContent');
+            return $this->forward('EuroLiteriestructureBundle:Main:saveElement',array('input' => $request->request->get('input'),
+                                                                                        'textarea' => $request->request->get('textarea'),
+                                                                                        'id' => $request->request->get('id'),
+                                                                                        'object' => $request->request->get('lien')));
+        }
+    }
     private function clearTitre($champ, $content)
     {
         if ($champ == 'art-titre')

@@ -233,7 +233,7 @@
 }
 .admin-content section article input
 {
-    width : 20%;
+    width : 40%;
     height:2.0em;
     font-size : 0.7em;
 }
@@ -324,7 +324,19 @@
     padding-top:0.1em;
     height:auto;
 }
-.marque-img
-{
 
+.adminMarqueLogo img
+{
+    max-width :100%;
+    max-height:100%;
+    padding-left : 1.0em;
+    float :left;
+    position :relative;
+    height : auto;
+}
+.adminMarqueLogo
+{
+    width:9em;
+    margin-bottom : 0.5em;
+    height:4em;
 }

@@ -52,7 +52,7 @@ class MainController extends Controller
                 $mail =  new MyMail();
                 $form = $this->getForm($mail);
                 $this->get('session')->set('envoie', true);
-                return $this->redirect($this->generateUrl('literie_contact'));
+                //return $this->redirect($this->generateUrl('literie_contact'));
             }
         }
         if ($this->get('session')->has('envoie'))
@@ -96,9 +96,13 @@ class MainController extends Controller
     {
         if ($this->get('security.context')->isGranted('ROLE_USER'))
         {
-            if (($repo =$this->getRepoAdminContentList($object))!= false)
+            if (($repo =self::getRepoAdminContentList($object))!= false)
             {
                 $response = $this->getDoctrine()->getRepository('EuroLiteriestructureBundle:'.$repo)->findAll(); 
+                //foreach($response as $r)
+                //{
+                    //$r->setContent(str_replace('</p><p>','\r',$r->getContent()));
+                //}
                 return new JsonResponse($response);
             }
             //$marques = $this->getDoctrine()->getRepository('EuroLiteriestructureBundle:Marque')->findAll();
@@ -113,7 +117,7 @@ class MainController extends Controller
         }
     }
 
-    private function getRepoAdminContentList($object)
+    static function getRepoAdminContentList($object)
     {
         $modifiable = array('marquesAdmin' => 'Marque',
                     'promotionsAdmin' => 'Promotion');
@@ -125,6 +129,39 @@ class MainController extends Controller
         {
             return false;
         }
+    }
 
+    public function saveElementAction($input, $textarea, $id, $object)
+    {
+        $elem = explode('&',$input);
+        $obj = array();
+        foreach($elem as $e)
+        {
+            $tmp = explode('=',$e);
+            $obj['set'.ucfirst($tmp[0])]= $tmp[1];
+        }
+        $elem = null;
+        if ($textarea != null)
+        {
+            $elem = explode('&', $textarea);
+            foreach($elem as $e)
+            {
+                $tmp = explode('=', $e);
+                $obj['set'.ucfirst($tmp[0])]= urldecode($tmp[1]);
+            }
+            $elem = null;
+        }
+        if (($repo =$this->getRepoAdminContentList($object))!= false)
+        {
+            $element = $this->getDoctrine()->getRepository('EuroLiteriestructureBundle:'.$repo)->find($id); 
+            foreach($obj as $key=>$val)
+            {
+                $element->$key($val);
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($element);
+            $em->flush();
+            return new Response();
+        }
     }
 }
