@@ -159,6 +159,7 @@ function setToolbar(art,classToAdd, classOfToolbar,position)
         append : '.'+classToAdd
     });
 }
+
 function makeUrl()
 {
     var loc = window.location;
@@ -197,30 +198,8 @@ function makeUrl()
         }
         return url;
     }
-    //
-    //URL vide après www.yomaah.fr/symfony/web
-    //
-    //else if (loc.toString().match('/app.php/'))
-    //{
-        //var url = loc.toString().split('app.php', 2);
-        //url[0] = url[0] + 'app_dev.php/';
-        //return url;
-    //}
 }
 
-//function createNewArticle()
-//{
-    //var url = makeUrl();
-    //$.ajax({
-        //type : 'POST',
-        //url : url + 'ajax/newArticle',
-        //data : { },
-        //success : function (data,textStatus, jqXHR)
-    //{
-        //$('#articles').append(data);
-    //}
-    //});
-//}
 function sendAjax(path,successFunction,data)
 {
     var url = makeUrl();

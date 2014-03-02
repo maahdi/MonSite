@@ -104,6 +104,7 @@
     height : 9em;
     font-size : 0.8em;
 }
+.admin-content input, .admin-content textarea,
 .form-email input, .form-email textarea
 {
     -moz-border-radius:0px 0 0 0px; 

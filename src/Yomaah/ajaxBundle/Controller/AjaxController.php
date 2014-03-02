@@ -131,6 +131,56 @@ class AjaxController extends Controller
             return $this->container->get('templating')->renderResponse($template);
         }
     }
+    public function getAdminMenuAction()
+    {
+        if ($this->get('security.context')->isGranted('ROLE_USER'))
+        {
+            $request = $this->get('request');
+            $template = $request->request->get('bundle').'ajaxbundle:Ajax:'.$request->request->get('menu').'.html.twig';
+            return $this->container->get('templating')->renderResponse($template);
+        }
+    }
+
+    public function getAdminContentAction()
+    {
+        if ($this->get('security.context')->isGranted('ROLE_USER'))
+        {
+            $request = $this->get('request');
+            if ($request->request->has('url'))
+            {
+                /*
+                 * Couper a espace client pas encore mis dans l'url
+                 */
+                $tmp = explode($request->getBaseUrl(), $request->request->get('url'));
+                $bundle = explode('/', $tmp[1]);
+            }
+            /*
+             * Forward correct
+             */
+            //$this->forward($bundle[0].'ajaxBundle:Ajax:getAdminContent');
+            return $this->forward('EuroLiteriestructureBundle:Main:getAdminContent',array('object' => $request->query->get('lien')));
+        }
+    }
+
+    public function getAdminContentStructureAction()
+    {
+        $request = $this->get('request');
+        return $this->forward('EuroLiteriestructureBundle:Main:getAdminContentStructure',array('object' => $request->request->get('lien')));
+    }
+
+    public function getAdminInterfaceAction()
+    {
+        if ($this->get('security.context')->isGranted('ROLE_USER'))
+        {
+            if ($this->get('request')->request->get('lien') == 'marquesAdmin'){
+                return $this->container->get('templating')->renderResponse('EuroLiteriestructureBundle:Main:adminInterface.html.twig');
+            }else
+            {
+                return $this->container->get('templating')->renderResponse('EuroLiteriestructureBundle:Main:pa.html.twig');
+                
+            }
+        }
+    }
 
     private function clearTitre($champ, $content)
     {

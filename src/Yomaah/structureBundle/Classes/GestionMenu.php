@@ -24,8 +24,8 @@ class GestionMenu
 
     public function getAllMenu()
     {
-//if ($this->secure->getToken() != null)
-//{
+if ($this->secure->getToken() != null)
+{
         $user = $this->secure->getToken()->getUser();
         if ($user == "anon.")
         {
@@ -69,6 +69,7 @@ class GestionMenu
 
         $connect = $this->isGranted('ROLE_USER');
         return array('menuleft' => $mLeft,'menuright' => $mRight,'admin' => $admin,'connect' => $connect);
+}
     }
 
     private function setAdminMenu($menu)

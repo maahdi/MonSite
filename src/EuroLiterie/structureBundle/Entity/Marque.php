@@ -2,13 +2,19 @@
 namespace EuroLiterie\structureBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  *@ORM\Entity(repositoryClass="MarqueRepo")
  *@ORM\Table(name="marques")
  */
-class Marque
+class Marque implements JsonSerializable
 {
+    public function __construct()
+    {
+        
+    }
+    protected $html;
     
     /**
      *@ORM\Id
@@ -149,5 +155,14 @@ class Marque
     public function getMarqueLien()
     {
         return $this->marqueLien;
+    }
+
+    public function jsonSerialize()
+    {
+        return array('idMarque' => $this->idMarque,
+            'nomMarque' => $this->nomMarque,
+            'content' => $this->content,
+            'marqueLien' => $this->marqueLien,
+            'pngUrl' => $this->pngUrl);
     }
 }

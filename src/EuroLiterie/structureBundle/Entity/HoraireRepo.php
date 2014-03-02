@@ -7,7 +7,6 @@ class HoraireRepo
     private $path ='EuroLiterie/structureBundle/XML/horaire.xml';
     public function getHoraires()
     {
-
         $horaires = array();
         $jours = new \SimpleXmlElement(file_get_contents($this->getXmlFilePath($this->path)));
         foreach ($jours->jour as $jour)
@@ -21,10 +20,6 @@ class HoraireRepo
             $horaires[] = $horaire;
         }
         return $horaires;
-
-
-     
-
     }
     
     private function getXmlFilePath($path)

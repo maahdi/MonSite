@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{asset('bundles/EuroLiteriestructure/css/normalize.css')}}">
     <link rel="stylesheet" href="{{asset('bundles/EuroLiteriestructure/css/menu.css')}}">
     <link rel="stylesheet" href="{{asset('bundles/EuroLiteriestructure/css/corps.css')}}">
+    <link rel="stylesheet" href="{{asset('bundles/EuroLiteriestructure/css/marque.css')}}">
     <link rel="stylesheet" href="{{asset('bundles/EuroLiteriestructure/css/contact.css')}}">
     <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/fontawesome/css/font-awesome.css') }}" />
     <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/jquery-ui.css') }}" />
@@ -21,6 +22,7 @@
     <link href='http://fonts.googleapis.com/css?family=Volkhov' rel='stylesheet' type='text/css'>
     {# A enlever#}
     <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/main-bar.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/yomaah/css/adminInterface.css') }}" />
     {##}
     <script src="{{ asset('bundles/EuroLiteriestructure/js/jquery-2.0.3.min.js')}}"></script>
     <script src="{{ asset('bundles/EuroLiteriestructure/js/jquery-ready.js')}}"></script>
@@ -58,7 +60,9 @@
             </div>
         </footer>
     </div>
-
+    <p id="back-top">
+		<a href="#top"><span></span>Haut de page</a>
+	</p>
     {# zoneAdmin deviendra admin en prod #}
     {%if literie_admin is defined and literie_admin%}
         {% include 'yomaahBundle:Toolbar:toolbar.html.twig' %}

@@ -2,6 +2,8 @@
 
 namespace EuroLiterie\structureBundle\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use EuroLiterie\structureBundle\Entity\HoraireRepo;
 use Yomaah\structureBundle\Entity\MyMail;
@@ -73,6 +75,7 @@ class MainController extends Controller
                     ->add('Message','textarea',array('attr' => array ('placeholder' => 'Votre message ...'),'label' => 'Votre message :'));
         return $formBuilder->getForm();
     }
+
     /**
      * Remplace fonction de login
      * de Yomaah\connexionBundle
@@ -82,9 +85,46 @@ class MainController extends Controller
         $this->get('session')->set('zoneAdmin', true);
         return $this->redirect($this->generateUrl('admin_literie_accueil'),301);
     }
+
     public function decoadminAction()
     {
         $this->get('session')->remove('zoneAdmin');
         return $this->redirect($this->generateUrl('admin_literie_accueil'),301);
+    }
+
+    public function getAdminContentAction($object)
+    {
+        if ($this->get('security.context')->isGranted('ROLE_USER'))
+        {
+            if (($repo =$this->getRepoAdminContentList($object))!= false)
+            {
+                $response = $this->getDoctrine()->getRepository('EuroLiteriestructureBundle:'.$repo)->findAll(); 
+                return new JsonResponse($response);
+            }
+            //$marques = $this->getDoctrine()->getRepository('EuroLiteriestructureBundle:Marque')->findAll();
+        }
+    }
+    public function getAdminContentStructureAction($object)
+    {
+        if (($repo =$this->getRepoAdminContentList($object))!= false)
+        {
+            $response = $this->getDoctrine()->getRepository('EuroLiteriestructureBundle:'.$repo)->getHtml(); 
+            return new Response($response);
+        }
+    }
+
+    private function getRepoAdminContentList($object)
+    {
+        $modifiable = array('marquesAdmin' => 'Marque',
+                    'promotionsAdmin' => 'Promotion');
+        if (array_key_exists($object, $modifiable))
+        {
+            return $modifiable[$object];
+
+        }else
+        {
+            return false;
+        }
+
     }
 }

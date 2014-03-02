@@ -64,8 +64,8 @@ class RequeteListener
 
 	        //$date = new \Datetime($r->date);
 	    }
-/*if ($this->secure->getToken() != null)
-{*/
+if ($this->secure->getToken() != null)
+{
 		$date = new \Datetime($test);
 
 		/**
@@ -107,6 +107,7 @@ class RequeteListener
 	        $sql = 'update visites set idUser = ? where adresseIp = ? and dateConnexion = ?';
 	        $this->db->executeUpdate($sql, array($id, $ip, $date->format('Y-m-d H:i:s')));
 	    }
+}
 	}
 	
 
