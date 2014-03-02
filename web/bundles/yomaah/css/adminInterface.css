@@ -232,7 +232,7 @@
     width:100%;
     height:50em;
     z-index:3011;
-    overflow:scroll;
+    /*overflow:scroll;*/
 }
 
 .textareaPromo
