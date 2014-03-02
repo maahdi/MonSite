@@ -11,10 +11,6 @@ use JsonSerializable;
  */
 class Marque implements JsonSerializable
 {
-    public function __construct()
-    {
-        
-    }
     protected $html;
     
     /**
@@ -123,13 +119,6 @@ class Marque implements JsonSerializable
         $this->content = $content;
     
         return $this;
-    }
-    /**
-     * @ORM\PostLoad
-     */
-    public function setContentDecode()
-    {
-        $this->content = str_replace('</p><p>','\\r\\n',$this->content);
     }
 
     /**

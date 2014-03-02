@@ -30,18 +30,24 @@
         <div id="border">
             <article class="promotion">
                 <article class="promo-titre"><h2>Promotion du moment</h2></article>
-                <article class="promo-date"><h2>Du 17/05/2013 au 20/07/2013</h2></article>
-                <section class="promo-content"><p>Sommier à 1 euros</p>
-                </section>
-                <a class="a-promotion" ref=#>Plus d'infos ...</a>
+                {%if actuel%}
+                    <article class="promo-date"><h2>Du {{actuel.dateDebut}} au {{actuel.dateFin}}</h2></article>
+                    <section class="promo-content"><p>{{actuel.PromoDesc | raw}}</p>
+                    </section>
+                    <a class="a-promotion" ref=#>Plus d'infos ...</a>
+                {%else%}
+                    <article class="promo-date"><h2>Aucune promotions en cours</h2></article>
+                {%endif%}
             </article> 
             <article class="promotion">
                 <article class="promo-titre"><h2>Promotion à venir</h2></article>
-                <article class="promo-date"><h2>Du <span class="date-debut">17/05/2013</span> au <span class="date-fin">20/07/2013</span></h2></article>
-                <section class="promo-content">
-                <p>Tout à -90% !!!</p>
-                </section>
-                <a class="a-promotion" ref=#>Plus d'infos ...</a>
+                {%for promotion in avenir%}
+                    <article class="promo-date"><h2>Du {{promotion.dateDebut}} au {{promotion.dateFin}}</h2></article>
+                    <section class="promo-content">
+                    <p>{{promotion.PromoDesc | raw}}</p>
+                    </section>
+                    <a class="a-promotion" ref=#>Plus d'infos ...</a>
+                {%endfor%}
             </article> 
         </div>
     </div>

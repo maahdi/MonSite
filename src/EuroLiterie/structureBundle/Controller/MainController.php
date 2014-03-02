@@ -19,8 +19,27 @@ class MainController extends Controller
     public function accueilAction()
     {
         $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('accueil',1);
+        $promotions = $this->getDoctrine()->getRepository('EuroLiteriestructureBundle:Promotion')->findBy(array('tag'=>'periode'));
+        $i =0;
+        $actuel = null;
+        $avenir = array();
+        foreach ($promotions as $promo)
+        {
+            if ($promo->getActuel())
+            {
+                $actuel = $promo;
+                $i++;
+            }else
+            {
+                $avenir[] = $promo;
+            }
+        }
+        if ($i == 0)
+        {
+            $actuel = false;
+        }
         return $this->get('templating')->renderResponse('EuroLiteriestructureBundle:Main:accueil.html.twig',
-            array('position' => 'Accueil','articles' => $articles));
+            array('position' => 'Accueil','articles' => $articles,'actuel' => $actuel,'avenir' => $avenir));
     }
 
     public function marquesAction()
@@ -52,7 +71,7 @@ class MainController extends Controller
                 $mail =  new MyMail();
                 $form = $this->getForm($mail);
                 $this->get('session')->set('envoie', true);
-                //return $this->redirect($this->generateUrl('literie_contact'));
+                return $this->redirect($this->generateUrl('literie_contact'));
             }
         }
         if ($this->get('session')->has('envoie'))

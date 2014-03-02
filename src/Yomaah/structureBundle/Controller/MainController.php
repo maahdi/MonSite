@@ -63,6 +63,7 @@ class MainController extends Controller
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:codeSource.html.twig', 
             array_merge($variable,array('articles'=> $articles)));
     }
+
     public function retourMonSiteEnAdminDepuisSiteClient()
     {
         if(($this->get('session')->has('idSite')))
