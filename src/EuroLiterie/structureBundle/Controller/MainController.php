@@ -99,13 +99,8 @@ class MainController extends Controller
             if (($repo =self::getRepoAdminContentList($object))!= false)
             {
                 $response = $this->getDoctrine()->getRepository('EuroLiteriestructureBundle:'.$repo)->findAll(); 
-                //foreach($response as $r)
-                //{
-                    //$r->setContent(str_replace('</p><p>','\r',$r->getContent()));
-                //}
                 return new JsonResponse($response);
             }
-            //$marques = $this->getDoctrine()->getRepository('EuroLiteriestructureBundle:Marque')->findAll();
         }
     }
     public function getAdminContentStructureAction($object)
@@ -138,7 +133,7 @@ class MainController extends Controller
         foreach($elem as $e)
         {
             $tmp = explode('=',$e);
-            $obj['set'.ucfirst($tmp[0])]= $tmp[1];
+            $obj['set'.ucfirst($tmp[0])]= urldecode($tmp[1]);
         }
         $elem = null;
         if ($textarea != null)
