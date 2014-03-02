@@ -184,13 +184,7 @@ class AjaxController extends Controller
     {
         if ($this->get('security.context')->isGranted('ROLE_USER'))
         {
-            if ($this->get('request')->request->get('lien') == 'marquesAdmin'){
-                return $this->container->get('templating')->renderResponse('EuroLiteriestructureBundle:Main:adminInterface.html.twig');
-            }else
-            {
-                return $this->container->get('templating')->renderResponse('EuroLiteriestructureBundle:Main:pa.html.twig');
-                
-            }
+            return $this->container->get('templating')->renderResponse('EuroLiteriestructureBundle:Main:adminInterface.html.twig');
         }
     }
 
@@ -209,6 +203,21 @@ class AjaxController extends Controller
                                                                                         'object' => $request->request->get('lien')));
         }
     }
+
+    public function deleteElementAction()
+    {
+        if ($this->get('security.context')->isGranted('ROLE_USER'))
+        {
+            $request = $this->get('request');
+            /*
+             * Forward correct
+             */
+            //$this->forward($bundle[0].'ajaxBundle:Ajax:getAdminContent');
+            return $this->forward('EuroLiteriestructureBundle:Main:deleteElement',array('id' => $request->request->get('id'),
+                                                                                        'object' => $request->request->get('lien')));
+        }
+    }
+
     private function clearTitre($champ, $content)
     {
         if ($champ == 'art-titre')

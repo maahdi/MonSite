@@ -19,7 +19,7 @@ class MarqueRepo extends EntityRepository
                     <section class="contentMarque">
                         <article class="adminMarque">
                             <label>Nom :</label><input type="text" name="nomMarque" value="%nomMarque%">
-                            <label>Texte :</label><textarea name="content" >%content%</textarea>
+                            <label>Texte :</label><textarea class="textareaMarque" name="content" >%content%</textarea>
                             <label>Lien :</label><input type="text" name="marqueLien" value="%marqueLien%">
                         </article>
                         <article class="adminLogoMarque">

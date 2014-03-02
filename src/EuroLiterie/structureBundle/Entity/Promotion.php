@@ -59,6 +59,10 @@ class Promotion implements JsonSerializable
 
     public function jsonSerialize()
     {
+        return array('id'=> $this->id,
+            'PromoDesc' => $this->PromoDesc,
+            'dateDebut' => $this->getDateDebut(),
+            'dateFin' => $this->getDateFin());
     }
 
     /**
@@ -171,7 +175,7 @@ class Promotion implements JsonSerializable
      */
     public function getPromoDesc()
     {
-        return $this->PromoDesc;
+        return nl2br($this->PromoDesc);
     }
 
     /**

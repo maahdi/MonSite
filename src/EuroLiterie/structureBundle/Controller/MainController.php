@@ -19,15 +19,15 @@ class MainController extends Controller
     public function accueilAction()
     {
         $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('accueil',1);
-        $promotions = $this->getDoctrine()->getRepository('EuroLiteriestructureBundle:Promotion')->findBy(array('tag'=>'periode'));
+        $promotions = $this->getDoctrine()->getRepository('EuroLiteriestructureBundle:Promotion')->findBy(array('tag'=>'periode'), array('dateDebut' => 'asc'));
         $i =0;
-        $actuel = null;
+        $actuel = array();
         $avenir = array();
         foreach ($promotions as $promo)
         {
             if ($promo->getActuel())
             {
-                $actuel = $promo;
+                $actuel[] = $promo;
                 $i++;
             }else
             {
@@ -37,6 +37,10 @@ class MainController extends Controller
         if ($i == 0)
         {
             $actuel = false;
+        }
+        if (count($avenir) ==0)
+        {
+            $avenir = false;
         }
         return $this->get('templating')->renderResponse('EuroLiteriestructureBundle:Main:accueil.html.twig',
             array('position' => 'Accueil','articles' => $articles,'actuel' => $actuel,'avenir' => $avenir));
@@ -124,10 +128,13 @@ class MainController extends Controller
     }
     public function getAdminContentStructureAction($object)
     {
-        if (($repo =$this->getRepoAdminContentList($object))!= false)
+        if ($this->get('security.context')->isGranted('ROLE_USER'))
         {
-            $response = $this->getDoctrine()->getRepository('EuroLiteriestructureBundle:'.$repo)->getHtml(); 
-            return new Response($response);
+            if (($repo =$this->getRepoAdminContentList($object))!= false)
+            {
+                $response = $this->getDoctrine()->getRepository('EuroLiteriestructureBundle:'.$repo)->getHtml(); 
+                return new Response($response);
+            }
         }
     }
 
@@ -147,35 +154,62 @@ class MainController extends Controller
 
     public function saveElementAction($input, $textarea, $id, $object)
     {
-        $elem = explode('&',$input);
-        $obj = array();
-        foreach($elem as $e)
+        if ($this->get('security.context')->isGranted('ROLE_USER'))
         {
-            $tmp = explode('=',$e);
-            $obj['set'.ucfirst($tmp[0])]= urldecode($tmp[1]);
-        }
-        $elem = null;
-        if ($textarea != null)
-        {
-            $elem = explode('&', $textarea);
+            $elem = explode('&',$input);
+            $obj = array();
             foreach($elem as $e)
             {
-                $tmp = explode('=', $e);
-                $obj['set'.ucfirst($tmp[0])]= urldecode($tmp[1]);
+                $tmp = explode('=',$e);
+                if (preg_match('/date/',urldecode($tmp[0])) == 1)
+                {
+                    $date = preg_replace('/\//','-',urldecode($tmp[1]));
+                    var_dump($date);
+                    $obj['set'.ucfirst($tmp[0])] = new \Datetime($date);
+                    
+                }else
+                {
+                    $obj['set'.ucfirst($tmp[0])] = urldecode($tmp[1]);
+                }
             }
             $elem = null;
-        }
-        if (($repo =$this->getRepoAdminContentList($object))!= false)
-        {
-            $element = $this->getDoctrine()->getRepository('EuroLiteriestructureBundle:'.$repo)->find($id); 
-            foreach($obj as $key=>$val)
+            if ($textarea != null)
             {
-                $element->$key($val);
+                $elem = explode('&', $textarea);
+                foreach($elem as $e)
+                {
+                    $tmp = explode('=', $e);
+                    $obj['set'.ucfirst($tmp[0])]= urldecode($tmp[1]);
+                }
+                $elem = null;
             }
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($element);
-            $em->flush();
-            return new Response();
+            if (($repo =$this->getRepoAdminContentList($object))!= false)
+            {
+                $element = $this->getDoctrine()->getRepository('EuroLiteriestructureBundle:'.$repo)->find($id); 
+                foreach($obj as $key=>$val)
+                {
+                    $element->$key($val);
+                }
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($element);
+                $em->flush();
+                return new Response();
+            }
+        }
+    }
+
+    public function deleteElementAction($id, $object)
+    {
+        if ($this->get('security.context')->isGranted('ROLE_USER'))
+        {
+            if (($repo = self::getRepoAdminContentList($object)) != false)
+            {
+                $em = $this->getDoctrine()->getManager();
+                $element = $this->getDoctrine()->getRepository('EuroLiteriestructureBundle:'.$repo)->find($id);
+                $em->remove($element);
+                $em->flush();
+                return new Response();
+            }
         }
     }
 }

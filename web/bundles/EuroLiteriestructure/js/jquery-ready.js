@@ -10,6 +10,8 @@ $(window).ready(function(){
         prevText:'<',
         nextText:'>'
     });
+
+
     $('.sectionAdmin').mouseover(function(){
         $(this).css(
             {'-webkit-border-radius': '3px 3px 3px 3px',
@@ -132,6 +134,10 @@ function getAdminContent(lien)
                 i++;
                 });
                 $('.contentI').append(article);
+                $('.datepickerDebut').datepicker({ maxDate : $('.datepickerFin').val(),
+                                                dateFormat : "dd/mm/yy"});
+                $('.datepickerFin').datepicker({ minDate : $('.datepickerDebut').val(),
+                                                dateFormat : "dd/mm/yy"});
             });
             contentStructure = null;
         });
@@ -209,7 +215,6 @@ $(document).on('click','.maj',function(){
     {
         var textarea = $(this).parent().children('section').children('article').children('textarea');
     }
-    console.log(textarea);
     sendAjax('ajax/dialog',function(data){
         $(data).dialog({
             modal : true,
@@ -236,4 +241,34 @@ $(document).on('click','.maj',function(){
             }
         });
     },{ 'dialog' : 'modifElement', 'element' : lien});
+});
+
+$(document).on('click','.sup',function(){
+    var elem = $(this).parent();
+    sendAjax('ajax/dialog', function (data){
+        $(data).dialog({
+            modal : true,
+            buttons : {
+                "oui" : function (){
+                    var t = $(this);
+                    sendAjax('ajax/deleteElement', function (data){
+                        t.dialog("close");
+                        elem.remove();
+                        var d = '<div>Suppression réussi !!</div>';
+                        $(d).dialog({
+                            modal : true,
+                            buttons :{
+                                "close" : function (){
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    }(t),{ 'id' : elem.children('input').val(), 'lien' : lien});
+                },
+                "Non" : function(){
+                    $(this).dialog("close");
+                }
+            }
+        });
+    },{ 'dialog' : 'deleteElement', 'element' : lien});
 });

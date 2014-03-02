@@ -7,6 +7,7 @@
     float : left;
     padding-top:1%;
 }
+
 .btn-admin li
 {
     font-size : 1em;
@@ -23,6 +24,7 @@
     -ms-transition: color .6s ease-in-out;
     transition: color .6s ease-in-out;
 }
+
 .btn-logo li
 {
     font-size : 1em;
@@ -37,8 +39,8 @@
     -o-transition: color .6s ease-in-out;
     -ms-transition: color .6s ease-in-out;
     transition: color .6s ease-in-out;
-
 }
+
 .btn-logo
 {
     /*margin-bottom:1em;*/
@@ -57,6 +59,7 @@
     -moz-transition:.6s;
     transition:.6s;
 }
+
 .btn-admin
 {
     display:inline-block;
@@ -77,8 +80,8 @@
     -webkit-transition:.6s;
     -moz-transition:.6s;
     transition:.6s;
-
 }
+
 .btn-menuI li
 {
     font-size : 1em;
@@ -137,6 +140,7 @@
     width : 100%;
     height : 5em;
 }
+
 .visite,
 .gestion
 {
@@ -146,6 +150,7 @@
     overflow : hidden;
     padding-top:0.2em;
 }
+
 .visite
 {
     width : 25%;
@@ -153,6 +158,7 @@
     border-right : 1px solid black;
     height : 5.2em;
 }
+
 .gestion h4,
 .visite h4
 {
@@ -167,6 +173,7 @@
     position : relative;
     float : left;
 }
+
 .visite section ul li
 {
     font-family : "Volkhov";
@@ -175,11 +182,13 @@
     list-style : none;
     font-size : 0.7em;
 }
+
 .gestion
 {
     width : 75%;
     height : 5em;
 }
+
 .gestion div{
     /*display : block;*/
     width : 100%;
@@ -225,10 +234,18 @@
     z-index:3011;
     overflow:scroll;
 }
-.admin-content section article textarea
+
+.textareaPromo
 {
     width : 80%;
-    height:15em;
+    height:70%;
+    font-size:0.7em;
+}
+
+.textareaMarque
+{
+    width : 80%;
+    height:90%;
     font-size:0.7em;
 }
 .admin-content section article input
@@ -275,6 +292,7 @@
     position:relative;
     float:left;
 }
+.adminPromo,
 .adminMarque,
 .adminLogoMarque
 {
@@ -286,6 +304,7 @@
     width:30%;
     float:right;
 }
+.adminPromo,
 .adminMarque
 {
     position:relative;
@@ -314,6 +333,7 @@
     height : auto;
     background-color : white;
 }
+.contentPromo,
 .contentMarque,
 .btn-bar
 {

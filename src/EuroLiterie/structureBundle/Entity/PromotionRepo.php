@@ -12,4 +12,29 @@ use Doctrine\ORM\EntityRepository;
  */
 class PromotionRepo extends EntityRepository
 {
+    public function getHtml()
+    {
+        return '<div class="admin-c border">
+                    <input type="hidden" name="id" value="%id%">
+                    <section class="contentPromo">
+                        <article class="adminPromo">
+                            <label>Date de début :</label><input class="datepickerDebut" type="text" name="dateDebut" value="%dateDebut%">
+                            <label>Date de fin :</label><input class="datepickerFin" type="text" name="dateFin" value="%dateFin%">
+                            <label>Description :</label><textarea class="textareaPromo" name="PromoDesc" >%PromoDesc%</textarea>
+                        </article>
+                    </section>
+                        <article class="btn-admin maj">
+                            <li>Mettre à jour</li>
+                        </article>
+                        <article class="btn-admin sup">
+                            <li>Supprimer</li>
+                        </article>
+                </div>';
+    }
+
+    public function findAll()
+    {
+        $query = $this->getEntityManager()->createQuery('select p from EuroLiteriestructureBundle:Promotion p order by p.dateDebut asc');
+        return $query->getResult();
+    }
 }
