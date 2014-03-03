@@ -3,7 +3,7 @@
     width : 20%;
     height: 100%;
     position:relative;
-    border-right : 1px solid black;
+    /*border-right : 1px solid black;*/
     float : left;
     padding-top:1%;
 }
@@ -116,9 +116,12 @@
 
 .contentI
 {
+    background-color: #a7a39d;
     position : relative;
     float : left;
     width : 80%;
+    margin-right:-5%;
+    border-left:1px solid black;
     height : auto;
     padding-left : 2%;
     padding-top : 1%;
@@ -212,7 +215,7 @@
 .sectionAdmin
 {
     display : inline-block;
-    background-color : #f1ecec;
+    /*background-color : #f1ecec;*/
     width : 20%;
     border : 1px solid #aaa;
     -webkit-border-radius: 3px 3px 3px 3px;
@@ -319,7 +322,8 @@
 {
     /*position:relative;*/
     height:20em;
-    background-color :#4c8597; 
+    /*background-color :#4c8597; */
+    background-color :#d0cbcb; 
     border:1px solid black;
     margin-bottom:1em;
     /*width:100%;*/

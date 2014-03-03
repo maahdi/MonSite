@@ -13,7 +13,13 @@ class CodeSourceController
 
     public function init($path)
     {
-        $this->path = $path;
+        if ($path == 'lit')
+        {
+            $this->path = 'Yomaah';
+        }else
+        {
+            $this->path = $path;
+        }
         $this->constructRootPath();
         $this->init = true;
     }
