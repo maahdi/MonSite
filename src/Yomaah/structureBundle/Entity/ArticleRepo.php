@@ -18,7 +18,7 @@ class ArticleRepo extends EntityRepository
         if ($site == null)
         {
             $query = $this->getEntityManager()
-                ->createQuery('select a, p from yomaahBundle:Article a join a.page p where p.pageUrl = :url and p.site is null order by a.artId asc')
+                ->createQuery('select a, p from yomaahBundle:Article a join a.page p where p.pageUrl = :url order by a.artId asc')
                 ->setParameter('url',$pageUrl);
         }else
         {
@@ -26,12 +26,6 @@ class ArticleRepo extends EntityRepository
                 ->createQuery('select a, p from yomaahBundle:Article a join a.page p join p.site s where p.pageUrl = :url and s.idSite = :site order by a.artId asc')
                 ->setParameters(array('url' => $pageUrl,'site' => $site));
         }
-        /**
-            * En prod
-        $query = $this->getEntityManager()
-                ->createQuery('select a, p from yomaahBundle:Article a join a.page p where p.pageUrl = :url order by a.artId asc')
-                ->setParameter('url',$pageUrl);
-         */
         return $query->getResult();
     }
 
@@ -54,7 +48,7 @@ class ArticleRepo extends EntityRepository
     {
         if ($page->getSite() == null)
         {
-            $sql = 'select max(a.artId) from yomaahBundle:Article a join a.page p where p.pageUrl = :url and p.site is null';
+            $sql = 'select max(a.artId) from yomaahBundle:Article a join a.page p where p.pageUrl = :url';
             $query = $em->createQuery($sql)->setParameter('url',$page->getPageUrl());
         }else
         {
@@ -78,14 +72,8 @@ class ArticleRepo extends EntityRepository
             if ($page->getSite() == null)
             {
                 $query = $this->getEntityManager()
-                    ->createQuery('select a from yomaahBundle:Article a join a.page p where p.pageUrl = :url and p.site is null order by a.artId asc')
+                    ->createQuery('select a from yomaahBundle:Article a join a.page p where p.pageUrl = :url order by a.artId asc')
                         ->setParameter('url',$page->getPageUrl());
-                /**
-                 * En prod :
-                $query = $this->getEntityManager()
-                    ->createQuery('select a from yomaahBundle:Article a join a.page p join p.site s where p.pageUrl = :url order by a.artId asc')
-                        ->setParameter('url',$page->getPageUrl());
-                 */
             }else
             {
                 $query = $this->getEntityManager()
