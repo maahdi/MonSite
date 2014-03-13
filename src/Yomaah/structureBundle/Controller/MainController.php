@@ -20,7 +20,7 @@ class MainController extends Controller
         //$user = new \Yomaah\connexionBundle\Entity\User();
         //$encoder = $factory->getEncoder($user);
         //$password = $encoder->encodePassword('martini',null);
-        $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('accueil');
+        $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('MonAccueil');
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:index.html.twig',
             array('articles' => $articles));
     }

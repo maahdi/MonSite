@@ -17,8 +17,14 @@ class ArticleRepo extends EntityRepository
     {
         if ($site == null)
         {
+            /*
+             * A remplacer par 
+$query = $this->getEntityManager()
+    ->createQuery('select a, p from yomaahBundle:Article a join a.page p where p.pageUrl = :url order by a.artId asc')
+    ->setParameter('url',$pageUrl);
+             */
             $query = $this->getEntityManager()
-                ->createQuery('select a, p from yomaahBundle:Article a join a.page p where p.pageUrl = :url order by a.artId asc')
+                ->createQuery('select a, p from yomaahBundle:Article a join a.page p where p.pageUrl = :url and p.site is null order by a.artId asc')
                 ->setParameter('url',$pageUrl);
         }else
         {
@@ -48,7 +54,11 @@ class ArticleRepo extends EntityRepository
     {
         if ($page->getSite() == null)
         {
-            $sql = 'select max(a.artId) from yomaahBundle:Article a join a.page p where p.pageUrl = :url';
+            /*
+             * A remplacer par 
+$sql = 'select max(a.artId) from yomaahBundle:Article a join a.page p where p.pageUrl = :url';
+             */
+            $sql = 'select max(a.artId) from yomaahBundle:Article a join a.page p where p.pageUrl = :url and p.site is null';
             $query = $em->createQuery($sql)->setParameter('url',$page->getPageUrl());
         }else
         {
@@ -56,11 +66,6 @@ class ArticleRepo extends EntityRepository
             $query = $em->createQuery($sql)
                 ->setParameters(array('site' => $page->getSite()->getIdSite(), 'url' => $page->getPageUrl()));
         }
-        /*
-         * En prod
-            $sql = 'select max(a.artId) from yomaahBundle:Article a join a.page p';
-            $query = $em->createQuery($sql);
-         */
         $id = $query->getSingleResult(); 
         $maxId = (int) $id[1] + 1;
 

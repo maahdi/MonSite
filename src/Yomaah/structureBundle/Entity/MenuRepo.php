@@ -16,7 +16,11 @@ class MenuRepo extends EntityRepository
     {
         if ($site == null)
         {
-            return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=0')->getResult();
+            /*
+             * A remplacer par 
+return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=0')->getResult();
+             */
+            return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=0 and m.site is null')->getResult();
             
         }else
         {
@@ -34,7 +38,7 @@ class MenuRepo extends EntityRepository
     {
         if ($site == null)
         {
-            return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=1')->getResult();
+            return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=1 and m.site is null')->getResult();
         }else
         {
             return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=1 and m.site = :site')
