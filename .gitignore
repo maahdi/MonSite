@@ -3,4 +3,5 @@
 /app/cache/
 /app/config/parameters.yml
 /app/logs/
-/clearCache
+/web/bundles/EuroLiteriestructureBundle
+/src/EuroLiterie
