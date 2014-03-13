@@ -88,6 +88,26 @@ if ($this->secure->getToken() != null)
         }
         
     }
+    private function getVisite()
+    {
+        $db = $this->container->get('database_connection');
+        $sql = 'select count(idVisite) as nb from visites as v left join utilisateur as u on v.idUser = u.idUser where u.idGroup !=1 and v.idUser = 0';
+        $result = $db->query($sql);
+        $result->setFetchMode(\PDO::FETCH_OBJ);
+        foreach ($result as $r)
+        {
+            $visite['total'] = $r->nb;
+        }
+        $sql = 'select count(idVisite) as nb from visites as v left join utilisateur as u on v.idUser = u.idUser where extract( month from current_date) = extract( month from dateConnexion) and (u.idGroup != 1 and v.idUser = 0)';
+        $result = $db->query($sql);
+        $result->setFetchMode(\PDO::FETCH_OBJ);
+        foreach ($result as $r)
+        {
+            $visite['mois'] = $r->nb;
+        }
+        return $visite;
+
+    }
 
     public function isGranted($role)
     {
