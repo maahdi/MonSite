@@ -60,10 +60,20 @@
     transition:.6s;
 }
 
-.btn-admin
+.marq .btn-admin
+{
+    bottom:.6em;
+}
+
+.prom .btn-admin
+{
+    bottom:-4.0em;
+}
+
+.marq .btn-admin,
+.prom .btn-admin
 {
     display:inline-block;
-    bottom:-6.6em;
     float:right;
     margin-right:1.5em;
     position : relative;
@@ -233,7 +243,7 @@
     top:5.5em;
     position:absolute;
     width:100%;
-    height:50em;
+    height:auto;
     z-index:3011;
     /*overflow:scroll;*/
 }
@@ -241,17 +251,23 @@
 .textareaPromo
 {
     width : 80%;
-    height:70%;
+    height:15em;
     font-size:0.7em;
 }
 
 .textareaMarque
 {
     width : 80%;
-    height:90%;
+    height:13em;
     font-size:0.7em;
 }
-.admin-content section article input
+.adminPromo input
+{
+    width : 80%;
+    height : 2em;
+    font-size : 0.7em;
+}
+.adminMarque input
 {
     width : 40%;
     height:2.0em;
@@ -265,29 +281,17 @@
     margin-bottom:0.5em;
     margin-left:0.8em;
 }
+
 .admin-content label
 {
     margin-top: 0.5em;
 }
+
 .admin-content label.inline
 {
     display:inline;
 }
-/*.admin-content input,*/
-/*.admin-content label,*/
-/*.admin-content textarea*/
-/*{*/
-    /*display:inline-block;*/
-    /*float:left;*/
-    /*margin-left:1em;*/
-/*}*/
-/*.admin-content label,*/
-/*.admin-content textarea*/
-/*{*/
-    /*display:inline-block;*/
-    /*float:left;*/
-    /*margin-left:1em;*/
-/*}*/
+
 .admin-content
 {
     width:100%;
@@ -299,7 +303,14 @@
 .adminMarque,
 .adminLogoMarque
 {
-    height:10em;
+    /*height:10em;*/
+}
+
+.adminPromoInfo
+{
+    position:relative;
+    width : 60%;
+    float :right;
 }
 .adminLogoMarque
 {
@@ -307,11 +318,18 @@
     width:30%;
     float:right;
 }
-.adminPromo,
+.adminPromo
+{
+    position:relative;
+    width:40%;
+    float:left;
+    height:auto;
+}
 .adminMarque
 {
     position:relative;
     width:70%;
+    height:auto;
     float:left;
 }
 .admin-c section
@@ -346,7 +364,7 @@
 .contentMarque
 {
     padding-top:0.1em;
-    height:auto;
+    /*height:auto;*/
 }
 
 .adminMarqueLogo img

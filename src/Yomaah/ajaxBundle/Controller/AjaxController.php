@@ -39,7 +39,7 @@ class AjaxController extends Controller
             {
                 return new Response('Erreur : mauvais champ !');
             }
-        }else if ($this->get('security.context')->isGranted('ROLE_USER'))
+        }else if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
         {
             $request = $this->get('request');
             $article = $this->getDoctrine()->getRepository('yomaahBundle:ArticleTest')->find($request->request->get('id'));
@@ -78,7 +78,7 @@ class AjaxController extends Controller
             $em->remove($this->getDoctrine()->getRepository('yomaahBundle:Article')->find($request->request->get('id')));
             $em->flush();
             return new Response();
-        }else if ($this->get('security.context')->isGranted('ROLE_USER'))
+        }else if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
         {
             $request = $this->get('request');
             $em = $this->getDoctrine()->getManager();
@@ -110,7 +110,7 @@ class AjaxController extends Controller
             $article = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findDefaultArticle($request->request->get('position'),$tmp[1], $page);
             return $this->container->get('templating')->renderResponse('YomaahajaxBundle:Ajax:'.$template, array('article' => $article));
             //return new Response('YomaahajaxBundle:Ajax:layoutArticle.html.twig',array('article' => $article));
-        }else if ($this->get('security.context')->isGranted('ROLE_USER'))
+        }else if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
         {
             $token = $this->get('session')->get('testToken');
             $request = $this->get('request');
@@ -125,7 +125,7 @@ class AjaxController extends Controller
 
     public function getDialogAction()
     {
-        if ($this->get('security.context')->isGranted('ROLE_USER'))
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
         {
             $request = $this->get('request');
             if ($request->request->has('element'))
@@ -145,7 +145,7 @@ class AjaxController extends Controller
     }
     public function getAdminMenuAction()
     {
-        if ($this->get('security.context')->isGranted('ROLE_USER'))
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
         {
             $request = $this->get('request');
             $template = $request->request->get('bundle').'ajaxbundle:Ajax:'.$request->request->get('menu').'.html.twig';
@@ -155,7 +155,7 @@ class AjaxController extends Controller
 
     public function getAdminContentAction()
     {
-        if ($this->get('security.context')->isGranted('ROLE_USER'))
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
         {
             $request = $this->get('request');
             if ($request->request->has('url'))
@@ -182,7 +182,7 @@ class AjaxController extends Controller
 
     public function getAdminInterfaceAction()
     {
-        if ($this->get('security.context')->isGranted('ROLE_USER'))
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
         {
             return $this->container->get('templating')->renderResponse('EuroLiteriestructureBundle:Main:adminInterface.html.twig');
         }
@@ -190,7 +190,7 @@ class AjaxController extends Controller
 
     public function saveElementAction()
     {
-        if ($this->get('security.context')->isGranted('ROLE_USER'))
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
         {
             $request = $this->get('request');
             /*
@@ -206,7 +206,7 @@ class AjaxController extends Controller
 
     public function deleteElementAction()
     {
-        if ($this->get('security.context')->isGranted('ROLE_USER'))
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
         {
             $request = $this->get('request');
             /*
