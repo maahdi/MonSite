@@ -218,6 +218,19 @@ class AjaxController extends Controller
         }
     }
 
+    public function addElementAction()
+    {
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
+        {
+            $request = $this->get('request');
+            /*
+             * Forward correct
+             */
+            //$this->forward($bundle[0].'ajaxBundle:Ajax:getAdminContent');
+            return $this->forward('EuroLiteriestructureBundle:Main:addElement',array('object' => $request->query->get('lien')));
+        }
+    }
+
     private function clearTitre($champ, $content)
     {
         if ($champ == 'art-titre')

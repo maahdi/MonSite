@@ -41,4 +41,8 @@ $collection->add('ajax_deleteElement', new Route('/ajax/deleteElement', array(
     '_controller' => 'YomaahajaxBundle:Ajax:deleteElement'),
     array('_method' => 'POST')));
 
+$collection->add('ajax_addElement', new Route('/ajax/addElement', array(
+    '_controller' => 'YomaahajaxBundle:Ajax:addElement'),
+    array('_method' => 'GET')));
+
 return $collection;
