@@ -62,10 +62,10 @@
     transition: color .2s ease-in-out;
 }
 
-.literie-menu li:first-child a {border-left:none;}
-.literie-menu li:last-child a {border-right: none;}
+/*.literie-menu li:first-child a {border-left:none;}*/
+/*.literie-menu li:last-child a {border-right: none;}*/
 
-.literie-menu li:hover > a {color:#0e9c07;}
+/*.literie-menu li:hover > a {color:#0e9c07;}*/
 
 .literie-menu ul
 {

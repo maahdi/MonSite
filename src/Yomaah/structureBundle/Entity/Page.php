@@ -36,6 +36,11 @@ class Page
      **/
     protected $site;
 
+    /**
+     *@ORM\Column(type="text")
+     */
+    protected $keywords;
+
      /* Set pageId
      *
      * @param integer $site
@@ -77,6 +82,28 @@ class Page
     public function getPageId()
     {
         return $this->pageId;
+    }
+    /**
+     * Set keywords
+     *
+     * @param string $keywords
+     * @return Page
+     */
+    public function setKeywords($keywords)
+    {
+        $this->keywords = $keywords;
+    
+        return $this;
+    }
+
+    /**
+     * Get keywords
+     *
+     * @return string 
+     */
+    public function getKeywords()
+    {
+        return $this->keywords;
     }
 
     /**

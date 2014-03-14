@@ -12,5 +12,33 @@ use Doctrine\ORM\EntityRepository;
  */
 class PageRepo extends EntityRepository
 {
+    public function findKeywords($pageUrl, $site = null)
+    {
+        if ($site == null)
+        {
+            /*
+             * A remplacer par 
+$query = $this->getEntityManager()
+    ->createQuery('select a, p from yomaahBundle:Article a join a.page p where p.pageUrl = :url order by a.artId asc')
+    ->setParameter('url',$pageUrl);
+             */
+            $query = $this->getEntityManager()
+                ->createQuery('select p.keywords from yomaahBundle:Page p where p.pageUrl = :url and p.site is null')
+                ->setParameter('url',$pageUrl);
+        }else
+        {
+            $query = $this->getEntityManager()
+                ->createQuery('select p.keywords from yomaahBundle:Page p join p.site s where p.pageUrl = :url and s.idSite = :site')
+                ->setParameters(array('url' => $pageUrl,'site' => $site));
+        }
+        $keywords = $query->getSingleResult();
+        if (strlen($keywords['keywords']) == 0)
+        {
+            return array('keywords' => false);
+        }else
+        {
+            return $keywords;
+        }
+    }
  
 }
