@@ -1,0 +1,352 @@
+﻿.menuI
+{
+    width : 20%;
+    height: 100%;
+    position:relative;
+    /*border-right : 1px solid black;*/
+    float : left;
+    padding-top:1%;
+}
+
+.btn-admin li
+{
+    font-size : 1em;
+    line-height:2em;
+    width:100%;
+    float:left;
+    text-align : center;
+    list-style : none;
+    font-family : "Volkhov";
+    /*padding-top:0.6em;*/
+    -webkit-transition: color .6s ease-in-out;
+    -moz-transition: color .6s ease-in-out;
+    -o-transition: color .6s ease-in-out;
+    -ms-transition: color .6s ease-in-out;
+    transition: color .6s ease-in-out;
+}
+
+.btn-logo li
+{
+    font-size : 1em;
+    line-height:2em;
+    width:100%;
+    text-align : center;
+    list-style : none;
+    font-family : "Volkhov";
+    /*padding-top:0.6em;*/
+    -webkit-transition: color .6s ease-in-out;
+    -moz-transition: color .6s ease-in-out;
+    -o-transition: color .6s ease-in-out;
+    -ms-transition: color .6s ease-in-out;
+    transition: color .6s ease-in-out;
+}
+
+.btn-logo
+{
+    /*margin-bottom:1em;*/
+    position : relative;
+    background-color : #f1ecec;
+    line-height :1em; 
+    width : 70%!important;
+    border : 1px solid #aaa;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;   
+    border-radius:3px 3px 3px 3px;
+    -moz-box-shadow: 3px 3px 0px #aaa; 
+    -webkit-box-shadow: 3px 3px 0px #aaa; 
+    box-shadow: 3px 3px 0px #555;
+    -webkit-transition:.6s;
+    -moz-transition:.6s;
+    transition:.6s;
+}
+
+.btn-admin
+{
+    display:inline-block;
+    bottom:-6.6em;
+    float:right;
+    margin-right:1.5em;
+    position : relative;
+    background-color : #f1ecec;
+    line-height :0.7em; 
+    width : 20%;
+    border : 1px solid #aaa;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;   
+    border-radius:3px 3px 3px 3px;
+    -moz-box-shadow: 3px 3px 0px #aaa; 
+    -webkit-box-shadow: 3px 3px 0px #aaa; 
+    box-shadow: 3px 3px 0px #555;
+    -webkit-transition:.6s;
+    -moz-transition:.6s;
+    transition:.6s;
+}
+
+.btn-menuI li
+{
+    font-size : 1em;
+    text-align : center;
+    list-style : none;
+    font-family : "Volkhov";
+    /*padding-top:0.6em;*/
+    /*margin-bottom:1.2em;*/
+    -webkit-transition: color .6s ease-in-out;
+    -moz-transition: color .6s ease-in-out;
+    -o-transition: color .6s ease-in-out;
+    -ms-transition: color .6s ease-in-out;
+    transition: color .6s ease-in-out;
+}
+.btn-menuI{
+    margin-bottom: 0.8em;
+    position : relative;
+    background-color : #f1ecec;
+    line-height :2em; 
+    width : 90%;
+    border : 1px solid #aaa;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;   
+    border-radius:3px 3px 3px 3px;
+    -moz-box-shadow: 3px 3px 0px #aaa; 
+    -webkit-box-shadow: 3px 3px 0px #aaa; 
+    box-shadow: 3px 3px 0px #555;
+	-webkit-transition:.6s;
+	-moz-transition:.6s;
+	transition:.6s;
+}
+
+.contentI
+{
+    background-color: #a7a39d;
+    border-left:1px solid black;
+    position : relative;
+    float : left;
+    width : 80%;
+    height : auto;
+    padding-left : 2%;
+    padding-top : 1%;
+}
+
+.barAdmin
+{
+    width : 100%;
+    z-index : 100;
+    height : auto;
+    /*height : 5em;*/
+    position : relative;
+    top : -1em;
+    font-size : 1em;
+}
+.bar
+{
+    position : fixed;
+    width : 100%;
+    height : 5em;
+}
+
+.visite,
+.gestion
+{
+    display: inline-block;
+    position : relative;
+    height : 5em;
+    overflow : hidden;
+    padding-top:0.2em;
+}
+
+.visite
+{
+    width : 25%;
+    float : left;
+    border-right : 1px solid black;
+    height : 5.2em;
+}
+
+.gestion h4,
+.visite h4
+{
+    display:block;
+    width : 100%;
+    font-family : "Volkhov";
+    font-size : 0.8em;
+    display:block;
+    top : 0.2em;
+    padding-left : 1em;
+    line-height : 1em;
+    position : relative;
+    float : left;
+}
+
+.visite section ul li
+{
+    font-family : "Volkhov";
+    padding-left: 20%;
+    width : 100%;
+    list-style : none;
+    font-size : 0.7em;
+}
+
+.gestion
+{
+    width : 75%;
+    height : 5em;
+}
+
+.gestion div{
+    /*display : block;*/
+    width : 100%;
+    padding : 3%;
+}
+
+.sectionAdmin ul li
+{
+    font-size : 1em;
+    text-align : center;
+    list-style : none;
+    font-family : "Volkhov";
+    padding-top:0.6em;
+    margin-bottom:-0.6em;
+    -webkit-transition: color .6s ease-in-out;
+    -moz-transition: color .6s ease-in-out;
+    -o-transition: color .6s ease-in-out;
+    -ms-transition: color .6s ease-in-out;
+    transition: color .6s ease-in-out;
+}
+.sectionAdmin
+{
+    display : inline-block;
+    background-color : #f1ecec;
+    width : 20%;
+    border : 1px solid #aaa;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;   
+    border-radius:3px 3px 3px 3px;
+    -moz-box-shadow: 3px 3px 0px #aaa; 
+    -webkit-box-shadow: 3px 3px 0px #aaa; 
+    box-shadow: 3px 3px 0px #555;
+	-webkit-transition:.6s;
+	-moz-transition:.6s;
+	transition:.6s;
+}
+.admin-content
+{
+    top:5.5em;
+    position:absolute;
+    width:100%;
+    height:50em;
+    z-index:3011;
+    /*overflow:scroll;*/
+}
+
+.textareaPromo
+{
+    width : 80%;
+    height:70%;
+    font-size:0.7em;
+}
+
+.textareaMarque
+{
+    width : 80%;
+    height:90%;
+    font-size:0.7em;
+}
+.admin-content section article input
+{
+    width : 40%;
+    height:2.0em;
+    font-size : 0.7em;
+}
+.admin-content label,
+.admin-content input,
+.admin-content textarea
+{
+    display:block;
+    margin-bottom:0.5em;
+    margin-left:0.8em;
+}
+
+.admin-content label
+{
+    margin-top: 0.5em;
+}
+
+.admin-content label.inline
+{
+    display:inline;
+}
+
+.admin-content
+{
+    width:100%;
+    height:auto;
+    position:relative;
+    float:left;
+}
+.adminPromo,
+.adminMarque,
+.adminLogoMarque
+{
+    height:10em;
+}
+.adminLogoMarque
+{
+    position:relative;
+    width:30%;
+    float:right;
+}
+.adminPromo,
+.adminMarque
+{
+    position:relative;
+    width:70%;
+    float:left;
+}
+.admin-c section
+{
+    width:100%;
+}
+.admin-c
+{
+    /*position:relative;*/
+    height:20em;
+    background-color :#d0cbcb;
+    border:1px solid black;
+    margin-bottom:1em;
+    /*width:100%;*/
+    -webkit-border-radius:3px 3px 3px 3px;
+    -moz-border-radius:3px 3px 3px 3px;
+    border-radius:3px 3px 3px 3px;
+}
+.btn-bar
+{
+    padding-top:5em;
+    height : auto;
+    background-color : white;
+}
+.contentPromo,
+.contentMarque,
+.btn-bar
+{
+    display:inline-block;
+}
+.contentMarque
+{
+    padding-top:0.1em;
+    height:auto;
+}
+
+.adminMarqueLogo img
+{
+    max-width :100%;
+    max-height:100%;
+    padding-left : 1.0em;
+    float :left;
+    position :relative;
+    height : auto;
+}
+.adminMarqueLogo
+{
+    width:9em;
+    margin-bottom : 0.5em;
+    height:4em;
+}
