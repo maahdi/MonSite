@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *@ORM\Entity(repositoryClass="PageRepo")
  *@ORM\Table(name="page")
  */
-class Page
+class Page implements \JsonSerializable
 {
     public function __construct()
     {
@@ -40,6 +40,11 @@ class Page
      *@ORM\Column(type="text")
      */
     protected $keywords;
+
+    /**
+     *@ORM\Column(type="string")
+     **/
+    protected $position;
 
      /* Set pageId
      *
@@ -82,6 +87,28 @@ class Page
     public function getPageId()
     {
         return $this->pageId;
+    }
+    /**
+     * Set position
+     *
+     * @param string $position
+     * @return Page
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+    
+        return $this;
+    }
+
+    /**
+     * Get position
+     *
+     * @return string 
+     */
+    public function getPosition()
+    {
+        return $this->position;
     }
     /**
      * Set keywords
@@ -166,5 +193,12 @@ class Page
         {
             return null;
         }
+    }
+
+    public function jsonSerialize()
+    {
+        return array('pageId' => $this->pageId,
+            'position' => $this->position,
+            'keywords' => $this->keywords);
     }
 }

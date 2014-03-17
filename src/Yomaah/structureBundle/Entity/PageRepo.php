@@ -40,5 +40,21 @@ $query = $this->getEntityManager()
             return $keywords;
         }
     }
+    public function getHtml()
+    {
+        return '<div class="page admin-c border">
+                    <input type="hidden" name="id" value="%pageId%" />
+                    <section class="contentPage">
+                        <article class="adminPage">
+                            <h3>Page : %position%</h3>
+                            <label>Position</label><input type="text" name="position" value="%position%" />
+                            <label>Mot-clés</label><textarea class="textareaPage" name="keywords">%keywords%</textarea>
+                        </article>
+                    </section>
+                    <article class="btn-admin maj">
+                        <li>Mettre à jour</li>
+                    </article>
+                   </div>';
+    }
  
 }

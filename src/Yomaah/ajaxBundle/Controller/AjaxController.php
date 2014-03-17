@@ -3,6 +3,8 @@ namespace Yomaah\ajaxBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use EuroLiterie\structureBundle\Entity\KeywordsRepo;
 
 
 /**
@@ -133,9 +135,16 @@ class AjaxController extends Controller
                 /*
                  * A changer par un forward automatique selon
                  */
-                $element = \EuroLiterie\structureBundle\Controller\MainController::getRepoAdminContentList($request->request->get('element'));
-                $template = 'YomaahajaxBundle:Ajax:'.$request->request->get('dialog').$element.'.html.twig';
-                return $this->container->get('templating')->renderResponse($template);
+                if ($request->request->get('element') == 'GkeywordsAdmin')
+                {
+                    return new Response('<div><p>Vous allez mettre à jour les mots-clés généraux !!</p><p>Souhaitez-vous continuer ?</p></div>');
+                    
+                }else
+                {
+                    $element = \EuroLiterie\structureBundle\Controller\MainController::getRepoAdminContentList($request->request->get('element'));
+                    $template = 'YomaahajaxBundle:Ajax:'.$request->request->get('dialog').$element.'.html.twig';
+                    return $this->container->get('templating')->renderResponse($template);
+                }
             }else
             {
                 $template = 'YomaahajaxBundle:Ajax:'.$request->request->get('dialog').'.html.twig';
@@ -158,26 +167,53 @@ class AjaxController extends Controller
         if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
         {
             $request = $this->get('request');
-            if ($request->request->has('url'))
-            {
+            //if ($request->request->has('url'))
+            //{
                 /*
                  * Couper a espace client pas encore mis dans l'url
                  */
-                $tmp = explode($request->getBaseUrl(), $request->request->get('url'));
-                $bundle = explode('/', $tmp[1]);
-            }
+                //$tmp = explode($request->getBaseUrl(), $request->request->get('url'));
+                //$bundle = explode('/', $tmp[1]);
+            //}
             /*
              * Forward correct
              */
             //$this->forward($bundle[0].'ajaxBundle:Ajax:getAdminContent');
-            return $this->forward('EuroLiteriestructureBundle:Main:getAdminContent',array('object' => $request->query->get('lien')));
+            if ($request->query->get('lien') == 'pagesAdmin')
+            {
+                $pages = $this->getDoctrine()->getRepository('yomaahBundle:Page')->findBy(array('site' => 1));
+                return new JsonResponse($pages);
+                
+            }else
+            {
+                return $this->forward('EuroLiteriestructureBundle:Main:getAdminContent',array('object' => $request->query->get('lien')));
+            }
         }
     }
 
     public function getAdminContentStructureAction()
     {
-        $request = $this->get('request');
-        return $this->forward('EuroLiteriestructureBundle:Main:getAdminContentStructure',array('object' => $request->request->get('lien')));
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
+        {
+            $request = $this->get('request')->get('lien');
+            if ($request == 'pagesAdmin')
+            {
+                return new Response($this->getDoctrine()->getRepository('yomaahBundle:Page')->getHtml());
+                
+            }else if ($request == 'GkeywordsAdmin')
+            {
+                $keyRepo = new KeywordsRepo();
+                return new Response('<div class="admin-c border">
+                            <label>Mots-clés généraux</label><textarea class="textareaGkeywords" name="Gkeywords">'.$keyRepo->getGeneralKeywords().'</textarea>
+                            <article class="btn-admin maj-Gkeywords">
+                                <li>Mettre à jour</li>
+                            </article>
+                        </div>');
+            }else
+            {
+                return $this->forward('EuroLiteriestructureBundle:Main:getAdminContentStructure',array('object' => $request));
+            }
+        }
     }
 
     public function getAdminInterfaceAction()
@@ -197,10 +233,58 @@ class AjaxController extends Controller
              * Forward correct
              */
             //$this->forward($bundle[0].'ajaxBundle:Ajax:getAdminContent');
-            return $this->forward('EuroLiteriestructureBundle:Main:saveElement',array('input' => $request->request->get('input'),
+            if ($request->request->get('lien') == 'GkeywordsAdmin')
+            {
+                $keyRepo = new KeywordsRepo();
+                $tmp = explode('=', $request->request->get('textarea'));
+                $newKeywords = urldecode($tmp[1]);
+                $keyRepo->save($newKeywords);
+                return new Response();
+                
+            }else if ($request->request->get('lien') == 'pagesAdmin')
+            {
+                $elem = explode('&',$request->request->get('input'));
+                $obj = array();
+                foreach($elem as $e)
+                {
+                    $tmp = explode('=',$e);
+                    if (preg_match('/date/',urldecode($tmp[0])) == 1)
+                    {
+                        $date = preg_replace('/\//','-',urldecode($tmp[1]));
+                        $obj['set'.ucfirst($tmp[0])] = new \Datetime($date);
+                        
+                    }else
+                    {
+                        $obj['set'.ucfirst($tmp[0])] = urldecode($tmp[1]);
+                    }
+                }
+                $elem = null;
+                if ($request->request->get('textarea') != null)
+                {
+                    $elem = explode('&', $request->request->get('textarea'));
+                    foreach($elem as $e)
+                    {
+                        $tmp = explode('=', $e);
+                        $obj['set'.ucfirst($tmp[0])]= urldecode($tmp[1]);
+                    }
+                    $elem = null;
+                }
+                $element = $this->getDoctrine()->getRepository('yomaahBundle:Page')->find($request->request->get('id')); 
+                foreach($obj as $key=>$val)
+                {
+                    $element->$key($val);
+                }
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($element);
+                $em->flush();
+                return new Response();
+            }else
+            {
+                return $this->forward('EuroLiteriestructureBundle:Main:saveElement',array('input' => $request->request->get('input'),
                                                                                         'textarea' => $request->request->get('textarea'),
                                                                                         'id' => $request->request->get('id'),
                                                                                         'object' => $request->request->get('lien')));
+            }
         }
     }
 
