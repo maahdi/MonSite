@@ -350,4 +350,15 @@ class AjaxController extends Controller
         }
         return $retour;
     }
+
+    public function imagesAdminStructureAction()
+    {
+        return $this->forward('EuroLiteriestructureBundle:Main:imagesAdminStructure');
+    }
+
+    public function imagesAdminAction()
+    {
+        $request = $this->get('request');
+        return $this->forward('EuroLiteriestructureBundle:Main:imagesAdmin',array('objet' => $request->query->get('lien')));
+    }
 }

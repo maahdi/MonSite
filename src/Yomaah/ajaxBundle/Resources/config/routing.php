@@ -45,4 +45,11 @@ $collection->add('ajax_addElement', new Route('/ajax/addElement', array(
     '_controller' => 'YomaahajaxBundle:Ajax:addElement'),
     array('_method' => 'GET')));
 
+$collection->add('ajax_imagesAdminStructure', new Route('/ajax/imagesAdminStructure', array(
+    '_controller' => 'YomaahajaxBundle:Ajax:imagesAdminStructure'),
+    array('_method' => 'POST')));
+
+$collection->add('ajax_imagesAdmin', new Route('/ajax/imagesAdmin', array(
+    '_controller' => 'YomaahajaxBundle:Ajax:imagesAdmin'),
+    array('_method' => 'GET')));
 return $collection;

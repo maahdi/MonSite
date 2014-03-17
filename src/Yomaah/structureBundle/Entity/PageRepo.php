@@ -45,8 +45,8 @@ $query = $this->getEntityManager()
         return '<div class="page admin-c border">
                     <input type="hidden" name="id" value="%pageId%" />
                     <section class="contentPage">
-                        <article class="adminPage">
-                            <h3>Page : %position%</h3>
+                        <article class="adminPage art-titre">
+                            <h1>Page : %position%</h1>
                             <label>Position</label><input type="text" name="position" value="%position%" />
                             <label>Mot-clés</label><textarea class="textareaPage" name="keywords">%keywords%</textarea>
                         </article>

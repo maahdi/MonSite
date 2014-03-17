@@ -329,18 +329,52 @@
 {
     display:inline-block;
 }
+.logoGalerie input[type="checkbox"]
+{
+    margin:auto;
+    display:block;
+    position :relative;
+    margin-bottom:2%;
+}
 .contentMarque
 {
     padding-top:0.1em;
     height:auto;
 }
-
+.logoGalerie
+{
+    display : inline-block;
+    float :left;
+    margin-left: 1%;
+    margin-top:1%;
+    position : relative;
+    border : 1px solid black;
+    -webkit-border-radius:3px 3px 3px 3px;
+    -moz-border-radius:3px 3px 3px 3px;
+    border-radius:3px 3px 3px 3px;
+}
+.imageDisplay,
+.newImage
+{
+    width : 100%;
+    height : auto;
+    display: block;
+    position:relative;
+    float:left;
+}
+.logoGalerie img,
 .adminMarqueLogo img
 {
+    /*margin-left:auto;*/
+    /*margin-right: auto;*/
+    padding-top:5%;
+    padding-right:5%;
+    margin:auto;
     max-width :100%;
     max-height:100%;
     padding-left : 1.0em;
-    float :left;
+    /*float :left;*/
+    display:block;
     position :relative;
     height : auto;
 }
