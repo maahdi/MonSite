@@ -22,7 +22,12 @@ $container->setDefinition(
  */
 $container->setDefinition('gestionMenu',
     new Definition ('Yomaah\structureBundle\Classes\GestionMenu',
-        array(new Reference('doctrine.orm.entity_manager'),new Reference('security.context'), new Reference('session')))
+        array(new Reference('doctrine.orm.entity_manager'), new Reference('security.context'), new Reference('session')))
+);
+
+$container->setDefinition('bundleDispatcher',
+    new Definition ('Yomaah\structureBundle\Classes\BundleDispatcher',
+        array(new Reference('security.context'), new Reference('session')))
 );
 
 $menutwig = new Definition('Yomaah\structureBundle\Classes\MenuTwigExtension',array(new Reference('gestionMenu')));

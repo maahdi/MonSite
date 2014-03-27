@@ -61,8 +61,6 @@ class RequeteListener
 	    foreach ($result as $r)
 	    {
 			$test = $r->date;
-
-	        //$date = new \Datetime($r->date);
 	    }
 if ($this->secure->getToken() != null)
 {

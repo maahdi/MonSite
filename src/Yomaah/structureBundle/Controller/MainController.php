@@ -24,6 +24,13 @@ class MainController extends Controller
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:index.html.twig',
             array('articles' => $articles));
     }
+    public function tmpLiterieAction()
+    {
+        $session = $this->get('session');
+        $session->set('idSite', 1);
+        $session->set('siteAdmin', 'literie');
+        return $this->redirect($this->generateUrl('literie_index'), 301);
+    }
 
     public function cvAction()
     {

@@ -53,8 +53,10 @@ $collection->add('admin_code_source_git',new Route('/admin_code_source_git', arr
 ));
 
 $collection->add('test_accueil',new Route('/test/test_accueil', array(
-    '_controller' => 'yomaahBundle:Test:accueil',)
+    '_controller' => 'yomaahBundle:Test:accueil')
 ));
+$collection->add('tmpliterie', new Route('/tmpliterie', array(
+    '_controller' => 'yomaahBundle:Main:tmpLiterie')));
 
 $collection->add('post_log',new Route('/post_log', array(
     '_controller' => 'yomaahBundle:Main:postLogout',)

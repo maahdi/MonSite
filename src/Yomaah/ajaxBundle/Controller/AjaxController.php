@@ -41,7 +41,7 @@ class AjaxController extends Controller
             {
                 return new Response('Erreur : mauvais champ !');
             }
-        }else if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
+        }else if ($this->get('security.context')->isGranted('ROLE_USER'))
         {
             $request = $this->get('request');
             $article = $this->getDoctrine()->getRepository('yomaahBundle:ArticleTest')->find($request->request->get('id'));
@@ -80,7 +80,7 @@ class AjaxController extends Controller
             $em->remove($this->getDoctrine()->getRepository('yomaahBundle:Article')->find($request->request->get('id')));
             $em->flush();
             return new Response();
-        }else if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
+        }else if ($this->get('security.context')->isGranted('ROLE_USER'))
         {
             $request = $this->get('request');
             $em = $this->getDoctrine()->getManager();
@@ -112,7 +112,7 @@ class AjaxController extends Controller
             $article = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findDefaultArticle($request->request->get('position'),$tmp[1], $page);
             return $this->container->get('templating')->renderResponse('YomaahajaxBundle:Ajax:'.$template, array('article' => $article));
             //return new Response('YomaahajaxBundle:Ajax:layoutArticle.html.twig',array('article' => $article));
-        }else if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
+        }else if ($this->get('security.context')->isGranted('ROLE_USER'))
         {
             $token = $this->get('session')->get('testToken');
             $request = $this->get('request');
@@ -127,29 +127,42 @@ class AjaxController extends Controller
 
     public function getDialogAction()
     {
-        if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
+        if ($this->get('security.context')->isGranted('ROLE_USER'))
         {
+            $bundleDispatcher = $this->get('bundleDispatcher');
             $request = $this->get('request');
             if ($request->request->has('element'))
             {
+                $param['element'] = $request->request->has('element');
+            }
+            $param['dialog'] = $request->request->get('dialog');
+            if ($bundleDispatcher->isClientSite())
+            {
+                return $this->forward($bundleDispatcher->getControllerPath().'getDialog', $param);
+            }else
+            {
+                $template = 'YomaahajaxBundle:Ajax:'.$param['dialog'].'.html.twig';
+                return $this->container->get('templating')->renderResponse($template);
+            }
+            
                 /*
                  * A changer par un forward automatique selon
                  */
-                if ($request->request->get('element') == 'GkeywordsAdmin')
-                {
-                    return new Response('<div><p>Vous allez mettre à jour les mots-clés généraux !!</p><p>Souhaitez-vous continuer ?</p></div>');
+                //if ($request->request->get('element') == 'GkeywordsAdmin')
+                //{
+                    //return new Response('<div><p>Vous allez mettre à jour les mots-clés généraux !!</p><p>Souhaitez-vous continuer ?</p></div>');
                     
-                }else
-                {
-                    $element = \EuroLiterie\structureBundle\Controller\MainController::getRepoAdminContentList($request->request->get('element'));
-                    $template = 'YomaahajaxBundle:Ajax:'.$request->request->get('dialog').$element.'.html.twig';
-                    return $this->container->get('templating')->renderResponse($template);
-                }
-            }else
-            {
-                $template = 'YomaahajaxBundle:Ajax:'.$request->request->get('dialog').'.html.twig';
-                return $this->container->get('templating')->renderResponse($template);
-            }
+                //}else
+                //{
+                    //$element = \EuroLiterie\structureBundle\Controller\MainController::getRepoAdminContentList($request->request->get('element'));
+                    //$template = 'YomaahajaxBundle:Ajax:'.$request->request->get('dialog').$element.'.html.twig';
+                    //return $this->container->get('templating')->renderResponse($template);
+                //}
+            //}else
+            //{
+                //$template = 'YomaahajaxBundle:Ajax:'.$request->request->get('dialog').'.html.twig';
+                //return $this->container->get('templating')->renderResponse($template);
+            //}
         }
     }
     public function getAdminMenuAction()
@@ -167,18 +180,6 @@ class AjaxController extends Controller
         if ($this->get('security.context')->isGranted('ROLE_ADMIN'))
         {
             $request = $this->get('request');
-            //if ($request->request->has('url'))
-            //{
-                /*
-                 * Couper a espace client pas encore mis dans l'url
-                 */
-                //$tmp = explode($request->getBaseUrl(), $request->request->get('url'));
-                //$bundle = explode('/', $tmp[1]);
-            //}
-            /*
-             * Forward correct
-             */
-            //$this->forward($bundle[0].'ajaxBundle:Ajax:getAdminContent');
             if ($request->query->get('lien') == 'pagesAdmin')
             {
                 $pages = $this->getDoctrine()->getRepository('yomaahBundle:Page')->findBy(array('site' => 1));
