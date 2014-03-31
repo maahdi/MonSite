@@ -169,7 +169,8 @@ function makeUrl()
         url[0] = url[0] + 'app_dev.php/';
         return url;
     }else
-    {if (loc.toString().match('/literie/'))
+    {
+        if (loc.toString().match('/literie/'))
         {
             var cut = '/literie/';
         }else if (loc.toString().match('/test/'))

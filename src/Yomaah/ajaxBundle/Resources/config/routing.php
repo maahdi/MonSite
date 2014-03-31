@@ -45,11 +45,23 @@ $collection->add('ajax_addElement', new Route('/ajax/addElement', array(
     '_controller' => 'YomaahajaxBundle:Ajax:addElement'),
     array('_method' => 'GET')));
 
-$collection->add('ajax_imagesAdminStructure', new Route('/ajax/imagesAdminStructure', array(
-    '_controller' => 'YomaahajaxBundle:Ajax:imagesAdminStructure'),
+$collection->add('ajax_logoAdminStructure', new Route('/ajax/logoAdminStructure', array(
+    '_controller' => 'YomaahajaxBundle:Ajax:logoAdminStructure'),
     array('_method' => 'POST')));
 
-$collection->add('ajax_imagesAdmin', new Route('/ajax/imagesAdmin', array(
-    '_controller' => 'YomaahajaxBundle:Ajax:imagesAdmin'),
+$collection->add('ajax_saveImage', new Route('/ajax/saveImage', array(
+    '_controller' => 'YomaahajaxBundle:Ajax:saveImage'),
+    array('_method' => 'POST')));
+
+$collection->add('ajax_uploadImage', new Route('/ajax/uploadImage', array(
+    '_controller' => 'YomaahajaxBundle:Ajax:uploadImage'),
+    array('_method' => 'POST')));
+
+$collection->add('ajax_deleteImage', new Route('/ajax/deleteImage', array(
+    '_controller' => 'YomaahajaxBundle:Ajax:deleteImage'),
+    array('_method' => 'POST')));
+
+$collection->add('ajax_imagesSearch', new Route('/ajax/imagesSearch', array(
+    '_controller' => 'YomaahajaxBundle:Ajax:imagesSearch'),
     array('_method' => 'GET')));
 return $collection;

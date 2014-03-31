@@ -13,24 +13,24 @@ use Yomaah\structureBundle\Entity\Page;
  */
 class ArticleRepo extends EntityRepository
 {
-    public function findByPage($pageUrl, $site = null)
+    public function findByPage(Array $param)
     {
-        if ($site == null)
+        if ($param['idSite'] == null)
         {
-            /*
-             * A remplacer par 
-$query = $this->getEntityManager()
-    ->createQuery('select a, p from yomaahBundle:Article a join a.page p where p.pageUrl = :url order by a.artId asc')
-    ->setParameter('url',$pageUrl);
-             */
             $query = $this->getEntityManager()
                 ->createQuery('select a, p from yomaahBundle:Article a join a.page p where p.pageUrl = :url and p.site is null order by a.artId asc')
-                ->setParameter('url',$pageUrl);
+                ->setParameter('url',$param['pageUrl']);
+        }else if ($param['idSite'] == false)
+        {
+            $query = $this->getEntityManager()
+                ->createQuery('select a, p from yomaahBundle:Article a join a.page p join p.site s where p.pageUrl = :url order by a.artId asc')
+                ->setParameter('url', $pageUrl);
         }else
         {
             $query = $this->getEntityManager()
-                ->createQuery('select a, p from yomaahBundle:Article a join a.page p join p.site s where p.pageUrl = :url and s.idSite = :site order by a.artId asc')
-                ->setParameters(array('url' => $pageUrl,'site' => $site));
+                ->createQuery('select a, p from yomaahBundle:Article a join a.page p where p.pageUrl = :url and p.site = :site order by a.artId asc')
+                ->setParameters(array('url' => $param['pageUrl'], 'site' => $param['idSite']));
+            
         }
         return $query->getResult();
     }

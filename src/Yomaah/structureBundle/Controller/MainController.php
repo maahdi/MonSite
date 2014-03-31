@@ -6,12 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Yomaah\structureBundle\Entity\Article;
 use Yomaah\structureBundle\Entity\Page;
 use Yomaah\structureBundle\Entity\Png;
+use Yomaah\structureBundle\Classes\BundleDispatcher;
 
 class MainController extends Controller
 {
     public function indexAction()
     {
         $this->retourMonSiteEnAdminDepuisSiteClient();
+        $this->delTmpSession();
         /**
          * Enregistrement d'un utilisateur avec nouveau password
          *
@@ -20,55 +22,75 @@ class MainController extends Controller
         //$user = new \Yomaah\connexionBundle\Entity\User();
         //$encoder = $factory->getEncoder($user);
         //$password = $encoder->encodePassword('martini',null);
-        $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('MonAccueil');
-        return $this->container->get('templating')->renderResponse('yomaahBundle:Main:index.html.twig',
-            array('articles' => $articles));
+        //$articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('MonAccueil');
+        $params = $this->getParams('MonAccueil');
+        return $this->container->get('templating')->renderResponse('yomaahBundle:Main:index.html.twig', $params);
+    }
+    public function getParams($page)
+    {
+        $dispatcher = $this->get('bundleDispatcher');
+        $params['articles'] = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage(array('pageUrl' => $page, 
+                                                                                                'idSite' => $dispatcher->getIdSite()));
+        return $params;
     }
     public function tmpLiterieAction()
     {
         $session = $this->get('session');
         $session->set('idSite', 1);
         $session->set('siteAdmin', 'literie');
-        return $this->redirect($this->generateUrl('literie_index'), 301);
+        return $this->forward('EuroLiteriestructureBundle:Main:index');
+    }
+    public function delTmpSession()
+    {
+        if ($this->get('session')->has('siteAdmin'))
+        {
+            $this->get('session')->remove('siteAdmin');
+        }
     }
 
     public function cvAction()
     {
+        $this->delTmpSession();
         $this->retourMonSiteEnAdminDepuisSiteClient();
-        $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('cv');
-        return $this->container->get('templating')->renderResponse('yomaahBundle:Main:cv.html.twig',array('articles' => $articles));
+        //$articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('cv');
+        $params = $this->getParams('cv');
+        return $this->container->get('templating')->renderResponse('yomaahBundle:Main:cv.html.twig', $params);
     }
 
     public function projetAction()
     {
+        $this->delTmpSession();
         $this->retourMonSiteEnAdminDepuisSiteClient();
-        $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('projets');
-        return $this->container->get('templating')->renderResponse('yomaahBundle:Main:projet.html.twig',
-            array('articles' => $articles));
+        //$articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('projets');
+        $params = $this->getParams('projets');
+        return $this->container->get('templating')->renderResponse('yomaahBundle:Main:projet.html.twig', $params);
     }
 
     public function codeSourceGitAction()
     {
+        $this->delTmpSession();
         $this->retourMonSiteEnAdminDepuisSiteClient();
-        $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('code_source');
-        return $this->container->get('templating')->renderResponse('yomaahBundle:Main:codeSource.html.twig',
-            array('git' => true,'articles' => $articles));
+        //$articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('code_source');
+        $params = $this->getParams('code_source');
+        $params['git'] = true;
+        return $this->container->get('templating')->renderResponse('yomaahBundle:Main:codeSource.html.twig', $params);
     }
 
     public function codeSourceAction($path)
     {
+        $this->delTmpSession();
         $this->retourMonSiteEnAdminDepuisSiteClient();
-        $articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('code_source');
+        //$articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('code_source');
+        $params = $this->getParams('code_source');
         $codeSourceController =$this->get('codeSource');
         $codeSourceController->init($path);
+        $params = array_merge($codeSourceController->getVariable(), $params);
 
         //tableau contenant le template approprié à l'indice 'template'
         //et soit les noms des fichiers et dossiers du répertoire
         //soit le contenu du fichier demandé
         //Mergé le tableau avec n'importe quel tableau qui doit être passer à la vue
-        $variable = $codeSourceController->getVariable();
-        return $this->container->get('templating')->renderResponse('yomaahBundle:Main:codeSource.html.twig', 
-            array_merge($variable,array('articles'=> $articles)));
+        return $this->container->get('templating')->renderResponse('yomaahBundle:Main:codeSource.html.twig', $params);
     }
 
     public function retourMonSiteEnAdminDepuisSiteClient()
@@ -96,6 +118,7 @@ class MainController extends Controller
             //$this->get('yomaah_requete_listener')->incrementCompteur();
         }
         $this->retourMonSiteEnAdminDepuisSiteClient();
+        $this->delTmpSession();
         $this->get('session')->remove('testToken');
         return $this->redirect($this->generateUrl('logout'),301);
     }

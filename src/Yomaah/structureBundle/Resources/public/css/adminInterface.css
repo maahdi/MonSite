@@ -13,7 +13,7 @@
     font-size : 1em;
     line-height:2em;
     width:100%;
-    float:left;
+    /*float:left;*/
     text-align : center;
     list-style : none;
     font-family : "Volkhov";
@@ -24,7 +24,41 @@
     -ms-transition: color .6s ease-in-out;
     transition: color .6s ease-in-out;
 }
+.btn-adminPanel
+{
+    width : 100%;
+    height : auto;
+}
+.prom .btn-adminPanel
+{
+    bottom : -1.6em;
+}
 
+.marq .btn-adminPanel
+{
+    bottom: -6.6em;
+}
+.btn-admin
+{
+    display: inline-block;
+    /*bottom:-6.6em;*/
+    float:right;
+    margin-right:1.5em;
+    position : relative;
+    background-color : #f1ecec;
+    /*line-height :0.7em; */
+    width : 20%;
+    border : 1px solid #aaa;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;   
+    border-radius:3px 3px 3px 3px;
+    -moz-box-shadow: 3px 3px 0px #aaa; 
+    -webkit-box-shadow: 3px 3px 0px #aaa; 
+    box-shadow: 3px 3px 0px #555;
+    -webkit-transition:.6s;
+    -moz-transition:.6s;
+    transition:.6s;
+}
 .btn-logo li
 {
     font-size : 1em;
@@ -60,27 +94,6 @@
     transition:.6s;
 }
 
-.btn-admin
-{
-    display:inline-block;
-    bottom:-6.6em;
-    float:right;
-    margin-right:1.5em;
-    position : relative;
-    background-color : #f1ecec;
-    line-height :0.7em; 
-    width : 20%;
-    border : 1px solid #aaa;
-    -webkit-border-radius: 3px 3px 3px 3px;
-    -moz-border-radius: 3px 3px 3px 3px;   
-    border-radius:3px 3px 3px 3px;
-    -moz-box-shadow: 3px 3px 0px #aaa; 
-    -webkit-box-shadow: 3px 3px 0px #aaa; 
-    box-shadow: 3px 3px 0px #555;
-    -webkit-transition:.6s;
-    -moz-transition:.6s;
-    transition:.6s;
-}
 
 .btn-menuI li
 {
@@ -237,24 +250,73 @@
     /*overflow:scroll;*/
 }
 
-.textareaPromo
-{
-    width : 80%;
-    height:70%;
-    font-size:0.7em;
-}
 
 .textareaMarque
 {
     width : 80%;
     height:90%;
+}
+.admin-c textarea
+{
     font-size:0.7em;
 }
-.admin-content section article input
+.admin-c input
+{
+    height:2.1em;
+    font-size : 0.7em;
+}
+.page
+{
+    height : 19em;
+}
+.page .btn-adminPanel
+{
+    bottom : -2em;
+}
+.adminPage input
 {
     width : 40%;
-    height:2.0em;
+}
+.adminPage textarea
+{
+    width : 90%;
+    height : 6em;
+}
+.Gkeywords
+{
+    height : 12em;
+}
+.Gkeywords .btn-adminPanel
+{
+    bottom :-0.5em;
+}
+.adminGkeywords textarea
+{
+    height : 9em;
+    width : 90%;
     font-size : 0.7em;
+
+}
+.prom input
+{
+    width : 90%;
+}
+.prom
+{
+    height : 15em;
+}
+.prom textarea
+{
+    height : 11em;
+    width : 90%;
+}
+.marq input
+{
+    width : 40%;
+}
+.marq
+{
+    height : 20em;
 }
 .admin-content label,
 .admin-content input,
@@ -288,6 +350,11 @@
 {
     height:10em;
 }
+.adminPromoInfo
+{
+    width : 70%;
+    float :right;
+}
 .adminLogoMarque
 {
     position:relative;
@@ -298,37 +365,35 @@
 .adminMarque
 {
     position:relative;
-    width:70%;
     float:left;
+}
+.adminMarque
+{
+    width : 70%;
+}
+.adminPromo
+{
+    width : 30%;
 }
 .admin-c section
 {
+    position : relative;
     width:100%;
+    display : inline-block;
 }
 .admin-c
 {
-    /*position:relative;*/
-    height:20em;
+    position:relative;
+    /*height : auto;*/
     background-color :#d0cbcb;
     border:1px solid black;
     margin-bottom:1em;
-    /*width:100%;*/
+    width:100%;
     -webkit-border-radius:3px 3px 3px 3px;
     -moz-border-radius:3px 3px 3px 3px;
     border-radius:3px 3px 3px 3px;
 }
-.btn-bar
-{
-    padding-top:5em;
-    height : auto;
-    background-color : white;
-}
-.contentPromo,
-.contentMarque,
-.btn-bar
-{
-    display:inline-block;
-}
+
 .logoGalerie input[type="checkbox"]
 {
     margin:auto;
@@ -336,6 +401,7 @@
     position :relative;
     margin-bottom:2%;
 }
+
 .contentMarque
 {
     padding-top:0.1em;
@@ -362,6 +428,7 @@
     position:relative;
     float:left;
 }
+.sliderImage img,
 .logoGalerie img,
 .adminMarqueLogo img
 {
@@ -378,9 +445,122 @@
     position :relative;
     height : auto;
 }
+
 .adminMarqueLogo
 {
     width:9em;
     margin-bottom : 0.5em;
     height:4em;
+}
+
+.sliderAdmin
+{
+    height : auto;
+}
+
+.sliderInactiveAdmin,
+.sliderActiveAdmin
+{
+    display : block!important;
+    width : 90%!important;
+    position : relative;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    border: 1px solid black;
+    height : 40%;
+    padding : 1em;
+    -webkit-border-radius:3px 3px 3px 3px;
+    -moz-border-radius:3px 3px 3px 3px;
+    border-radius:3px 3px 3px 3px;
+    background-color : #f0eae3;
+}
+
+.sliderImage input[type="checkbox"]
+{
+    display : block;
+    margin : auto;
+}
+
+.sliderImage
+{
+    width : 40%;
+    height : 40%;
+    display : inline-block;
+    border :1px solid black;
+    margin-left: 2em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    -webkit-border-radius:3px 3px 3px 3px;
+    -moz-border-radius:3px 3px 3px 3px;
+    border-radius:3px 3px 3px 3px;
+    background-color : #939293;
+}
+
+
+.sliderImage figure
+{
+    width : 90%;
+    height : auto;
+    margin :auto;
+}
+.sliderInactiveAdmin
+{
+    margin-bottom : 1em;
+}
+.sliderAdmin .btn-adminPanel
+{
+    margin-bottom : 1em;
+}
+.sliderActiveAdmin
+{
+    margin-top : 2em;
+}
+
+.sliderUpDownAdmin
+{
+    width : 100%;
+    line-height : 5em;
+    position : relative;
+    margin : auto;
+}
+.sliderUpDownAdmin div
+{
+    width:40%;
+    height:5em;
+    display : block;
+    position : relative;
+    margin:auto;
+}
+
+.btn-slider
+{
+    width : 20%;
+    display : inline-block;
+    vertical-align: middle;
+    position : relative;
+    line-height : 4em;
+    border :1px solid black;
+    -webkit-border-radius:3px 3px 3px 3px;
+    -moz-border-radius:3px 3px 3px 3px;
+    border-radius:3px 3px 3px 3px;
+    background-color : #f1ecec;
+    -webkit-transition: color .6s ease-in-out;
+    -moz-transition: color .6s ease-in-out;
+    -o-transition: color .6s ease-in-out;
+    -ms-transition: color .6s ease-in-out;
+    transition: color .6s ease-in-out;
+}
+
+.upload img,
+.del img,
+.up img,
+.down img
+{
+    position : relative;
+    padding-left:10%;
+    height : 3em;
+    /*padding-top: 1em;*/
+    max-width : 90%;
+    margin : auto;
+    vertical-align: middle;
 }

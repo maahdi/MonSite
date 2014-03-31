@@ -22,7 +22,7 @@ $container->setDefinition(
  */
 $container->setDefinition('gestionMenu',
     new Definition ('Yomaah\structureBundle\Classes\GestionMenu',
-        array(new Reference('doctrine.orm.entity_manager'), new Reference('security.context'), new Reference('session')))
+        array(new Reference('doctrine.orm.entity_manager'), new Reference('bundleDispatcher'), new Reference('database_connection')))
 );
 
 $container->setDefinition('bundleDispatcher',

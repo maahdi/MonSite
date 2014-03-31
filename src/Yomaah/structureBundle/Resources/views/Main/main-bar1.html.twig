@@ -1,26 +1,30 @@
 ﻿    <div id="main-bar">
         <div class="row">
             <ul class="menu" id="menu-left">
-            {%for menu in menuleft%}
-                <li><a href="{{path(menu.path)}}">{{menu.name}}</a>
-                    {%if menu.sousMenu is defined%}
-                        <ul>
-                        {%for ss in menu.sousMenu%}
-                        <li><a href="{{ path(ss.path,{'path': 'Yomaah'})}}">{{ ss.name}}</a></li>
-                        {%endfor%}
-                        </ul></li>
-                    {%else%}
-                        </li>
-                    {%endif%}
+            {%for index, menu in menus if index == 'left'%}
+                {% for left in menu%}
+                    <li><a href="{{path(left.path)}}">{{left.name}}</a>
+                        {%if left.sousMenu is defined%}
+                            <ul>
+                            {%for ss in left.sousMenu%}
+                            <li><a href="{{ path(ss.path,{'path': 'Yomaah'})}}">{{ ss.name}}</a></li>
+                            {%endfor%}
+                            </ul></li>
+                        {%else%}
+                            </li>
+                        {%endif%}
+                {%endfor%}
             {%endfor%}
             </ul>
             <ul class="menu" id="menu-right">
-            {%for menu in menuright  %}
-                {%if (connect is defined and connect) or menu == false%}
-                    <li><a href="{{path('post_log')}}">Se Déconnecter</a></li>
-                {%else%}
-                    <li><a href="{{path(menu.path)}}">{{menu.name}}</a></li>
-                {%endif%}
+            {%for index,menu in menus if index == 'right' %}
+                {%for right in menu%}
+                    {%if (connect is defined and connect)%}
+                        <li><a href="{{path('post_log')}}">Se Déconnecter</a></li>
+                    {%else%}
+                        <li><a href="{{path(right.path)}}">{{right.name}}</a></li>
+                    {%endif%}
+                {%endfor%}
             {%endfor%}
         </div>
     </div>

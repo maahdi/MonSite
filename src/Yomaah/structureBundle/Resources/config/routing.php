@@ -5,7 +5,7 @@ use Symfony\Component\Routing\Route;
 
 $collection = new RouteCollection();
 
-$collection->add('yomaah_homepage', new Route('/', array(
+$collection->add('homepage', new Route('/', array(
     '_controller' => 'yomaahBundle:Main:index',
 )));
 
@@ -30,7 +30,7 @@ $collection->add('code_source_git',new Route('/code_source_git', array(
     '_controller' => 'yomaahBundle:Main:codeSourceGit',)
 ));
 
-$collection->add('admin_yomaah_homepage', new Route('/admin_homepage', array(
+$collection->add('admin_homepage', new Route('/admin_homepage', array(
     '_controller' => 'yomaahBundle:Main:index',
 )));
 

@@ -19,63 +19,134 @@ class BundleDispatcher
      */
     private $sitePath;
     private $site;
+    private $deployed;
+    private $admin;
+    private $secure;
+    private $idSite;
 
-    public function __construct(SecurityContext $secure, Session $session)
+    public function __construct(SecurityContextInterface $secure, Session $session)
     {
         /**
          * Mettre a true en prod
          */
-        $deployed = false;
-        $user = $secure->getToken()->getUser();
+        $this->secure = $secure;
+        $this->deployed = false;
+        $this->admin = false;
         if ($secure->getToken() != null)
         {
-            if ($deployed)
+            $user = $secure->getToken()->getUser();
+            if ($this->deployed)
             {
-                $this->site = '';
+                if ($this->secure->isGranted('ROLE_ADMIN'))
+                {
+                    $this->site = '';
+                    $this->admin = true;
+                }else
+                {
+                    $this->site = '';
+                }
             }else
             {
                 if ($secure->isGranted('ROLE_SUPER_ADMIN'))
                 {
-                    if ($session->has('siteAdmin'))
+                    //siteAdmin créer artificiellement pour l'instant
+                    // normalement défini en choississant le projet du client 
+                    /**
+                     * Si admin sur le site client
+                     * mais deja connecté sur le compte super_admin
+                     */
+                    if ($session->has('siteAdmin') && $session->has('zoneAdmin'))
                     {
+                        $this->admin = true;
                         $this->site = $session->get('siteAdmin');
+                        $this->idSite = $session->get('idSite');
+                        /**
+                         * Si non-admin sur le site du client
+                         * Mais accès en étant connecté en super_admin
+                         */
+                    }else if ($session->has('siteAdmin'))
+                    {
+                        $this->idSite = $session->get('idSite');
+                        $this->site = $session->get('siteAdmin');
+                        /**
+                         * Si connecter juste sur le site principal
+                         * 
+                         */
                     }else
                     {
+                        $this->admin = true;
                         $this->site = 'yomaah';
+                        $this->idSite = null;
                     }
-                }else if ($secure->isGranted('ROLE_ADMIN'))
+                }else if ($secure->isGranted('ROLE_ADMIN') && $session->has('site'))
                 {
-                    $this->site = $session->get('site');
+                    if ($session->has('zoneAdmin'))
+                    {
+                        $this->idSite = $session->get('idSite');
+                        $this->site = $session->get('site');
+                        $this->admin = true;
+                    }else
+                    {
+                        $this->idSite = $session->get('idSite');
+                        $this->site = $session->get('site');
+                    }
                 }else if ($secure->isGranted('ROLE_USER'))
                 {
                     $this->site = 'test';
+                    $this->idSite = $session->get('testToken');
+                    $this->admin = true;
+                }else
+                {
+                    $this->site = 'yomaah';
                 }
             }
         }else
         {
-            // quelque chose à mettre pour exception
+            if ($this->deployed)
+            {
+                $this->site = '';
+            }else
+            {
+                $this->site = 'yomaah';
+            }
         }
-        //if ($session->has('site'))
-        //{
-            //$this->site = $session->get('site');
-        //}else if ($session->has('testToken'))
-        //{
-            //$this->site = 'test';
-        //}else
-        //{
-            /**
-             * Changer variable par valeur du site déployé
-             * supprimer ce qu'il y a avant
-             */
-            //$this->site = 'yomaah';
-        //}
+        //var_dump($this->site);
+        //var_dump($this->admin);
+        //var_dump($this->isTestSite());
+        //var_dump($this->isClientSite());
+        //var_dump($this->testException());
         /**
          * Garder controller du site déployé
          */
         $this->controllers = $this->constructControllers();
         $this->sitePath = $this->constructSitePath();
     }
+    public function getSite()
+    {
+        return $this->site;
+    }
 
+    public function getIdSite()
+    {
+        if ($this->deployed)
+        {
+            return false;
+        }else
+        {
+            return $this->idSite;
+        }
+    }
+
+    public function testException()
+    {
+        if ($this->secure->getToken() == null)
+        {
+            return true;
+        }else
+        {
+            return false;
+        }
+    }
 
     /**
      * Controller a appeler en fonction du site
@@ -85,7 +156,7 @@ class BundleDispatcher
      */
     private function constructControllers()
     {
-        $controllers['literie'] = 'structureBundle:Main';
+        $controllers['literie'] = 'structureBundle';
         return $controllers;
     }
 
@@ -95,10 +166,19 @@ class BundleDispatcher
         return $sitePath;
     }
 
+    public function getDeployed()
+    {
+        return $this->deployed;
+    }
+
+    public function isAdmin()
+    {
+        return $this->admin;
+    }
     private function test()
     {
-        if (array_key_exists($this->site, $this->sitePath) && array_key_exists($this->site, $this->sitePath
-            && $this->isClientSite()))
+        if (array_key_exists($this->site, $this->sitePath) && array_key_exists($this->site, $this->sitePath)
+            && $this->isClientSite())
         {
             return true;
         }else
@@ -107,7 +187,7 @@ class BundleDispatcher
         }
     }
 
-    private function getSitePath()
+    public function getSitePath()
     {
         return $this->sitePath[$this->site];
     }
@@ -127,15 +207,18 @@ class BundleDispatcher
 
     public function isClientSite()
     {
-        if ($this->site == 'yomaah' || $this->site == 'test')
+        if ($this->site == 'yomaah')
         {
             return false;
-        }else
+        }else if ($this->site != 'test')
         {
             return true;
+        }else
+        {
+            return null;
         }
     }
-    private function getControllers()
+    public function getControllers()
     {
         return $this->controllers[$this->site];
     }
@@ -144,7 +227,7 @@ class BundleDispatcher
     {
         if ($this->test())
         {
-            return $this->getBundle().$this->getControllers().':';
+            return $this->getSitePath().$this->getControllers().':';
         }else
         {
             return false;

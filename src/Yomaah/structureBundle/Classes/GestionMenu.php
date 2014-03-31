@@ -1,9 +1,7 @@
 <?php
-
 namespace Yomaah\structureBundle\Classes;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Yomaah\connexionBundle\Entity\User;
+
+use Yomaah\structureBundle\Classes\BundleDispatcher;
 /**
  * Classe pour remplir les menus
  * Utilisé par MenuTwigExtension
@@ -11,72 +9,151 @@ use Yomaah\connexionBundle\Entity\User;
  **/
 class GestionMenu
 {
-    private $entityManager;
-    private $secure;
-    private $session;
+    private $em;
+    private $dispatcher;
+    private $db;
 
-    public function __construct(\Doctrine\ORM\EntityManager $em,SecurityContextInterface $secure, Session $session)
+    public function __construct(\Doctrine\ORM\EntityManager $em, BundleDispatcher $dispatcher, \Doctrine\DBAL\Connection $db)
     {
-        $this->entityManager = $em;
-        $this->secure = $secure;
-        $this->session = $session;
+        $this->dispatcher = $dispatcher;
+        $this->em = $em;
+        $this->db = $db;
+    }
+
+    public function getClientMenu($name)
+    {
+        $menus = $this->getMenu('left', 'Menu', 'client');
+        if ($name == 'clientAdmin')
+        {
+            $this->setAdminMenu($menus);
+            return $this->getParam($name, $menus);
+        }else
+        {
+            return $this->getParam($name, $menus);
+        }
     }
 
     public function getAllMenu()
     {
-if ($this->secure->getToken() != null)
-{
-        $user = $this->secure->getToken()->getUser();
-        if ($user == "anon.")
+        if (!($this->dispatcher->testException()))
+        {
+            if ($this->dispatcher->isClientSite() === true)
+            {
+                if ($this->dispatcher->isAdmin())
+                {
+                    $menu = $this->getClientMenu('clientAdmin');
+                }else
+                {
+                    $menu = $this->getClientMenu('normalClient');
+                }
+                $menuP = $this->getMenuPrincipal('normal', array('connect' => true));
+                return array_merge($menuP, $menu);
+                /**
+                 * Si on est sur le site principal
+                 */
+            }else if($this->dispatcher->isClientSite() === false)
+            {
+                if ($this->dispatcher->isAdmin())
+                {
+                    return $this->getMenuPrincipal('admin');
+                }else
+                {
+                    return $this->getMenuPrincipal('normal');
+                }
+            }else if ($this->dispatcher->isClientSite() == null)
+            {
+                    return $this->getClientMenu('normal');
+            }
+
+        }else
+        {
+            /**
+             * Voir pour la gestion des erreurs
+             */
+            //if ($this->dispatcher->isClientSite())
+            //{
+                //return $this->getClientMenu('erreur');
+            //}else if (!($this->dispatcher->isClientSite()))
+            //{
+                //return $this->getMenuPrincipal('erreur');
+            //}
+        }
+
+    }
+
+    public function getTestMenu()
+    {
+        return $this->getMenuPrincipal('test');
+    }
+
+
+    public function getMenuPrincipal($name, Array $append = null)
+    {
+        if ($name == 'admin')
         {
             $mLeft = $this->getMenu('left','Menu');
             $mRight = $this->getMenu('right','Menu');
-            $admin = false;
-            $connect = false;
+            $this->setAdminMenu($mLeft);
+            $menus['left'] = $mLeft;
+            $menus['right'] = $mRight;
+            return $this->getParam('admin', $menus, $append);
             
+        }else if ($name == 'test')
+        {
+            $mLeft = $this->getMenu('left','MenuTest', 'visiteur', $this->dispatcher->getIdSite());
+            $mRight = $this->getMenu('right','Menu');
+            $this->setTestMenu($mLeft);
+            $menus['left'] = $mLeft;
+            $menus['right'] = $mRight;
+            return $this->getParam('admin', $menus, $append);
         }else
         {
-            $role = $user->getRoles();
-            if ($role[0] == 'visiteur')
-            {
-                $mLeft = $this->getMenu('left','MenuTest', $role[0]);
-                $mRight = array(false);
-                $admin = false;
-                if ($this->isGranted('ROLE_USER'))
-                {
-                    $this->setTestMenu($mLeft);
-                    $admin = $this->isGranted('ROLE_USER');
-                }   
-            }else
-            {
-                $mLeft = $this->getMenu('left','Menu');
-                $mRight = $this->getMenu('right','Menu');
-                $admin = false;
-                if ($this->isGranted('ROLE_SUPER_ADMIN'))
-                {
-                    $this->setAdminMenu($mLeft);
-                    $admin = $this->isGranted('ROLE_SUPER_ADMIN');
-                    $this->setAdminMenu($mRight);
-                }   
-            }
+            $mLeft = $this->getMenu('left','Menu');
+            $mRight = $this->getMenu('right','Menu');
+            $menus['left'] = $mLeft;
+            $menus['right'] = $mRight;
+            return $this->getParam('normal', $menus, $append);
         }
-//}else
-//{
-//$mLeft = $this->getMenu('left','Menu');
-  //              $mRight = $this->getMenu('right','Menu');
-    //            $admin = false;
-//}
 
-        $connect = $this->isGranted('ROLE_USER');
-        return array('menuleft' => $mLeft,'menuright' => $mRight,'admin' => $admin,'connect' => $connect);
-}
+    }
+
+    private function getParam($mode, $menus, Array $append = null)
+    {
+        if ($mode == 'admin')
+        {
+            $visite = $this->getVisite();
+            $retour = array('menus' => $menus,'connect' => true,'visite' => $visite);
+        }else if ($mode == 'clientAdmin')
+        {
+            $visite = $this->getVisite();
+            $retour = array('menusClient' => $menus,'connectClient' => true, 'visite' => $visite);
+        }else if ($mode == 'normalClient')
+        {
+            $retour = array('menusClient' => $menus,'connectClient' => false);
+        }else if ($mode == 'normal')
+        {
+            $retour = array('menus' => $menus,'connect' => false);
+        }else if ($mode == 'erreur')
+        {
+            $retour = array('menus' => $menus,'connect' => false, 'position' => 'Erreur');
+        }
+        if ($append != null)
+        {
+            return array_merge($retour, $append);
+        }else
+        {
+            return $retour;
+        }
     }
 
     private function setAdminMenu($menu)
     {
         foreach ($menu as $m)
         {
-            $m->setPath('admin_'.$m->getPath());
+            if (preg_match('/admin_/', $m->getPath()) == 0)
+            {
+                $m->setPath('admin_'.$m->getPath());
+            }
         }
     }
 
@@ -85,21 +162,21 @@ if ($this->secure->getToken() != null)
         foreach ($menu as $m)
         {
             $m->setPath('test_'.$m->getPath());
+            $i++;
         }
-        
     }
+
     private function getVisite()
     {
-        $db = $this->container->get('database_connection');
         $sql = 'select count(idVisite) as nb from visites as v left join utilisateur as u on v.idUser = u.idUser where u.idGroup !=1 and v.idUser = 0';
-        $result = $db->query($sql);
+        $result = $this->db->query($sql);
         $result->setFetchMode(\PDO::FETCH_OBJ);
         foreach ($result as $r)
         {
             $visite['total'] = $r->nb;
         }
         $sql = 'select count(idVisite) as nb from visites as v left join utilisateur as u on v.idUser = u.idUser where extract( month from current_date) = extract( month from dateConnexion) and (u.idGroup != 1 and v.idUser = 0)';
-        $result = $db->query($sql);
+        $result = $this->db->query($sql);
         $result->setFetchMode(\PDO::FETCH_OBJ);
         foreach ($result as $r)
         {
@@ -109,17 +186,7 @@ if ($this->secure->getToken() != null)
 
     }
 
-    public function isGranted($role)
-    {
-        if ($this->secure->isGranted($role))
-        {
-            return true;
-        }else
-        {
-            return false;
-        }
-    }
-    private function getMenu($position, $menu, $role = null)
+    private function getMenu($position, $menu, $role = null, $token = null)
     {
         if ($position == 'left')
         {
@@ -130,10 +197,15 @@ if ($this->secure->getToken() != null)
         }
         if ($role == null)
         {
-            return $this->entityManager->getRepository('yomaahBundle:'.$menu)->$fn();
+            return $this->em->getRepository('yomaahBundle:'.$menu)->$fn();
         }else if ($role == 'visiteur')
         {
-            return $this->entityManager->getRepository('yomaahBundle:'.$menu)->$fn($this->session->get('testToken'));
+            return $this->em->getRepository('yomaahBundle:'.$menu)->$fn($token);
+        }else if ( $role == 'client')
+        {
+            $id = $this->dispatcher->getIdSite();
+            return $this->em->getRepository('yomaahBundle:'.$menu)->$fn($id);
+            
         }    
     }
 
