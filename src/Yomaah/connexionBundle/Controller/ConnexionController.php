@@ -9,6 +9,15 @@ class ConnexionController extends Controller
 {
     public function loginAction()
     {
+        $dispatcher = $this->get('bundleDispatcher');
+        if ($dispatcher->isClientSite())
+        {
+            $template = $dispatcher->getControllerPath().'Connexion:login.html.twig';
+            $param['position'] = 'Login';
+        }else
+        {
+            $template = 'YomaahconnexionBundle:Default:login.html.twig';
+        }
         $request = $this->getRequest();
         $session = $request->getSession();
         // get the login error if there is one
@@ -25,9 +34,12 @@ class ConnexionController extends Controller
         {
             $username = $session->get(SecurityContext::LAST_USERNAME);
         }
-        return $this->render('YomaahconnexionBundle:Default:login.html.twig', array(
-        // last username entered by the user
-        'last_username' => $username,
-        'error'   => $error));
+        $param['last_username'] = $username;
+        $param['error'] = $error;
+        //return $this->render($template, array(
+        //// last username entered by the user
+        //'last_username' => $username,
+        //'error'   => $error));
+        return $this->render($template, $param);
     }
 }

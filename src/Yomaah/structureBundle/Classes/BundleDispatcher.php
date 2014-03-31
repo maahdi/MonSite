@@ -30,20 +30,17 @@ class BundleDispatcher
          * Mettre a true en prod
          */
         $this->secure = $secure;
-        $this->deployed = false;
+        $this->deployed = true;
         $this->admin = false;
         if ($secure->getToken() != null)
         {
             $user = $secure->getToken()->getUser();
             if ($this->deployed)
             {
+                $this->site = 'literie';
                 if ($this->secure->isGranted('ROLE_ADMIN'))
                 {
-                    $this->site = '';
                     $this->admin = true;
-                }else
-                {
-                    $this->site = '';
                 }
             }else
             {
@@ -104,7 +101,7 @@ class BundleDispatcher
         {
             if ($this->deployed)
             {
-                $this->site = '';
+                $this->site = 'literie';
             }else
             {
                 $this->site = 'yomaah';
@@ -115,6 +112,7 @@ class BundleDispatcher
         //var_dump($this->isTestSite());
         //var_dump($this->isClientSite());
         //var_dump($this->testException());
+        //var_dump($this->getIdSite());
         /**
          * Garder controller du site déployé
          */
@@ -215,7 +213,7 @@ class BundleDispatcher
             return true;
         }else
         {
-            return null;
+            return $this->site;
         }
     }
     public function getControllers()

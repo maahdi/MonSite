@@ -34,7 +34,7 @@ $menutwig = new Definition('Yomaah\structureBundle\Classes\MenuTwigExtension',ar
 $menutwig->addTag('twig.extension');
 $container->setDefinition('menuTwigExtension',$menutwig);
 
-$listenerLog = new Definition('Yomaah\structureBundle\Classes\SecurityListener', array(new Reference('security.context'),new Reference('router'),new Reference('event_dispatcher'),new Reference('database_connection'), new Reference('session')));
+$listenerLog = new Definition('Yomaah\structureBundle\Classes\SecurityListener', array(new Reference('security.context'),new Reference('router'),new Reference('event_dispatcher'),new Reference('database_connection'), new Reference('session'), new Reference('bundleDispatcher')));
 $listenerLog->addTag('kernel.event_subscriber');
 $container->setDefinition('yomaah_security_listener',$listenerLog);
 //,array('event' => 'security.interactive_login','method'=> 'onSecurityInteractiveLogin')

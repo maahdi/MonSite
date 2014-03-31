@@ -11,6 +11,7 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Util\SecureRandom;
+use Yomaah\structureBundle\Classes\BundleDispatcher;
 
 /**
  * Le listener est utilisé quand un utilisateur se log
@@ -26,14 +27,16 @@ class SecurityListener implements EventSubscriberInterface
     private $router;
     private $dispatcher;
     private $session;
+    private $bundleDispatcher;
 
-    public function __construct(SecurityContextInterface $secure, Router $router, EventDispatcher $dispatch, \Doctrine\DBAL\Connection $db, Session $session)
+    public function __construct(SecurityContextInterface $secure, Router $router, EventDispatcher $dispatch, \Doctrine\DBAL\Connection $db, Session $session, BundleDispatcher $dispatcher)
     {
         $this->db = $db;
         $this->secure = $secure;
         $this->dispatcher = $dispatch;
         $this->router = $router;
         $this->session = $session;
+        $this->bundleDispatcher = $dispatcher;
     }
 
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
@@ -45,8 +48,9 @@ class SecurityListener implements EventSubscriberInterface
     {
         if ($this->secure->getToken()->isAuthenticated()){
             $role = $this->secure->getToken()->getUser()->getRoles();
-            if ($role != "anon."){
-                if ($role[0] == "visiteur")
+            if (!($this->bundleDispatcher->testException()))
+            {
+                if ($this->bundleDispatcher->isTestSite())
                 {
                     /**
                      * Cette portion de code définit un token générique si la base est vide
@@ -79,14 +83,17 @@ class SecurityListener implements EventSubscriberInterface
                      * Pour l'instant en se connectant un utilisateur lié a un site creer une session
                      * Pour le futur plusieurs sites pourront être lié à un utilisateur
                      */
-                    $sql = 'select nomSite from site where idUser = ? ';
-                    $result = $this->db->executeQuery($sql, array($this->secure->getToken()->getUser()->getIdUser()));
-                    $result->setFetchMode(\PDO::FETCH_OBJ);
-                    foreach ($result as $r)
+                    if ($this->bundleDispatcher->isClientSite() && $this->bundleDispatcher->getDeployed() == false)
                     {
-                        if ($r != null)
+                        $sql = 'select nomSite from site where idUser = ? ';
+                        $result = $this->db->executeQuery($sql, array($this->secure->getToken()->getUser()->getIdUser()));
+                        $result->setFetchMode(\PDO::FETCH_OBJ);
+                        foreach ($result as $r)
                         {
-                            $this->session->set('site', $r->nomSite);
+                            if ($r != null)
+                            {
+                                $this->session->set('site', $r->nomSite);
+                            }
                         }
                     }
                 }                    

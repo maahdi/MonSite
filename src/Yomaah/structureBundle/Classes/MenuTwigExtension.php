@@ -21,12 +21,12 @@ class MenuTwigExtension extends \Twig_Extension
 
     public function getGlobals()
     {
-        if (is_array($this->menu->getAllMenu()))
-        {
+        //if (is_array($this->menu->getAllMenu()))
+        //{
             return $this->menu->getAllMenu();
-        }else
-        {
-            return $this->menu->getTestMenu();
-        }
+        //}else
+        //{
+            //return $this->menu->getTestMenu();
+        //}
     }
 }
