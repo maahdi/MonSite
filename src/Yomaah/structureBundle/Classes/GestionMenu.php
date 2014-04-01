@@ -47,7 +47,7 @@ class GestionMenu
                 {
                     $menu = $this->getClientMenu('normalClient');
                 }
-                $menuP = $this->getMenuPrincipal('normal', array('connect' => true));
+                $menuP = $this->getMenuPrincipal('admin');
                 return array_merge($menuP, $menu);
                 /**
                  * Si on est sur le site principal
@@ -101,8 +101,8 @@ class GestionMenu
     {
         if ($name == 'admin')
         {
-            $mLeft = $this->getMenu('left','Menu');
-            $mRight = $this->getMenu('right','Menu');
+            $mLeft = $this->getMenu('left','Menu', true);
+            $mRight = $this->getMenu('right','Menu', true);
             $this->setAdminMenu($mLeft);
             $menus['left'] = $mLeft;
             $menus['right'] = $mRight;
@@ -110,16 +110,16 @@ class GestionMenu
             
         }else if ($name == 'test')
         {
-            $mLeft = $this->getMenu('left','MenuTest', $this->dispatcher->getIdSite());
-            $mRight = $this->getMenu('right','Menu');
+            $mLeft = $this->getMenu('left','MenuTest',true);
+            $mRight = $this->getMenu('right','Menu', true);
             $this->setTestMenu($mLeft);
             $menus['left'] = $mLeft;
             $menus['right'] = $mRight;
             return $this->getParam('admin', $menus, $append);
         }else
         {
-            $mLeft = $this->getMenu('left','Menu');
-            $mRight = $this->getMenu('right','Menu');
+            $mLeft = $this->getMenu('left','Menu', true);
+            $mRight = $this->getMenu('right','Menu', true);
             $menus['left'] = $mLeft;
             $menus['right'] = $mRight;
             return $this->getParam('normal', $menus, $append);
@@ -137,15 +137,16 @@ class GestionMenu
         }else if ($mode == 'clientAdmin')
         {
             $visite = $this->getVisite();
-            $retour = array('menusClient' => $menus,'connectClient' => true, 'visite' => $visite);
+            $retour = array('menusClient' => $menus, 'connectClient' => true, 'visite' => $visite);
 
         }else if ($mode == 'normalClient')
         {
-            $retour = array('menusClient' => $menus,'connectClient' => false);
+            $retour = array('menusClient' => $menus, 'connectClient' => false);
 
         }else if ($mode == 'normal')
         {
-            $retour = array('menus' => $menus,'connect' => false);
+            $retour = array('menus' => $menus, 'connect' => false);
+
         }else if ($mode == 'erreur')
         {
             $retour = array('menus' => $menus,'connect' => false, 'position' => 'Erreur');
@@ -199,7 +200,7 @@ class GestionMenu
 
     }
 
-    private function getMenu($position, $menu, $token = null)
+    private function getMenu($position, $menu, $origin = null)
     {
         if ($position == 'left')
         {
@@ -208,12 +209,18 @@ class GestionMenu
         {
             $fn = 'getRight'.$menu;
         }
-        $param['idSite'] = $this->dispatcher->getIdSite();
+        if ($origin)
+        {
+            $param['idSite'] = null;
+        }else
+        {
+            $param['idSite'] = $this->dispatcher->getIdSite();
+        }
         if ($this->dispatcher->isTestSite())
         {
-            $param['token'] = $token;
+            $param['token'] = $this->dispatcher->getIdSite();
         }
-        return $this->em->getRepository('yomaahBundle:'.$menu)->$fn(array('param' =>$param));
+        return $this->em->getRepository('yomaahBundle:'.$menu)->$fn($param);
     }
 
 }

@@ -5,15 +5,15 @@ use Symfony\Component\Routing\Route;
 
 $collection = new RouteCollection();
 
-//$collection->add('homepage', new Route('/', array(
-    //'_controller' => 'yomaahBundle:Main:index',
-//)));
+$collection->add('yomaah_accueil', new Route('/', array(
+    '_controller' => 'yomaahBundle:Main:index',
+)));
 
-$collection->add('cv', new Route('/cv', array(
+$collection->add('yomaah_cv', new Route('/cv', array(
     '_controller' => 'yomaahBundle:Main:cv',
 )));
 
-$collection->add('projet', new Route('/projets', array(
+$collection->add('yomaah_projets', new Route('/projets', array(
     '_controller' => 'yomaahBundle:Main:projet',
 )));
 
@@ -21,34 +21,34 @@ $collection->add('espace_client', new Route('/espace_client', array(
     '_controller' => 'yomaahBundle:Main:espaceClient',
 )));
 
-$collection->add('code_source', new Route('/code_source/{path}', array(
+$collection->add('yomaah_code_source', new Route('/code_source/{path}', array(
     '_controller' => 'yomaahBundle:Main:codeSource',
     ),array('path'=> '.+')
 ));
 
-$collection->add('code_source_git',new Route('/code_source_git', array(
+$collection->add('yomaah_code_source_git',new Route('/code_source_git', array(
     '_controller' => 'yomaahBundle:Main:codeSourceGit',)
 ));
 
-$collection->add('admin_homepage', new Route('/admin_homepage', array(
+$collection->add('admin_yomaah_accueil', new Route('/admin_accueil', array(
     '_controller' => 'yomaahBundle:Main:index',
 )));
 
 
-$collection->add('admin_cv', new Route('/admin_cv', array(
+$collection->add('admin_yomaah_cv', new Route('/admin_cv', array(
     '_controller' => 'yomaahBundle:Main:cv',
 )));
 
-$collection->add('admin_projet', new Route('/admin_projets', array(
+$collection->add('admin_yomaah_projets', new Route('/admin_projets', array(
     '_controller' => 'yomaahBundle:Main:projet',
 )));
 
-$collection->add('admin_code_source', new Route('/admin_code_source/{path}', array(
+$collection->add('admin_yomaah_code_source', new Route('/admin_code_source/{path}', array(
     '_controller' => 'yomaahBundle:Main:codeSource',
     ),array('path'=> '.+')
 ));
 
-$collection->add('admin_code_source_git',new Route('/admin_code_source_git', array(
+$collection->add('admin_yomaah_code_source_git',new Route('/admin_code_source_git', array(
     '_controller' => 'yomaahBundle:Main:codeSourceGit',)
 ));
 

@@ -43,6 +43,21 @@ class User implements AdvancedUserInterface, \Serializable
     protected $salt;
 
     /**
+     *@ORM\OneToMany(targetEntity="\Yomaah\structureBundle\Entity\Adresse", mappedBy="utilisateur")
+     */
+    protected $adresse;
+
+    /**
+     *@ORM\Column(type="string")
+     **/
+    protected $userLastName;
+
+    /**
+     *@ORM\Column(type="string")
+     **/
+    protected $userFirstName;
+
+    /**
      * Add sites
      *
      * @param \Yomaah\structureBundle\Entity\Site $site
@@ -78,6 +93,7 @@ class User implements AdvancedUserInterface, \Serializable
     public function __construct()
     {
         $this->sites = new ArrayCollection();
+        $this->adresse = new ArrayCollection();
     }
 
     public function getRoles()
@@ -247,4 +263,93 @@ class User implements AdvancedUserInterface, \Serializable
         ) = unserialize($serialized);
     }
 
+
+    /**
+     * Add idAdresse
+     *
+     * @param \Yomaah\structureBundle\Entity\Adresse $idAdresse
+     * @return User
+     */
+    public function addAdresse(\Yomaah\structureBundle\Entity\Adresse $adresse)
+    {
+        $this->adresse[] = $adresse;
+    
+        return $this;
+    }
+
+    /**
+     * Remove idAdresse
+     *
+     * @param \Yomaah\structureBundle\Entity\Adresse $idAdresse
+     */
+    public function removeAdresse(\Yomaah\structureBundle\Entity\Adresse $adresse)
+    {
+        $this->adresse->removeElement($adresse);
+    }
+
+    /**
+     * Get idAdresse
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIdAdresse()
+    {
+        return $this->idAdresse;
+    }
+
+    /**
+     * Get adresse
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAdresse()
+    {
+        return $this->adresse;
+    }
+
+    /**
+     * Set userLastName
+     *
+     * @param string $userLastName
+     * @return User
+     */
+    public function setUserLastName($userLastName)
+    {
+        $this->userLastName = $userLastName;
+    
+        return $this;
+    }
+
+    /**
+     * Get userLastName
+     *
+     * @return string 
+     */
+    public function getUserLastName()
+    {
+        return $this->userLastName;
+    }
+
+    /**
+     * Set userName
+     *
+     * @param string $userName
+     * @return User
+     */
+    public function setUserName($userName)
+    {
+        $this->userName = $userName;
+    
+        return $this;
+    }
+
+    /**
+     * Get userName
+     *
+     * @return string 
+     */
+    public function getUserFirstName()
+    {
+        return $this->userFirstName;
+    }
 }

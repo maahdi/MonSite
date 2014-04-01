@@ -48,9 +48,9 @@ class SecurityListener implements EventSubscriberInterface
     {
         if ($this->secure->getToken()->isAuthenticated()){
             $role = $this->secure->getToken()->getUser()->getRoles();
-            if (!($this->bundleDispatcher->testException()))
+            if (!($this->secure->getToken() == null))
             {
-                if ($this->bundleDispatcher->isTestSite())
+                if ($role[0] == 'visiteur')
                 {
                     /**
                      * Cette portion de code définit un token générique si la base est vide
@@ -73,7 +73,8 @@ class SecurityListener implements EventSubscriberInterface
                             }
                         }
                     }
-                    $this->session->set('testToken' , $token);
+                    $this->bundleDispatcher->setSite('test');
+                    $this->bundleDispatcher->setIdSite($token);
                     $this->createTestEnvironnement($token);
                     $response = new RedirectResponse($this->router->generate('test_accueil'));
                     $event->setResponse($response);
@@ -83,18 +84,21 @@ class SecurityListener implements EventSubscriberInterface
                      * Pour l'instant en se connectant un utilisateur lié a un site creer une session
                      * Pour le futur plusieurs sites pourront être lié à un utilisateur
                      */
-                    if ($this->bundleDispatcher->isClientSite() && $this->bundleDispatcher->getDeployed() == false)
+                    if ($role[0] == 'client' && $this->bundleDispatcher->getDeployed() === false)
                     {
-                        $sql = 'select nomSite from site where idUser = ? ';
-                        $result = $this->db->executeQuery($sql, array($this->secure->getToken()->getUser()->getIdUser()));
-                        $result->setFetchMode(\PDO::FETCH_OBJ);
-                        foreach ($result as $r)
-                        {
-                            if ($r != null)
-                            {
-                                $this->session->set('site', $r->nomSite);
-                            }
-                        }
+                        $response = new RedirectResponse($this->router->generate('espace_client_accueil'));
+                        $event->setResponse($response);
+                        //$sql = 'select idSite, nomSite from site where idUser = ? ';
+                        //$result = $this->db->executeQuery($sql, array($this->secure->getToken()->getUser()->getIdUser()));
+                        //$result->setFetchMode(\PDO::FETCH_OBJ);
+                        //foreach ($result as $r)
+                        //{
+                            //if ($r != null)
+                            //{
+                                //$this->session->set('site', $r->nomSite);
+                                //$this->session->set('idSite', 1);
+                            //}
+                        //}
                     }
                 }                    
             }

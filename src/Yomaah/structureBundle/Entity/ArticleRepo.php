@@ -15,12 +15,12 @@ class ArticleRepo extends EntityRepository
 {
     public function findByPage(Array $param)
     {
-        if ($param['idSite'] == null)
+        if ($param['idSite'] === null)
         {
             $query = $this->getEntityManager()
                 ->createQuery('select a, p from yomaahBundle:Article a join a.page p where p.pageUrl = :url and p.site is null order by a.artId asc')
                 ->setParameter('url',$param['pageUrl']);
-        }else if ($param['idSite'] == false)
+        }else if ($param['idSite'] === false)
         {
             $query = $this->getEntityManager()
                 ->createQuery('select a, p from yomaahBundle:Article a join a.page p join p.site s where p.pageUrl = :url order by a.artId asc')
@@ -52,12 +52,8 @@ class ArticleRepo extends EntityRepository
 
     public function getNewId($position, $page, $em)
     {
-        if ($page->getSite() == null)
+        if ($page->getSite() === null)
         {
-            /*
-             * A remplacer par 
-$sql = 'select max(a.artId) from yomaahBundle:Article a join a.page p where p.pageUrl = :url';
-             */
             $sql = 'select max(a.artId) from yomaahBundle:Article a join a.page p where p.pageUrl = :url and p.site is null';
             $query = $em->createQuery($sql)->setParameter('url',$page->getPageUrl());
         }else

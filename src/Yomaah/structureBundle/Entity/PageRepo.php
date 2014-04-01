@@ -64,12 +64,13 @@ class PageRepo extends EntityRepository
 
     public function findKeywords($pageUrl, $site = null)
     {
-        if ($site == null)
+        if ($site === null)
         {
             $query = $this->getEntityManager()
                 ->createQuery('select p.keywords from yomaahBundle:Page p where p.pageUrl = :url and p.site is null')
                 ->setParameter('url', $pageUrl);
-        }else if ($site == false)
+
+        }else if ($site === false)
         {
             $query = $this->getEntityManager()
                 ->createQuery('select p.keywords from yomaahBundle:Page p join p.site s where p.pageUrl = :url')
@@ -90,7 +91,7 @@ class PageRepo extends EntityRepository
         }
     }
 
-    public function getHtml()
+    public function getHtml($url)
     {
         return '<div class="page admin-c border">
                     <input type="hidden" name="id" value="%pageId%" />

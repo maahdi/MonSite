@@ -14,11 +14,11 @@ class MenuRepo extends EntityRepository
 {
     public function getLeftMenu(Array $param)
     {
-        if ($param['param']['idSite'] == false)
+        if ($param['idSite'] === false)
         {
             return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=0')->getResult();
             
-        }else if ($param['param']['idSite'] == null)
+        }else if ($param['idSite'] == null)
         {
             return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=0 and m.site is null')->getResult();
             
@@ -47,7 +47,7 @@ class MenuRepo extends EntityRepository
         }else
         {
             return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=1 and m.site = :site')
-                ->setParameter('site', $site)
+                ->setParameter('site', $param['idSite'])
                 ->getResult();
         }
     }

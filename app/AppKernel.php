@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Yomaah\connexionBundle\YomaahconnexionBundle(),
             new Yomaah\ajaxBundle\YomaahajaxBundle(),
             new EuroLiterie\structureBundle\EuroLiteriestructureBundle(),
+            new Yomaah\EspaceClientBundle\YomaahEspaceClientBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

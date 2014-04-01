@@ -23,9 +23,10 @@ class MainController extends Controller
         //$encoder = $factory->getEncoder($user);
         //$password = $encoder->encodePassword('martini',null);
         //$articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('MonAccueil');
-        $params = $this->getParams('MonAccueil');
+        $params = $this->getParams('yomaah_accueil');
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:index.html.twig', $params);
     }
+
     public function getParams($page)
     {
         $dispatcher = $this->get('bundleDispatcher');
@@ -52,8 +53,7 @@ class MainController extends Controller
     {
         $this->delTmpSession();
         $this->retourMonSiteEnAdminDepuisSiteClient();
-        //$articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('cv');
-        $params = $this->getParams('cv');
+        $params = $this->getParams('yomaah_cv');
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:cv.html.twig', $params);
     }
 
@@ -61,8 +61,7 @@ class MainController extends Controller
     {
         $this->delTmpSession();
         $this->retourMonSiteEnAdminDepuisSiteClient();
-        //$articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('projets');
-        $params = $this->getParams('projets');
+        $params = $this->getParams('yomaah_projets');
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:projet.html.twig', $params);
     }
 
@@ -70,8 +69,7 @@ class MainController extends Controller
     {
         $this->delTmpSession();
         $this->retourMonSiteEnAdminDepuisSiteClient();
-        //$articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('code_source');
-        $params = $this->getParams('code_source');
+        $params = $this->getParams('yomaah_code_source');
         $params['git'] = true;
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:codeSource.html.twig', $params);
     }
@@ -80,8 +78,7 @@ class MainController extends Controller
     {
         $this->delTmpSession();
         $this->retourMonSiteEnAdminDepuisSiteClient();
-        //$articles = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage('code_source');
-        $params = $this->getParams('code_source');
+        $params = $this->getParams('yomaah_code_source');
         $codeSourceController =$this->get('codeSource');
         $codeSourceController->init($path);
         $params = array_merge($codeSourceController->getVariable(), $params);
@@ -95,7 +92,8 @@ class MainController extends Controller
 
     public function retourMonSiteEnAdminDepuisSiteClient()
     {
-        if(($this->get('session')->has('idSite')))
+        $dispatch = $this->get('bundleDispatcher');
+        if(($this->get('session')->has('idSite') && $dispatch->isClientSite() === false))
         {
             $this->get('session')->remove('idSite');
         }
@@ -113,9 +111,6 @@ class MainController extends Controller
         if ($role[0] == 'visiteur')
         {
             $this->deleteTestEnvironnement();
-        }else if ($role[0] == "administrateur")
-        {
-            //$this->get('yomaah_requete_listener')->incrementCompteur();
         }
         $this->retourMonSiteEnAdminDepuisSiteClient();
         $this->delTmpSession();

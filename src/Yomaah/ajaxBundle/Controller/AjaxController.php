@@ -195,7 +195,7 @@ class AjaxController extends Controller
 
             }else if (preg_match('/pagesAdmin/', $param['lien']))
             {
-                return new Response($this->getDoctrine()->getRepository('yomaahBundle:Page')->getHtml());
+                return new Response($this->getDoctrine()->getRepository('yomaahBundle:Page')->getHtml(null));
 
             }else
             {
@@ -231,7 +231,7 @@ class AjaxController extends Controller
      * Renvoie un tableau contenant les données et
      * en index leurs méthodes setter
      */
-    static function decodeHtmlGet($encode)
+    static function decodeHtmlGet($encode, $name)
     {
         if ($encode != null)
         {
@@ -247,6 +247,10 @@ class AjaxController extends Controller
                     
                 }else
                 {
+                    if (!isset($tmp[1]))
+                    {
+                        $tmp[1] ='';
+                    }
                     $obj['set'.ucfirst($tmp[0])] = urldecode($tmp[1]);
                 }
             }
@@ -286,7 +290,14 @@ class AjaxController extends Controller
                 {
                     if (!($function == null))
                     {
-                        $param[$pattern[$key]] = $function($request->$method->get($pattern[$key]));
+                        if (preg_match('/self/', $function))
+                        {
+                            $tmp = explode('self::', $function);
+                            $param[$pattern[$key]] = self::$tmp[1]($request->$method->get($pattern[$key]), $key);
+                        }else
+                        {
+                            $param[$pattern[$key]] = $function($request->$method->get($pattern[$key]));
+                        }
                     }else
                     {
                         $param[$pattern[$key]] = $request->$method->get($pattern[$key]);
@@ -315,9 +326,12 @@ class AjaxController extends Controller
         if ($bundleDispatcher->isAdmin())
         {
             $request = $this->get('request');
-            $test = array('input', 'textarea', 'id');
-            $param = $this->getRequestElement($request, $test, 'POST', 'self::decodeHtmlGet');
+            $test = array('input', 'textarea');
+            $field = $this->getRequestElement($request, $test, 'POST', 'self::decodeHtmlGet');
+            $param['id'] = $request->request->get('id');
             $param['lien'] = $request->request->get('lien');
+            $param = array_merge($field, $param);
+            var_dump($param);
             if ($bundleDispatcher->isClientSite() && preg_match('/pagesAdmin/', $param['lien']) == 0)
             {
                 $test = array('active', 'inactive');
@@ -510,7 +524,6 @@ class AjaxController extends Controller
     }
     static function deleteImage($destination, $from, $file, $bundle)
     {
-        var_dump('mv ./bundles/'.$bundle.'/images/'.$from.$file.' ../deleted/'.$destination.time().$file);
         exec ('mv ./bundles/'.$bundle.'/images/'.$from.$file.' ../deleted/'.$destination.time().$file);
     }
 

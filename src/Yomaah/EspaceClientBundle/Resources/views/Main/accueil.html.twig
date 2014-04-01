@@ -1,0 +1,35 @@
+{%extends 'yomaahBundle:Main:base.html.twig' %}
+
+{%block body%}
+<div class="articles small-12 columns marge">
+    
+    {% for article in articles %}
+        {%if article.tagName == 'liste_projets'%}
+            <div class="article border-article marge cs">
+                <input type="hidden" name="id" value="{{article.id}}"/>
+                <article class="art-titre"><h1>{{ article.artTitle~' '~userName }}</h1></article>
+                <figure class="art-png"><img src="{{asset('bundles/yomaah/images/'~article.png.pngUrl)}}"></img></figure>
+                <article class="art-triangle"></article>
+                <article class="art-content not-editable">
+                {%for site in sites if sites is defined%}
+                    {%if site.nomSite == 'literie'%}
+                        <a href="espace_client/connexion/{{ site.nomSite}}_index">{{ site.tag}}</a>
+                    {%else%}
+                        <a href="espace_client/connexion/{{ site.nomSite}}_accueil">{{ site.tag}}</a>
+                    {%endif%}
+                {%endfor%}
+                </article>
+            </div>
+        {#{%else%}#}
+            {#<div class="article border-article marge cs">#}
+                {#<input type="hidden" name="id" value="{{article.id}}"/>#}
+                {#<article class="art-titre"><h1>{{ article.artTitle}}</h1></article>#}
+                {#<figure class="art-png"><img src="{{asset('bundles/yomaah/images/'~article.png.pngUrl)}}"></img></figure>#}
+                {#<article class="art-triangle"></article>#}
+                {#<article class="art-content not-editable">{{ article.artContent | raw}}#}
+                {#</article>#}
+            {#</div>#}
+        {%endif%}
+    {%endfor%}
+</div>
+{%endblock%}

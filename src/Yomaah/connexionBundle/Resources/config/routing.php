@@ -5,7 +5,7 @@ use Symfony\Component\Routing\Route;
 
 $collection = new RouteCollection();
 
-$collection->add('login', new Route('/login', array(
+$collection->add('yomaah_login', new Route('/login', array(
     '_controller' => 'YomaahconnexionBundle:Connexion:login',
 )));
 

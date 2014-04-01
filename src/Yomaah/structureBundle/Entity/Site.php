@@ -19,6 +19,10 @@ class Site
      *@ORM\Column(type="string")
      */
     protected $nomSite;
+    /**
+     *@ORM\Column(type="string")
+     */
+    protected $tag;
 
     /**
      *@ORM\ManyToOne(targetEntity="\Yomaah\connexionBundle\Entity\User",inversedBy="sites")
@@ -77,6 +81,27 @@ class Site
         return $this;
     }
 
+    /**
+     * Set tag
+     *
+     * @param string $tag
+     * @return Site
+     */
+    public function setTag($tag)
+    {
+        $this->tag = $tag;
+    
+        return $this;
+    }
+    /**
+     * Get tag
+     *
+     * @return string 
+     */
+    public function getTag()
+    {
+        return $this->tag;
+    }
     /**
      * Get idSite
      *

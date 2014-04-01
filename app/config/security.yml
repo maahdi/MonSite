@@ -44,3 +44,4 @@ security:
         - { path: ^/admin*, roles: ROLE_ADMIN }
         - { path: ^/test*, roles: ROLE_USER }
         - { path: ^/literie, roles: ROLE_ADMIN }
+        - { path: ^/espace-client*, roles: ROLE_ADMIN }

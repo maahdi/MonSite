@@ -1,3 +1,7 @@
+yomaah_espace_client:
+    resource: "@YomaahEspaceClientBundle/Resources/config/routing.php"
+    prefix:   /
+
 EuroLiteriestructure:
     resource: "@EuroLiteriestructureBundle/Resources/config/routing.php"
     prefix:   /
