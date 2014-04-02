@@ -77,34 +77,19 @@ class SecurityListener implements EventSubscriberInterface
                     $this->bundleDispatcher->setIdSite($token);
                     $this->createTestEnvironnement($token);
                     $response = new RedirectResponse($this->router->generate('test_accueil'));
-                    $event->setResponse($response);
                 }else
                 {
-                    /**
-                     * Pour l'instant en se connectant un utilisateur lié a un site creer une session
-                     * Pour le futur plusieurs sites pourront être lié à un utilisateur
-                     */
                     if ($role[0] == 'client' && $this->bundleDispatcher->getDeployed() === false)
                     {
                         $response = new RedirectResponse($this->router->generate('espace_client_accueil'));
-                        $event->setResponse($response);
-                        //$sql = 'select idSite, nomSite from site where idUser = ? ';
-                        //$result = $this->db->executeQuery($sql, array($this->secure->getToken()->getUser()->getIdUser()));
-                        //$result->setFetchMode(\PDO::FETCH_OBJ);
-                        //foreach ($result as $r)
-                        //{
-                            //if ($r != null)
-                            //{
-                                //$this->session->set('site', $r->nomSite);
-                                //$this->session->set('idSite', 1);
-                            //}
-                        //}
+
+                    }else if ($role[0] == 'administrateur' && $this->bundleDispatcher->getDeployed() === false)
+                    {
+                        $response = new RedirectResponse($this->router->generate('espace_client_admin'));
                     }
                 }                    
+                $event->setResponse($response);
             }
-            /*
-             * Ajouter retour reponse vers la page qu'on veut
-             */
         }
     }
 

@@ -20,17 +20,14 @@ class GestionMenu
         $this->db = $db;
     }
 
-    public function getClientMenu($name)
+    public function getClientMenu($name, $append = null)
     {
         $menus = $this->getMenu('left', 'Menu');
         if ($name == 'clientAdmin')
         {
             $this->setAdminMenu($menus);
-            return $this->getParam($name, $menus);
-        }else
-        {
-            return $this->getParam($name, $menus);
         }
+        return $this->getParam($name, $menus, $append);
     }
 
     public function getAllMenu()
@@ -47,7 +44,13 @@ class GestionMenu
                 {
                     $menu = $this->getClientMenu('normalClient');
                 }
-                $menuP = $this->getMenuPrincipal('admin');
+                if ($this->dispatcher->isSuperAdmin())
+                {
+                    $menuP = $this->getMenuPrincipal('admin');
+                }else
+                {
+                    $menuP = $this->getMenuPrincipal('normal');
+                }
                 return array_merge($menuP, $menu);
                 /**
                  * Si on est sur le site principal
@@ -61,18 +64,19 @@ class GestionMenu
                 {
                     return $menu = $this->getClientMenu('normalClient');
                 }
-            }else if($this->dispatcher->isClientSite() === false)
+            }else if ($this->dispatcher->isClientSite() === null)
+            {
+                    return $this->getTestMenu('normal');
+
+            }else if ($this->dispatcher->isClientSite() === false)
             {
                 if ($this->dispatcher->isAdmin())
                 {
                     return $this->getMenuPrincipal('admin');
                 }else
                 {
-                    return $this->getMenuPrincipal('normal');
+                    return $this->getMenuPrincipal('normal', array('connectClient' => true));
                 }
-            }else if ($this->dispatcher->isClientSite() === 'test')
-            {
-                    return $this->getTestMenu('normal');
             }
 
         }else
@@ -127,12 +131,17 @@ class GestionMenu
 
     }
 
+    /*
+     * connect = pour modification affichage des personnes connectées
+     * connectClient = pour affichage des clients connectés
+     * connectAdmin = pour intégration des fichiers pour l'interface admin template Yomaah
+     */
     private function getParam($mode, $menus, Array $append = null)
     {
         if ($mode == 'admin')
         {
             $visite = $this->getVisite();
-            $retour = array('menus' => $menus,'connect' => true,'visite' => $visite);
+            $retour = array('menus' => $menus, 'connectAdmin' => true,'visite' => $visite);
 
         }else if ($mode == 'clientAdmin')
         {
@@ -145,19 +154,34 @@ class GestionMenu
 
         }else if ($mode == 'normal')
         {
-            $retour = array('menus' => $menus, 'connect' => false);
+            $retour = array('menus' => $menus);
 
         }else if ($mode == 'erreur')
         {
-            $retour = array('menus' => $menus,'connect' => false, 'position' => 'Erreur');
+            $retour = array('menus' => $menus, 'position' => 'Erreur');
+        }
+        if ($this->dispatcher->isAuthenticated())
+        {
+            if (!(isset($retour['connect'])))
+            {
+                $retour['connect'] = true;
+            } 
         }
         if ($append != null)
         {
-            return array_merge($retour, $append);
-        }else
-        {
-            return $retour;
+            $keys = array_keys($append);
+            foreach ($keys as $key)
+            {
+                if (array_key_exists($key, $retour))
+                {
+                    $retour[$key] = $append[$key];
+                }else
+                {
+                    $retour = array_merge($retour, $append);
+                }
+            }
         }
+        return $retour;
     }
 
     private function setAdminMenu($menu)
@@ -176,7 +200,6 @@ class GestionMenu
         foreach ($menu as $m)
         {
             $m->setPath('test_'.$m->getPath());
-            $i++;
         }
     }
 

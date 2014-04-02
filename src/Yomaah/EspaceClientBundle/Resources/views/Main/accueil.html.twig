@@ -10,14 +10,17 @@
                 <article class="art-titre"><h1>{{ article.artTitle~' '~userName }}</h1></article>
                 <figure class="art-png"><img src="{{asset('bundles/yomaah/images/'~article.png.pngUrl)}}"></img></figure>
                 <article class="art-triangle"></article>
-                <article class="art-content not-editable">
+                <article class="art-content not-editable">{{ article.artContent | raw}}
                 {%for site in sites if sites is defined%}
+                    <p>
                     {%if site.nomSite == 'literie'%}
-                        <a href="espace_client/connexion/{{ site.nomSite}}_index">{{ site.tag}}</a>
+                        <a href="espace-client/connexion/{{ site.nomSite}}_index">{{ site.tag}}</a>
                     {%else%}
-                        <a href="espace_client/connexion/{{ site.nomSite}}_accueil">{{ site.tag}}</a>
+                        <a href="espace-client/connexion/{{ site.nomSite}}_accueil">{{ site.tag}}</a>
                     {%endif%}
+                    </p>
                 {%endfor%}
+                    
                 </article>
             </div>
         {#{%else%}#}

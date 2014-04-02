@@ -13,10 +13,10 @@ use Yomaah\structureBundle\Entity\PageTest;
  */
 class ArticleTestRepo extends EntityRepository
 {
-    public function findByPage($pageUrl, $token)
+    public function findByPage(Array $param)
     {
         $query = $this->getEntityManager()->createQuery('select a, p from yomaahBundle:ArticleTest a join a.page p where p.pageUrl = :url and a.token = :token order by a.artId asc')
-            ->setParameters(array('url' => $pageUrl, 'token' => $token));
+            ->setParameters(array('url' => $param['pageUrl'], 'token' => $param['token']));
         return $query->getResult();
     }
 

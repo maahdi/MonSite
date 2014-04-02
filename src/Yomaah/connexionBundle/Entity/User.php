@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  *@ORM\Entity
  *@ORM\Table(name="utilisateur")
+ *@ORM\Entity(repositoryClass="UserRepo")
  **/
 class User implements AdvancedUserInterface, \Serializable
 {
@@ -351,5 +352,18 @@ class User implements AdvancedUserInterface, \Serializable
     public function getUserFirstName()
     {
         return $this->userFirstName;
+    }
+
+    /**
+     * Set userFirstName
+     *
+     * @param string $userFirstName
+     * @return User
+     */
+    public function setUserFirstName($userFirstName)
+    {
+        $this->userFirstName = $userFirstName;
+    
+        return $this;
     }
 }

@@ -12,17 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class MenuTestRepo extends EntityRepository
 {
-    public function getLeftMenuTest($token)
+    public function getLeftMenuTest(Array $param)
     {
         return $this->getEntityManager()->createQuery('select m from yomaahBundle:MenuTest m where m.position=0 and m.token = :token')
-            ->setParameter('token', $token)
+            ->setParameter('token', $param['token'])
             ->getResult();
     }
 
-    public function getRightMenuTest($token)
+    public function getRightMenuTest(Array $param)
     {
         return $this->getEntityManager()->createQuery('select m from yomaahBundle:MenuTest m where m.position=1 and m.token = :token')
-            ->setParameter('token', $token)
+            ->setParameter('token', $param['token'])
             ->getResult();
     }
 }

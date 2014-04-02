@@ -11,8 +11,9 @@ class TestController extends Controller
 {
     public function accueilAction()
     {
-        $token = $this->get('session')->get('testToken');
-        $articles = $this->getDoctrine()->getRepository('yomaahBundle:ArticleTest')->findByPage('accueil', $token);
+        $dispatcher = $this->get('bundleDispatcher');
+        $articles = $this->getDoctrine()->getRepository('yomaahBundle:ArticleTest')
+                ->findByPage(array('pageUrl' => 'accueil', 'token' => $dispatcher->getIdSite()));
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:projet.html.twig',
             array('articles' => $articles));
     }

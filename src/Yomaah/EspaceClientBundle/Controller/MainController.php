@@ -14,7 +14,11 @@ class MainController extends Controller
         {
             $user = $secure->getToken()->getUser();
             $dispatcher->unsetSite();
-            if ($secure->isGranted('ROLE_ADMIN'))
+            if ($secure->isGranted('ROLE_SUPER_ADMIN'))
+            {
+                return $this->accueilAdminAction();
+
+            }else if ($secure->isGranted('ROLE_ADMIN'))
             {
                 $param['articles'] = $this->getDoctrine()->getRepository('yomaahBundle:Article')
                         ->findByPage(array('pageUrl' => 'espace_client_accueil', 'idSite' => $dispatcher->getIdSite()));
@@ -24,24 +28,52 @@ class MainController extends Controller
             }
         }
     }
+    public function accueilAdminAction()
+    {
+        $secure = $this->get('security.context');
+        $dispatcher = $this->get('bundleDispatcher');
+        $request = $this->get('request');
+        if ($secure->getToken() != null)
+        {
+            if ($secure->isGranted('ROLE_SUPER_ADMIN'))
+            {
+                $dispatcher->unsetSite();
+                $dispatcher->setAdmin();
+                $param['users'] = $this->getDoctrine()->getRepository('YomaahconnexionBundle:User')->findByGroup(array('idGroup' => 400));
+                //$param['baseUrl'] = 'http://'.$request->getHttpHost().$request->getBaseUrl().'/';
+                return $this->render('YomaahEspaceClientBundle:Main:accueilAdmin.html.twig', $param);
+            }
+        }
+
+    }
 
     public function getSiteAction($site)
     {
         $secure = $this->get('security.context');
-        if ($secure->getToken() != null && $secure->isGranted('ROLE_ADMIN'))
+        $dispatcher = $this->get('bundleDispatcher');
+        $tmp = explode('_', $site);
+        if ($secure->getToken() != null && $secure->isGranted('ROLE_SUPER_ADMIN'))
         {
-            $user = $secure->getToken()->getUser();
-            $tmp = explode('_', $site);
-            $dispatcher = $this->get('bundleDispatcher');
-            foreach($user->getSites() as $s)
+            $dispatcher->setSite($tmp[0]);
+            $tmpsite = $this->getDoctrine()->getRepository('yomaahBundle:Site')->findOneBy(array('nomSite' => $tmp[0]));
+            $dispatcher->setIdSite($tmpsite->getIdSite());
+            $dispatcher->setFromAdmin();
+
+        }else if ($secure->getToken() != null && $secure->isGranted('ROLE_ADMIN'))
+        {
+            if ($secure->isGranted('ROLE_ADMIN'))
             {
-                if ($s->getNomSite() == $tmp[0])
+                $user = $secure->getToken()->getUser();
+                foreach($user->getSites() as $s)
                 {
-                    $dispatcher->setSite($tmp[0]);
-                    $dispatcher->setIdSite($s->getIdSite());
+                    if ($s->getNomSite() == $tmp[0])
+                    {
+                        $dispatcher->setSite($tmp[0]);
+                        $dispatcher->setIdSite($s->getIdSite());
+                    }
                 }
             }
-            return $this->redirect($this->generateUrl($site), 301);
         }
+        return $this->redirect($this->generateUrl($site), 301);
     }
 }

@@ -12,8 +12,8 @@ class MainController extends Controller
 {
     public function indexAction()
     {
-        $this->retourMonSiteEnAdminDepuisSiteClient();
-        $this->delTmpSession();
+        //$this->retourMonSiteEnAdminDepuisSiteClient();
+        //$this->delTmpSession();
         /**
          * Enregistrement d'un utilisateur avec nouveau password
          *
@@ -30,45 +30,53 @@ class MainController extends Controller
     public function getParams($page)
     {
         $dispatcher = $this->get('bundleDispatcher');
+        $dispatcher->unsetSite();
+        if ($this->get('security.context')->getToken()!= null)
+        {
+            if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN'))
+            {
+                $dispatcher->setAdmin();
+            }
+        }
         $params['articles'] = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findByPage(array('pageUrl' => $page, 
                                                                                                 'idSite' => $dispatcher->getIdSite()));
         return $params;
     }
-    public function tmpLiterieAction()
-    {
-        $session = $this->get('session');
-        $session->set('idSite', 1);
-        $session->set('siteAdmin', 'literie');
-        return $this->forward('EuroLiteriestructureBundle:Main:index');
-    }
-    public function delTmpSession()
-    {
-        if ($this->get('session')->has('siteAdmin'))
-        {
-            $this->get('session')->remove('siteAdmin');
-        }
-    }
+    //public function tmpLiterieAction()
+    //{
+        //$session = $this->get('session');
+        //$session->set('idSite', 1);
+        //$session->set('siteAdmin', 'literie');
+        //return $this->forward('EuroLiteriestructureBundle:Main:index');
+    //}
+    //public function delTmpSession()
+    //{
+        //if ($this->get('session')->has('siteAdmin'))
+        //{
+            //$this->get('session')->remove('siteAdmin');
+        //}
+    //}
 
     public function cvAction()
     {
-        $this->delTmpSession();
-        $this->retourMonSiteEnAdminDepuisSiteClient();
+        //$this->delTmpSession();
+        //$this->retourMonSiteEnAdminDepuisSiteClient();
         $params = $this->getParams('yomaah_cv');
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:cv.html.twig', $params);
     }
 
     public function projetAction()
     {
-        $this->delTmpSession();
-        $this->retourMonSiteEnAdminDepuisSiteClient();
+        //$this->delTmpSession();
+        //$this->retourMonSiteEnAdminDepuisSiteClient();
         $params = $this->getParams('yomaah_projets');
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:projet.html.twig', $params);
     }
 
     public function codeSourceGitAction()
     {
-        $this->delTmpSession();
-        $this->retourMonSiteEnAdminDepuisSiteClient();
+        //$this->delTmpSession();
+        //$this->retourMonSiteEnAdminDepuisSiteClient();
         $params = $this->getParams('yomaah_code_source');
         $params['git'] = true;
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:codeSource.html.twig', $params);
@@ -76,8 +84,8 @@ class MainController extends Controller
 
     public function codeSourceAction($path)
     {
-        $this->delTmpSession();
-        $this->retourMonSiteEnAdminDepuisSiteClient();
+        //$this->delTmpSession();
+        //$this->retourMonSiteEnAdminDepuisSiteClient();
         $params = $this->getParams('yomaah_code_source');
         $codeSourceController =$this->get('codeSource');
         $codeSourceController->init($path);
@@ -90,14 +98,14 @@ class MainController extends Controller
         return $this->container->get('templating')->renderResponse('yomaahBundle:Main:codeSource.html.twig', $params);
     }
 
-    public function retourMonSiteEnAdminDepuisSiteClient()
-    {
-        $dispatch = $this->get('bundleDispatcher');
-        if(($this->get('session')->has('idSite') && $dispatch->isClientSite() === false))
-        {
-            $this->get('session')->remove('idSite');
-        }
-    }
+    //public function retourMonSiteEnAdminDepuisSiteClient()
+    //{
+        //$dispatch = $this->get('bundleDispatcher');
+        //if(($this->get('session')->has('idSite') && $dispatch->isClientSite() === false))
+        //{
+            //$this->get('session')->remove('idSite');
+        //}
+    //}
 
     /**
      * Path du lien déconnection envoie ici
@@ -111,10 +119,10 @@ class MainController extends Controller
         if ($role[0] == 'visiteur')
         {
             $this->deleteTestEnvironnement();
+        //$this->retourMonSiteEnAdminDepuisSiteClient();
+        //$this->delTmpSession();
+            $this->get('session')->remove('testToken');
         }
-        $this->retourMonSiteEnAdminDepuisSiteClient();
-        $this->delTmpSession();
-        $this->get('session')->remove('testToken');
         return $this->redirect($this->generateUrl('logout'),301);
     }
 

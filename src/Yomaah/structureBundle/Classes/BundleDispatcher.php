@@ -75,98 +75,68 @@ class BundleDispatcher
                 }
             }
         }
-                //$this->site = 'literie';
-                //if ($this->secure->isGranted('ROLE_ADMIN'))
-                //{
-                    //$this->admin = true;
-                //}
-            //}else
-            //{
-                //if ($secure->isGranted('ROLE_SUPER_ADMIN'))
-                //{
-                    ////siteAdmin créer artificiellement pour l'instant
-                    //// normalement défini en choississant le projet du client 
-                    /**
-                     * Si admin sur le site client
-                     * mais deja connecté sur le compte super_admin
-                     */
-                    //if ($session->has('siteAdmin') && $session->has('zoneAdmin'))
-                    //{
-                        //$this->admin = true;
-                        //$this->site = $session->get('siteAdmin');
-                        //$this->idSite = $session->get('idSite');
-                        /**
-                         * Si non-admin sur le site du client
-                         * Mais accès en étant connecté en super_admin
-                         */
-                    //}else if ($session->has('siteAdmin'))
-                    //{
-                        //$this->idSite = $session->get('idSite');
-                        //$this->site = $session->get('siteAdmin');
-                        /**
-                         * Si connecter juste sur le site principal
-                         * 
-                         */
-                    //}else
-                    //{
-                        //$this->admin = true;
-                        //$this->site = 'yomaah';
-                        //$this->idSite = null;
-                    //}
-                //}else if ($secure->isGranted('ROLE_ADMIN') && $session->has('site'))
-                //{
-                    //if ($session->has('zoneAdmin'))
-                    //{
-                        //$this->idSite = $session->get('idSite');
-                        //$this->site = $session->get('site');
-                        //$this->admin = true;
-                    //}else
-                    //{
-                        //$this->idSite = $session->get('idSite');
-                        //$this->site = $session->get('site');
-                    //}
-                //}else if ($secure->isGranted('ROLE_USER'))
-                //{
-                    //$this->site = 'test';
-                    //$this->idSite = $session->get('testToken');
-                    //$this->admin = true;
-                //}else
-                //{
-                    //$this->site = 'yomaah';
-                    //$this->idSite = null;
-                //}
-            //}
-        //}else
-        //{
-            //if ($this->deployed)
-            //{
-                //$this->site = 'literie';
-            //}else
-            //{
-                //$this->site = 'yomaah';
-            //}
-        //}
-        //var_dump($this->site);
-        //var_dump($this->admin);
-        //var_dump($this->isTestSite());
-        //var_dump($this->isClientSite());
-        //var_dump($this->testException());
-        //var_dump($this->getIdSite());
-        /**
-         * Garder controller du site déployé
-         */
         $this->controllers = $this->constructControllers();
         $this->sitePath = $this->constructSitePath();
+    }
+    public function isAuthenticated()
+    {
+        if ($this->secure->getToken()->isAuthenticated())
+        {
+            if ($this->secure->isGranted('ROLE_USER'))
+            {
+                return true;
+            }else
+            {
+                return false;
+            }
+        }
+    }
+
+    public function isSuperAdmin()
+    {
+        if ($this->session->has('siteAdmin'))
+        {
+            if ($this->session->get('siteAdmin'))
+            {
+                return true;
+            }else
+            {
+                return false;
+            }
+        }else
+            {
+                return false;
+            }
+    }
+
+    public function setAdmin()
+    {
+        if ($this->admin)
+        {
+            $this->admin = false;
+        }else
+        {
+            $this->admin = true;
+        }
+    }
+
+    public function setFromAdmin()
+    {
+        if ($this->session->has('siteAdmin') === false)
+        {
+            $this->session->set('siteAdmin', true);
+        }
     }
 
     public function unsetSite()
     {
         $this->site = 'yomaah';
         $this->idSite = null;
-        if ($this->session->has('site') && $this->session->has('idSite'))
+        if ($this->session->has('site') && $this->session->has('idSite') && $this->session->has('siteAdmin'))
         {
             $this->session->remove('site');
             $this->session->remove('idSite');
+            $this->session->remove('siteAdmin');
         }
     }
     public function getSite()
@@ -285,7 +255,7 @@ class BundleDispatcher
             return true;
         }else
         {
-            return $this->site;
+            return null;
         }
     }
     public function getControllers()

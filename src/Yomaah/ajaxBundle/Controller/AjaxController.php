@@ -227,11 +227,12 @@ class AjaxController extends Controller
             }
         }
     }
+
     /**
      * Renvoie un tableau contenant les données et
      * en index leurs méthodes setter
      */
-    static function decodeHtmlGet($encode, $name)
+    static function decodeHtmlGet($encode)
     {
         if ($encode != null)
         {
@@ -249,7 +250,7 @@ class AjaxController extends Controller
                 {
                     if (!isset($tmp[1]))
                     {
-                        $tmp[1] ='';
+                        $tmp[1] = '';
                     }
                     $obj['set'.ucfirst($tmp[0])] = urldecode($tmp[1]);
                 }
@@ -259,8 +260,9 @@ class AjaxController extends Controller
     }
     /**
      * Test si un élément exist
+     * le récupere selon la méthode requise et applique une fonction dessus
      * Retourne false ou l'élément si un seul pattern
-     * Retourne un tableau délément avec soit false soit la valeur
+     * Retourne un tableau d'élément avec soit false soit la valeur
      */
     private function getRequestElement($request, $pattern, $method = 'POST', $function = null)
     {
@@ -293,7 +295,7 @@ class AjaxController extends Controller
                         if (preg_match('/self/', $function))
                         {
                             $tmp = explode('self::', $function);
-                            $param[$pattern[$key]] = self::$tmp[1]($request->$method->get($pattern[$key]), $key);
+                            $param[$pattern[$key]] = self::$tmp[1]($request->$method->get($pattern[$key]));
                         }else
                         {
                             $param[$pattern[$key]] = $function($request->$method->get($pattern[$key]));
@@ -331,7 +333,6 @@ class AjaxController extends Controller
             $param['id'] = $request->request->get('id');
             $param['lien'] = $request->request->get('lien');
             $param = array_merge($field, $param);
-            var_dump($param);
             if ($bundleDispatcher->isClientSite() && preg_match('/pagesAdmin/', $param['lien']) == 0)
             {
                 $test = array('active', 'inactive');
@@ -527,9 +528,16 @@ class AjaxController extends Controller
         exec ('mv ./bundles/'.$bundle.'/images/'.$from.$file.' ../deleted/'.$destination.time().$file);
     }
 
-    static function moveImage($dossier1, $dossier2, $img, $bundle)
+    static function moveImage($dossier1, $dossier2, $img, $bundle, $newImg = null)
     {
-        exec('mv ./bundles/'.$bundle.'/images/'.$dossier1.$img.' ./bundles/'.$bundle.'/images/'.$dossier2.$newImg); 
+        if ($newImg === null)
+        {
+            exec('mv ./bundles/'.$bundle.'/images/'.$dossier1.$img.' ./bundles/'.$bundle.'/images/'.$dossier2.$img); 
+
+        }else
+        {
+            exec('mv ./bundles/'.$bundle.'/images/'.$dossier1.$img.' ./bundles/'.$bundle.'/images/'.$dossier2.$newImg); 
+        }
     }
 
     public function uploadImageAction()

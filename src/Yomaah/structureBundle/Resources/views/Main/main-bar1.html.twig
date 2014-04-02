@@ -15,6 +15,9 @@
                         {%endif%}
                 {%endfor%}
             {%endfor%}
+            {%if (connect is defined and connect)%}
+                    <li><a href="{{path('espace_client_accueil')}}">Mon Espace</a></li>
+            {%endif%}
             </ul>
             <ul class="menu" id="menu-right">
             {%for index,menu in menus if index == 'right' %}

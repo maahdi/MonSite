@@ -134,40 +134,40 @@ if ($this->secure->getToken() != null)
      * Exclusion ip administrateur plus tard pour alléger la base
      *
      **/
-    public function incrementCompteur()
-    {
-        $fichier = fopen(__DIR__.'/compteur.txt','r+');
-        while (!feof($fichier))
-        {
-            $buffer = fgets($fichier,4096);
-            if ($buffer !== false)
-            {
-                $compteur = (int) $buffer;
-                $compteur +=1;
-            }
-        }
-        fseek($fichier,0);
-        ftruncate($fichier,0);
-        fwrite($fichier,(string) $compteur);
-        fclose($fichier);
-    }
+    //public function incrementCompteur()
+    //{
+        //$fichier = fopen(__DIR__.'/compteur.txt','r+');
+        //while (!feof($fichier))
+        //{
+            //$buffer = fgets($fichier,4096);
+            //if ($buffer !== false)
+            //{
+                //$compteur = (int) $buffer;
+                //$compteur +=1;
+            //}
+        //}
+        //fseek($fichier,0);
+        //ftruncate($fichier,0);
+        //fwrite($fichier,(string) $compteur);
+        //fclose($fichier);
+    //}
 
-    private function decrementCompteur()
-    {
-        $fichier = fopen(__DIR__.'/compteur.txt','r+');
-        while (!feof($fichier))
-        {
-            $buffer = fgets($fichier,4096);
-            if ($buffer !== false)
-            {
-                $compteur = (int) $buffer;
-                $compteur -=1;
-            }
-        }
-        fseek($fichier,0);
-        ftruncate($fichier,0);
-        fwrite($fichier,(string) $compteur);
-        fclose($fichier);
-    }
+    //private function decrementCompteur()
+    //{
+        //$fichier = fopen(__DIR__.'/compteur.txt','r+');
+        //while (!feof($fichier))
+        //{
+            //$buffer = fgets($fichier,4096);
+            //if ($buffer !== false)
+            //{
+                //$compteur = (int) $buffer;
+                //$compteur -=1;
+            //}
+        //}
+        //fseek($fichier,0);
+        //ftruncate($fichier,0);
+        //fwrite($fichier,(string) $compteur);
+        //fclose($fichier);
+    //}
     
 }

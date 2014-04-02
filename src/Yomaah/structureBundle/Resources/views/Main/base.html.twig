@@ -54,7 +54,7 @@
         {%block body %}{%endblock%}
     </div>
     {%block javascript %}{%endblock%}
-    {%if connect is defined and connect%}
+    {%if connectAdmin is defined and connectAdmin%}
         {% include 'yomaahBundle:Toolbar:toolbar.html.twig' %}
         {% include 'yomaahBundle:Toolbar:addArticleToolBar.html.twig' %}
         <script src="{{asset('bundles/yomaah/js/rangy-core.js')}}"></script>
