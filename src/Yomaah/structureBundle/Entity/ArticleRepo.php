@@ -23,8 +23,8 @@ class ArticleRepo extends EntityRepository
         }else if ($param['idSite'] === false)
         {
             $query = $this->getEntityManager()
-                ->createQuery('select a, p from yomaahBundle:Article a join a.page p join p.site s where p.pageUrl = :url order by a.artId asc')
-                ->setParameter('url', $pageUrl);
+                ->createQuery('select a, p from yomaahBundle:Article a join a.page p where p.pageUrl = :url order by a.artId asc')
+                ->setParameter('url', $param['pageUrl']);
         }else
         {
             $query = $this->getEntityManager()
@@ -35,7 +35,7 @@ class ArticleRepo extends EntityRepository
         return $query->getResult();
     }
 
-    public function findDefaultArticle($position, $pageUrl, \Yomaah\structureBundle\Entity\Page $page)
+    public function findDefaultArticle(Array $param)
     {
         $em = $this->getEntityManager();
         $new = new Article();
@@ -43,24 +43,30 @@ class ArticleRepo extends EntityRepository
         $new->setArtContent('<p>Ceci est un article</p>');
         $new->setArtDate(new \Datetime());
         $new->setPng($em->getRepository('yomaahBundle:Png')->find(3));
-        $new->setPage($page);
-        $new->setArtId($this->getNewId($position, $page, $em));
+        $new->setPage($param['page']);
+        $new->setArtId($this->getNewId($param, $em));
         $em->persist($new);
         $em->flush();
         return $new;
     }
 
-    public function getNewId($position, $page, $em)
+    public function getNewId(Array $param, $em)
     {
-        if ($page->getSite() === null)
+        if ($param['idSite'] === null)
         {
             $sql = 'select max(a.artId) from yomaahBundle:Article a join a.page p where p.pageUrl = :url and p.site is null';
-            $query = $em->createQuery($sql)->setParameter('url',$page->getPageUrl());
+            $query = $em->createQuery($sql)->setParameter('url',$param['page']->getPageUrl());
+
+        }else if ($param['idSite'] === false)
+        {
+            $sql = 'select max(a.artId) from yomaahBundle:Article a join a.page p where p.pageUrl = :url';
+            $query = $em->createQuery($sql)->setParameter('url',$param['page']->getPageUrl());
+            
         }else
         {
             $sql =  'select max(a.artId) from yomaahBundle:Article a join a.page p join p.site s where p.pageUrl= :url and s.idSite = :site';
             $query = $em->createQuery($sql)
-                ->setParameters(array('site' => $page->getSite()->getIdSite(), 'url' => $page->getPageUrl()));
+                ->setParameters(array('site' => $param['idSite'], 'url' => $param['page']->getPageUrl()));
         }
         $id = $query->getSingleResult(); 
         $maxId = (int) $id[1] + 1;
@@ -68,18 +74,25 @@ class ArticleRepo extends EntityRepository
         /**
          * Début == 0
          */
-        if ($position == "0")
+        if ($param['position'] == "0")
         {
-            if ($page->getSite() == null)
+            if ($param['idSite'] === null)
+            {
+                $query = $this->getEntityManager()
+                    ->createQuery('select a from yomaahBundle:Article a join a.page p where p.pageUrl = :url and p.site is null order by a.artId asc')
+                        ->setParameter('url',$param['page']->getPageUrl());
+
+            }else if ($param['idSite'] === false)
             {
                 $query = $this->getEntityManager()
                     ->createQuery('select a from yomaahBundle:Article a join a.page p where p.pageUrl = :url order by a.artId asc')
-                        ->setParameter('url',$page->getPageUrl());
+                        ->setParameter('url',$param['page']->getPageUrl());
+                
             }else
             {
                 $query = $this->getEntityManager()
                     ->createQuery('select a from yomaahBundle:Article a join a.page p join p.site s where p.pageUrl = :url and s.idSite =:site order by a.artId asc')
-                    ->setParameters(array('url' => $page->getPageUrl(),'site' => $page->getSite()->getIdSite()));
+                    ->setParameters(array('url' => $param['page']->getPageUrl(),'site' => $param['idSite']));
             }
             $articles = $query->getResult();
             $nb = count($articles);

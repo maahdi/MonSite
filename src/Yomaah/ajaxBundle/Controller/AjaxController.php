@@ -109,8 +109,12 @@ class AjaxController extends Controller
                     $template = 'layoutArticle'.$bundleDispatcher->getSite().'.html.twig';
                     $bundle = $bundleDispatcher->getControllerPath();
                 }
-	            $page = $this->get('doctrine')->getRepository('yomaahBundle:Page')->findPageByUrl(array('pageUrl' => $tmp[1],'idSite' => $id));
-                $article = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findDefaultArticle($request->request->get('position'),$tmp[1], $page);
+                $page = $this->get('doctrine')->getRepository('yomaahBundle:Page')
+                        ->findPageByUrl(array('pageUrl' => $bundleDispatcher->getSite().'_'.$tmp[1],'idSite' => $id));
+                $param['page'] = $page;
+                $param['idSite'] = $id;
+                $param['position'] = $request->request->get('position');
+                $article = $this->getDoctrine()->getRepository('yomaahBundle:Article')->findDefaultArticle($param);
             } 
             return $this->container->get('templating')->renderResponse($bundle.'Ajax:'.$template, array('article' => $article));
         }
@@ -133,8 +137,8 @@ class AjaxController extends Controller
              * les templates de dialogue des articles
              * sont appelés directement
              */
-            if ($bundleDispatcher->isClientSite() && preg_match('/[a-zA-z]+Article/', $param['dialog']) == 1 
-                    && preg_match('/newArticle/', $param['dialog']) == 0 && preg_match('/suppressionArticle/', $param['dialog']) == 0)
+            if ($bundleDispatcher->isClientSite() && preg_match('/[a-zA-z]+Article/', $param['dialog']) === 1 
+                    && preg_match('/newArticle/', $param['dialog']) === 0 && preg_match('/suppressionArticle/', $param['dialog']) === 0)
             {
                 $template = $bundleDispatcher->getControllerPath().'Dialog:'.$param['dialog'].'.html.twig';
                 return $this->container->get('templating')->renderResponse($template);
@@ -142,8 +146,8 @@ class AjaxController extends Controller
                 /** idem qu'au dessus
                  * sauf qu'apellé depuis bundle principal
                  */
-            }else if ($bundleDispatcher->isClientSite() && preg_match('/newArticle/', $param['dialog']) == 1
-                     && preg_match('/suppressionArticle/', $param['dialog']) == 1)
+            }else if ($bundleDispatcher->isClientSite() && (preg_match('/newArticle/', $param['dialog']) === 1
+                     || preg_match('/suppressionArticle/', $param['dialog']) === 1))
             {
                 $template = 'YomaahajaxBundle:Ajax:'.$param['dialog'].'.html.twig';
                 return $this->container->get('templating')->renderResponse($template);

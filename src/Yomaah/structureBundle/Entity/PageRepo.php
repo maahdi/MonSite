@@ -73,7 +73,7 @@ class PageRepo extends EntityRepository
         }else if ($site === false)
         {
             $query = $this->getEntityManager()
-                ->createQuery('select p.keywords from yomaahBundle:Page p join p.site s where p.pageUrl = :url')
+                ->createQuery('select p.keywords from yomaahBundle:Page p where p.pageUrl = :url')
                 ->setParameter('url', $pageUrl);
         }else
         {

@@ -86,6 +86,11 @@ class SecurityListener implements EventSubscriberInterface
                     }else if ($role[0] == 'administrateur' && $this->bundleDispatcher->getDeployed() === false)
                     {
                         $response = new RedirectResponse($this->router->generate('espace_client_admin'));
+
+                    }else if ($this->bundleDispatcher->getDeployed())
+                    {
+                        $response = new RedirectResponse($this->router->generate('admin_'.$this->bundleDispatcher->getSite().'_accueil'));
+                        
                     }
                 }                    
                 $event->setResponse($response);
