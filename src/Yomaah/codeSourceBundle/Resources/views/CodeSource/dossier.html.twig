@@ -5,19 +5,19 @@
     <section class="srcPath">
         {%for key,path in paths%}
             <ul>
-                <li><a href="{{path('code_source',{ 'path' : path})}}">{{ key }}</a></li>
+                <li><a href="{{path('yomaah_code_source',{ 'path' : path})}}">{{ key }}</a></li>
             </ul>
         {%endfor%}
     </section>
     <section class="tabSource art-content">
         {%if directories is defined%}
             {% for dir in directories%}
-                <article class="directories"><a href="{{path('code_source',{ 'path' : entirePath ~ '/' ~ dir })}}">{{dir}}</a></article>
+                <article class="directories"><a href="{{path('yomaah_code_source',{ 'path' : entirePath ~ '/' ~ dir })}}">{{dir}}</a></article>
             {%endfor%}
         {%endif%}
         {%if files is defined%}
             {%for file in files%}
-                <article class="files"><a href="{{path('code_source',{ 'path' : entirePath ~ '/' ~ file })}}">{{file}}</a></article>
+                <article class="files"><a href="{{path('yomaah_code_source',{ 'path' : entirePath ~ '/' ~ file })}}">{{file}}</a></article>
             {%endfor%}
         {%endif%}
     </section>

@@ -18,7 +18,7 @@ class CodeSourceController
             $this->path = 'Yomaah';
         }else
         {
-            $this->path = $path;
+            $this->path =$path;
         }
         $this->constructRootPath();
         $this->init = true;
