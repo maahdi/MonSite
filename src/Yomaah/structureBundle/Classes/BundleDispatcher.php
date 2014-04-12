@@ -56,7 +56,7 @@ class BundleDispatcher
                     $this->idSite = $this->session->get('idSite');
                     $this->site = $this->session->get('site');
                 }
-                if ($this->secure->isGranted('SUPER_ROLE_ADMIN'))
+                if ($this->secure->isGranted('ROLE_SUPER_ADMIN'))
                 {
                     if ($this->session->has('siteAdmin') && $this->session->has('zoneAdmin'))
                     {
@@ -64,8 +64,7 @@ class BundleDispatcher
                         {
                             $this->admin = true;
                         }
-                    }
-                    
+                    }                    
                 }else if ($this->secure->isGranted('ROLE_ADMIN'))
                 {
                     if ($this->session->has('zoneAdmin'))

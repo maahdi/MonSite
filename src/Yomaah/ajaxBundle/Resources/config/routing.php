@@ -64,4 +64,8 @@ $collection->add('ajax_deleteImage', new Route('/ajax/deleteImage', array(
 $collection->add('ajax_imagesSearch', new Route('/ajax/imagesSearch', array(
     '_controller' => 'YomaahajaxBundle:Ajax:imagesSearch'),
     array('_method' => 'GET')));
+
+$collection->add('ajax_atteindre', new Route('/ajax/atteindre', array(
+    '_controller' => 'YomaahajaxBundle:Ajax:atteindre'),
+    array('_method' => 'POST')));
 return $collection;

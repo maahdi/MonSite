@@ -1,18 +1,20 @@
 <?php
-namespace EuroLiterie\structureBundle\Classes;
+namespace Yomaah\structureBundle\Classes;
 
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\Security\Core\SecurityContext;
 
 class GestionErreur
 {
     private $templating;
+    private $dispatcher;
 
-    public function __construct($controller, $templating)
+    public function __construct($templating, \Yomaah\structureBundle\Classes\BundleDispatcher $dispatcher)
     {
         $this->templating = $templating;
-        $this->controller = $controller;
+        $this->dispatcher = $dispatcher;
     }
 
     public function onKernelException(GetResponseForExceptionEvent $event)
@@ -20,10 +22,30 @@ class GestionErreur
         // nous récupérons l'objet exception depuis l'évènement reçu
         $exception = $event->getException();
         $response = new Response();
-        if (preg_match('/NotFoundHttpException/',get_class($exception)) == 1)
+        if (preg_match('/NotFoundHttpException/',get_class($exception)) === 1)
         {
-            $message = $this->controller->routeNotFoundAction($this->templating);
-            //$message = $this->templating->render('EuroLiteriestructureBundle:Main:error404.html.twig');
+            if ($this->dispatcher->isClientSite())
+            {
+                $message = $this->templating->render($this->dispatcher->getControllerPath().'Error:error404.html.twig');
+                
+            }else
+            {
+                $message = $this->templating->render('yomaahBundle:Error:error404.html.twig');
+            }
+
+        }else if (preg_match('/AccessDeniedHttpException/', get_class($exception)) === 1)
+        {
+            if ($this->dispatcher->isClientSite())
+            {
+                $gestionMenu = $this->dispatcher->getSitePath().'\\'.$this->dispatcher->getControllers().'\\Classes\\GestionMenu';
+                $param = $gestionMenu::getOnException();
+                $message = $this->templating->render($this->dispatcher->getControllerPath().'Error:error403.html.twig', $param);
+                
+            }else
+            {
+                $message = $this->templating->render('yomaahBundle:Error:error403.html.twig');
+            }
+
         }else
         {
             $message = $exception->getMessage();

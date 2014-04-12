@@ -16,8 +16,8 @@ class AjaxController extends Controller
     public function updateArticleAction ()
     {
         $bundleDispatcher = $this->get('bundleDispatcher');
-        if ($bundleDispatcher->isAdmin())
-        {
+        //if ($bundleDispatcher->isAdmin())
+        //{
             if (!($bundleDispatcher->isTestSite()))
             {
                 $request = $this->container->get('request');
@@ -34,18 +34,18 @@ class AjaxController extends Controller
             }
             if ($getSet !== false && $content != "")
             {
-                if ((substr_compare($article->$getSet['getter'](), $content, 0) != 0))
-                {
+                //if ((substr_compare($article->$getSet['getter'](), $content, 0) != 0))
+                //{
                     $article->$getSet['setter']($content);
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($article);
                     $em->flush();
                     return new Response();
 
-                }else
-                {
-                    return new Response('Deja enregistré');
-                }
+                //}else
+                //{
+                    //return new Response('Deja enregistré');
+                //}
             }else if ($content == "")
             {
                 return new Response('Le titre ne peut pas être vide !');
@@ -53,7 +53,7 @@ class AjaxController extends Controller
             {
                 return new Response('Erreur : mauvais champ !');
             }
-        }
+        //}
 
     }
 
@@ -171,8 +171,9 @@ class AjaxController extends Controller
         {
             $request = $this->get('request');
             $param['lien'] = $request->query->get('lien');
-            if ($bundleDispatcher->isClientSite() && preg_match('/pagesAdmin/', $param['lien']) == 0)
+            if ($bundleDispatcher->isClientSite() && preg_match('/pagesAdmin/', $param['lien']) === 0)
             {
+                $param['id'] = $this->request->get('id');
                 return $this->forward($bundleDispatcher->getControllerPath().'Main:getAdminContent', array('param' => $param));
 
             }else if (preg_match('/pagesAdmin/', $param['lien']))
@@ -180,9 +181,6 @@ class AjaxController extends Controller
                 $pages = $this->getDoctrine()->getRepository('yomaahBundle:Page')->findPage($bundleDispatcher->getIdSite());
                 return new JsonResponse($pages);
 
-            }else
-            {
-                
             }
         }
     }
@@ -190,9 +188,9 @@ class AjaxController extends Controller
     public function getAdminContentStructureAction()
     {
         $bundleDispatcher = $this->get('bundleDispatcher');
+        $param = $this->get('request')->request->all();
         if ($bundleDispatcher->isAdmin())
         {
-            $param['lien'] = $this->get('request')->request->get('lien');
             if ($bundleDispatcher->isClientSite() && preg_match('/pagesAdmin/', $param['lien']) == 0)
             {
                 return $this->forward($bundleDispatcher->getControllerPath().'Main:getAdminContentStructure', array('param' => $param));
@@ -207,6 +205,27 @@ class AjaxController extends Controller
                 /**
                  * Pour le site principal
                  */
+            }
+        }else
+        {
+            if ($bundleDispatcher->isClientSite())
+            {
+                return $this->forward($bundleDispatcher->getControllerPath().'Main:getAdminContentStructure', array('param' => $param));
+            }
+        }
+    }
+    public function atteindreAction()
+    {
+        $dispatcher = $this->get('bundleDispatcher');
+        $request = $this->get('request');
+        if ($dispatcher->isAdmin())
+        {
+            $param['lien'] = $request->request->get('lien');
+            $tmp = explode('//', $request->getUri());
+            $param['url'] = $tmp[0].'//'.$request->getHttpHost().$request->getBaseUrl();
+            if ($dispatcher->isClientSite())
+            {
+                return $this->forward($dispatcher->getControllerPath().'Main:atteindre', array('param' => $param));
             }
         }
     }

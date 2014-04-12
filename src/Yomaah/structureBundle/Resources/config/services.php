@@ -20,6 +20,11 @@ $container->setDefinition(
 
 
  */
+$gestionErreur= new Definition('Yomaah\structureBundle\Classes\GestionErreur',
+    array(new Reference('templating'), new Reference('bundleDispatcher')));
+$gestionErreur->addTag('kernel.event_listener', array('event' => 'kernel.exception', 'method' => 'onKernelException'));
+$container->setDefinition('gestionErreur', $gestionErreur);
+
 $container->setDefinition('gestionMenu',
     new Definition ('Yomaah\structureBundle\Classes\GestionMenu',
         array(new Reference('doctrine.orm.entity_manager'), new Reference('bundleDispatcher'), new Reference('database_connection')))
