@@ -194,6 +194,7 @@ class BundleDispatcher
     {
         $controllers['literie'] = 'structureBundle';
         $controllers['yomaah'] = 'structureBundle';
+        $controllers['toilettage'] = 'structureBundle';
         return $controllers;
     }
 
@@ -201,6 +202,7 @@ class BundleDispatcher
     {
         $sitePath['literie'] = 'EuroLiterie';
         $sitePath['yomaah'] = 'Yomaah';
+        $sitePath['toilettage'] = 'Toilettage';
         return $sitePath;
     }
 

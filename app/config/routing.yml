@@ -1,3 +1,7 @@
+toilettagestructure:
+    resource: "@ToilettagestructureBundle/Resources/config/routing.php"
+    prefix:   /
+
 yomaah_espace_client:
     resource: "@YomaahEspaceClientBundle/Resources/config/routing.php"
     prefix:   /
