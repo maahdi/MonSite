@@ -73,10 +73,22 @@ class BundleDispatcher
                     }
                 }
             }
+        }else
+        {
+            if ($this->session->has('idSite') && $this->session->has('site'))
+            {
+                $this->idSite = $this->session->get('idSite');
+                $this->site = $this->session->get('site');
+            }
+            if ($this->session->has('zoneAdmin'))
+            {
+                $this->admin = true;
+            }
         }
         $this->controllers = $this->constructControllers();
         $this->sitePath = $this->constructSitePath();
     }
+
     public function isAuthenticated()
     {
         if ($this->secure->getToken()->isAuthenticated())
@@ -131,13 +143,19 @@ class BundleDispatcher
     {
         $this->site = 'yomaah';
         $this->idSite = null;
-        if ($this->session->has('site') && $this->session->has('idSite') && $this->session->has('siteAdmin'))
+        if ($this->session->has('site') && $this->session->has('idSite'))
         {
             $this->session->remove('site');
             $this->session->remove('idSite');
+        }
+        if ($this->session->has('siteAdmin'))
+        {
+
             $this->session->remove('siteAdmin');
+            
         }
     }
+
     public function getSite()
     {
         return $this->site;
@@ -175,7 +193,7 @@ class BundleDispatcher
 
     public function testException()
     {
-        if ($this->secure->getToken() == null)
+        if ($this->secure->getToken() === null)
         {
             return true;
         }else

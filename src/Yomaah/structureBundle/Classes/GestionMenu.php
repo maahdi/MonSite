@@ -81,20 +81,46 @@ class GestionMenu
 
         }else
         {
-            if ($this->dispatcher->getSite() != 'yomaah' && $this->dispatcher->isAdmin())
-            {
-                return $this->getClientMenu('clientAdmin');
+            //if ($this->dispatcher->isClientSite() && $this->dispatcher->isAdmin())
+            //{
+                //return $this->getClientMenu('clientAdmin');
 
-            }else if ($this->dispatcher->getSite() != 'yomaah' && $this->dispatcher->isAdmin() === false)
-            {
-                return $this->getClientMenu('normalClient');
+            //}else if ($this->dispatcher->isClientSite() && $this->dispatcher->isAdmin() === false)
+            //{
+                //return $this->getClientMenu('normalClient');
                 
-            }else
+            //}
+            if ($this->dispatcher->getDeployed() === false)
             {
-                return $this->getMenuPrincipal('normal');
+                if ($this->dispatcher->isAdmin() && $this->dispatcher->isClientSite() && $this->dispatcher->isSuperAdmin() === false)
+                {
+                    $menu = $this->getClientMenu('clientAdmin');
+                    $menuP = $this->getMenuPrincipal('erreur', array('connectClient' => true, 'connect' => true));
+
+                }else if ($this->dispatcher->isAdmin() === false && $this->dispatcher->isClientSite())
+                {
+                    $menu = $this->getClientMenu('normalClient');
+                    $menuP = $this->getMenuPrincipal('erreur', array('connectClient' => true, 'connect' => true));
+
+                }else if ($this->dispatcher->isAdmin() && $this->dispatcher->isClientSite() === false)
+                {
+                    $menu = array();
+                    $menuP = $this->getMenuPrincipal('erreur', array('connectClient' => true));
+
+                }else if ($this->dispatcher->isAdmin() === false && $this->dispatcher->isClientSite() === false)
+                {
+                    $menu = array();
+                    $menuP = $this->getMenuPrincipal('erreur');
+                    
+                }else if ($this->dispatcher->isSuperAdmin())
+                {
+                    $menu = array();
+                    $menuP = $this->getMenuPrincipal('admin');
+
+                }
+                return array_merge($menuP, $menu);
             }
         }
-
     }
 
     public function getTestMenu()
@@ -122,13 +148,14 @@ class GestionMenu
             $menus['left'] = $mLeft;
             $menus['right'] = $mRight;
             return $this->getParam('admin', $menus, $append);
+
         }else
         {
             $mLeft = $this->getMenu('left','Menu', true);
             $mRight = $this->getMenu('right','Menu', true);
             $menus['left'] = $mLeft;
             $menus['right'] = $mRight;
-            return $this->getParam('normal', $menus, $append);
+            return $this->getParam($name, $menus, $append);
         }
 
     }
@@ -162,9 +189,9 @@ class GestionMenu
         {
             $retour = array('menus' => $menus, 'position' => 'Erreur');
         }
-        if ($this->dispatcher->isAuthenticated())
+        if ($this->dispatcher->testException() === false)
         {
-            if (!(isset($retour['connect'])))
+            if (!(isset($retour['connect'])) && $this->dispatcher->isAuthenticated())
             {
                 $retour['connect'] = true;
             } 
@@ -230,6 +257,7 @@ class GestionMenu
         if ($position == 'left')
         {
             $fn = 'getLeft'.$menu;
+
         }else if ($position == 'right')
         {
             $fn = 'getRight'.$menu;

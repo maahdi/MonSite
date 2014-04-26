@@ -28,6 +28,7 @@ class MainController extends Controller
             }
         }
     }
+
     public function accueilAdminAction()
     {
         $secure = $this->get('security.context');

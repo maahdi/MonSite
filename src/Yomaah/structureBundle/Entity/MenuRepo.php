@@ -18,7 +18,7 @@ class MenuRepo extends EntityRepository
         {
             return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=0')->getResult();
             
-        }else if ($param['idSite'] == null)
+        }else if ($param['idSite'] === null)
         {
             return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=0 and m.site is null')->getResult();
             
@@ -28,19 +28,15 @@ class MenuRepo extends EntityRepository
                 ->setParameter('site', $param['idSite'])
                 ->getResult();
         }
-        /**
-         * En prod
-         * return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=0')->getResult();
-         **/
     }
 
     public function getRightMenu(Array $param)
     {
-        if ($param['idSite'] == null)
+        if ($param['idSite'] === null)
         {
             return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=1 and m.site is null')->getResult();
 
-        }else if ($param['idSite'] == false)
+        }else if ($param['idSite'] === false)
         {
             return $this->getEntityManager()->createQuery('select m from yomaahBundle:Menu m where m.position=1')->getResult();
             
