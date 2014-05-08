@@ -15,4 +15,7 @@ $collection->add('admin_login', new Route('/admin', array(
 $collection->add('login_check', new Route('/login_check',array()));
 $collection->add('logout', new Route('/logout',array()));
 
+$collection->add('admin_test', new Route('/testFunction', array(
+    '_controller' => 'YomaahconnexionBundle:Connexion:test',
+)));
 return $collection;
