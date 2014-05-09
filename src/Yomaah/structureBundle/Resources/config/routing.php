@@ -13,7 +13,7 @@ $collection->add('yomaah_cv', new Route('/cv', array(
     '_controller' => 'yomaahBundle:Main:cv',
 )));
 
-$collection->add('yomaah_projets', new Route('/projets', array(
+$collection->add('yomaah_projet', new Route('/projet', array(
     '_controller' => 'yomaahBundle:Main:projet',
 )));
 

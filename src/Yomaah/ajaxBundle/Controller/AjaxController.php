@@ -774,4 +774,18 @@ class AjaxController extends Controller
             }
         }
     }
+
+    public function getInterfaceAction()
+    {
+        $interface = $this->get('interfaceBuilder');
+        $interface->loadConf();
+        $this->getContentAction();
+        return new Response($interface->getInterface()->getHtml());
+    }
+    public function getContentAction()
+    {
+        $id = $this->get('request')->request->get('id');
+        $interface = $this->get('interfaceBuilder');
+        $interface->getToolBar('marques');
+    }
 }

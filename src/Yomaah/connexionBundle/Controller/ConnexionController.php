@@ -5,12 +5,6 @@ namespace Yomaah\connexionBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Response;
-use Yomaah\connexionBundle\Classes\NavBar;
-use Yomaah\connexionBundle\Classes\ToolBar;
-use Yomaah\connexionBundle\Classes\DisplayContent;
-use Yomaah\connexionBundle\Classes\AdminLayout;
-use Yomaah\connexionBundle\Classes\Element;
-use Yomaah\connexionBundle\Classes\Onglet;
 
 class ConnexionController extends Controller
 {
@@ -50,12 +44,19 @@ class ConnexionController extends Controller
         return $this->render($template, $param);
     }
 
-    public function testAction()
+    public function adminAction($path)
     {
-
-        $layout = new AdminLayout(new NavBar(), new ToolBar(), new DisplayContent(new Element('article', null, 'displayContent'), 'accueil'));
-
-        return new Response($layout->getHtml());
-        
+        $tmp = preg_split('/_/', $path);
+        $dispatcher = $this->get('bundleDispatcher');
+        if ($dispatcher->isClientSite())
+        {
+            $params = $this->get($dispatcher->getSite().'Controller')->getAdminParams($path, $this->getDoctrine(), $dispatcher);
+            return $this->render($dispatcher->getControllerPath().'Main:'.$tmp[1].'.html.twig', $params);
+        }else
+        {
+            $params = $this->get('yomaahController')->getAdminParams($path, $this->getDoctrine(), $dispatcher);
+            return $this->render('yomaahBundle:Main:'.$tmp[1].'.html.twig', $params);
+        }
     }
+
 }

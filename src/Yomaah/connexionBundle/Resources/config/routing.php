@@ -18,4 +18,8 @@ $collection->add('logout', new Route('/logout',array()));
 $collection->add('admin_test', new Route('/testFunction', array(
     '_controller' => 'YomaahconnexionBundle:Connexion:test',
 )));
+
+$collection->add('admin', new Route('/admin/{path}', array(
+    '_controller' => 'YomaahconnexionBundle:Connexion:admin',
+)));
 return $collection;

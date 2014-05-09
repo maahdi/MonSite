@@ -3,7 +3,11 @@
             <ul class="menu" id="menu-left">
             {%for index, menu in menus if index == 'left'%}
                 {% for left in menu%}
+                {%if (superAdmin is defined and superAdmin)%}
+                    <li><a href="{{path('admin', {'path' : left.path})}}">{{left.name}}</a>
+                {%else%}
                     <li><a href="{{path(left.path)}}">{{left.name}}</a>
+                {%endif%}
                         {%if left.sousMenu is defined%}
                             <ul>
                             {%for ss in left.sousMenu%}

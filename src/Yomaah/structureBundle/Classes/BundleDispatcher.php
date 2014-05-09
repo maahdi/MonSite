@@ -39,47 +39,38 @@ class BundleDispatcher
         $this->secure = $secure;
         $this->idSite = null;
         $this->admin = false;
+
+        if ($this->session->has('idSite') && $this->session->has('site'))
+        {
+            $this->idSite = $this->session->get('idSite');
+            $this->site = $this->session->get('site');
+        }
+
         if ($secure->getToken() != null)
         {
-            $user = $secure->getToken()->getUser();
-            if ($this->deployed)
+            if ($this->deployed === false)
             {
-                if ($secure->isGranted('ROLE_ADMIN'))
+                if ($secure->isGranted('ROLE_SUPER_ADMIN'))
                 {
                     $this->admin = true;
-                }
-            }else
-            {
-                
-                if ($this->session->has('idSite') && $this->session->has('site'))
-                {
-                    $this->idSite = $this->session->get('idSite');
-                    $this->site = $this->session->get('site');
-                }
-                if ($this->secure->isGranted('ROLE_SUPER_ADMIN'))
-                {
-                    if ($this->session->has('siteAdmin') && $this->session->has('zoneAdmin'))
-                    {
-                        if ($this->session->get('siteAdmin') && $this->session->get('zoneAdmin'))
-                        {
-                            $this->admin = true;
-                        }
-                    }                    
-                }else if ($this->secure->isGranted('ROLE_ADMIN'))
+
+                }else if ($secure->isGranted('ROLE_ADMIN'))
                 {
                     if ($this->session->has('zoneAdmin'))
                     {
                         $this->admin = true;
                     }
                 }
+                
+            }else if ($this->deployed)
+            {
+                if ($secure->isGranted('ROLE_ADMIN') && $this->deployed)
+                {
+                    $this->admin = true;
+                }
             }
         }else
         {
-            if ($this->session->has('idSite') && $this->session->has('site'))
-            {
-                $this->idSite = $this->session->get('idSite');
-                $this->site = $this->session->get('site');
-            }
             if ($this->session->has('zoneAdmin'))
             {
                 $this->admin = true;
@@ -103,21 +94,17 @@ class BundleDispatcher
         }
     }
 
+
     public function isSuperAdmin()
     {
-        if ($this->session->has('siteAdmin'))
+        if ($this->secure->isGranted('ROLE_SUPER_ADMIN') && $this->deployed)
         {
-            if ($this->session->get('siteAdmin'))
-            {
-                return true;
-            }else
-            {
-                return false;
-            }
-        }else
-            {
-                return false;
-            }
+            return false;
+
+        }else if ($this->secure->isGranted('ROLE_SUPER_ADMIN') && $this->deployed === false)
+        {
+            return true;
+        }
     }
 
     public function setAdmin()
@@ -131,28 +118,14 @@ class BundleDispatcher
         }
     }
 
-    public function setFromAdmin()
-    {
-        if ($this->session->has('siteAdmin') === false)
-        {
-            $this->session->set('siteAdmin', true);
-        }
-    }
-
     public function unsetSite()
     {
         $this->site = 'yomaah';
         $this->idSite = null;
         if ($this->session->has('site') && $this->session->has('idSite'))
         {
-            $this->session->remove('site');
-            $this->session->remove('idSite');
-        }
-        if ($this->session->has('siteAdmin'))
-        {
-
-            $this->session->remove('siteAdmin');
-            
+            $this->session->set('site', 'yomaah');
+            $this->session->set('idSite', null);
         }
     }
 
@@ -231,6 +204,13 @@ class BundleDispatcher
 
     public function isAdmin()
     {
+        //if ($this->secure->isGranted('ROLE_ADMIN'))
+        //{
+            //return true;
+        //}else
+        //{
+            //return false;
+        //}
         return $this->admin;
     }
 

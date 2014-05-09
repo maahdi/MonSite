@@ -1,5 +1,5 @@
 <?php
-namespace Yomaah\connexionBundle\Classes;
+namespace Yomaah\ajaxBundle\Classes;
 
 class Onglet extends AbsElement
 {
@@ -8,7 +8,7 @@ class Onglet extends AbsElement
 
     public function __construct($titre, $id)
     {
-        $close = new Element('figure', new Element('img' , null, null, array('src' => 'images/ici.png')), 'close');
+        $close = new Element('figure', new Image('fermer.png'), 'close');
         $titre = new Element('h1', $titre);
         parent::__construct($this->_name, array($titre, $close), $this->_class, array('id' => $id));
     }

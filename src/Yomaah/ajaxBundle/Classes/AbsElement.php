@@ -1,5 +1,5 @@
 <?php
-namespace Yomaah\connexionBundle\Classes;
+namespace Yomaah\ajaxBundle\Classes;
 
 abstract class AbsElement
 {
@@ -16,6 +16,21 @@ abstract class AbsElement
         $this->attributes = $attributes;
         $this->element = $value;
     }
+    public function addElement(AbsElement $element)
+    {
+        if (is_array($this->element))
+        {
+            $this->element[] = $element;
+        }else if (is_object($this->element))
+        {
+            $tmp = $this->element;
+            $this->element = array($tmp, $element);
+        }
+    }
+    public function replaceElement($element)
+    {
+        $this->element = $element;
+    }
 
     protected function endOfStructure()
     {
@@ -31,6 +46,10 @@ abstract class AbsElement
         }
     }
     public function addClass($class)
+    {
+        $this->class .= ' '.$class;
+    }
+    public function replaceClass($class)
     {
         $this->class = $class;
     }

@@ -1,3 +1,4 @@
+
 toilettagestructure:
     resource: "@ToilettagestructureBundle/Resources/config/routing.php"
     prefix:   /

@@ -17,5 +17,9 @@ $container->setDefinition(
         )
     )
 );
-
 */
+$container->setDefinition('confBuilder',
+    new Definition('Yomaah\ajaxBundle\Classes\ConfBuilder', array(new Reference('bundleDispatcher'))));
+
+$container->setDefinition('interfaceBuilder',
+    new Definition('Yomaah\ajaxBundle\Classes\InterfaceBuilder', array(new Reference('confBuilder'))));

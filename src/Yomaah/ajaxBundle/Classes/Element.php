@@ -1,5 +1,5 @@
 <?php
-namespace Yomaah\connexionBundle\Classes;
+namespace Yomaah\ajaxBundle\Classes;
 
 class Element extends AbsElement 
 {
@@ -17,9 +17,19 @@ class Element extends AbsElement
     {
         return parent::getAttributes($name);
     }
+
     public function setAttributes($name, $value)
     {
         parent::setAttributes($name, $value);
     }
     
+    public function replaceElement($element)
+    {
+        parent::replaceElement($element);
+    }
+
+    public function addElement(AbsElement $element)
+    {
+        parent::addElement($element);
+    }
 }

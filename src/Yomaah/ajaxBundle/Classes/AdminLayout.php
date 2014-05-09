@@ -1,5 +1,5 @@
 <?php
-namespace Yomaah\connexionBundle\Classes;
+namespace Yomaah\ajaxBundle\Classes;
 
 class AdminLayout
 {

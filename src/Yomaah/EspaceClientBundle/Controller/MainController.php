@@ -12,7 +12,6 @@ class MainController extends Controller
         $dispatcher = $this->get('bundleDispatcher');
         if ($secure->getToken() !== null)
         {
-            $user = $secure->getToken()->getUser();
             $dispatcher->unsetSite();
             if ($secure->isGranted('ROLE_SUPER_ADMIN'))
             {
@@ -20,6 +19,7 @@ class MainController extends Controller
 
             }else if ($secure->isGranted('ROLE_ADMIN'))
             {
+                $user = $secure->getToken()->getUser();
                 $param['articles'] = $this->getDoctrine()->getRepository('yomaahBundle:Article')
                         ->findByPage(array('pageUrl' => 'espace_client_accueil', 'idSite' => $dispatcher->getIdSite()));
                 $param['sites'] = $user->getSites();       
@@ -38,14 +38,12 @@ class MainController extends Controller
         {
             if ($secure->isGranted('ROLE_SUPER_ADMIN'))
             {
-                $dispatcher->unsetSite();
                 $dispatcher->setAdmin();
                 $param['users'] = $this->getDoctrine()->getRepository('YomaahconnexionBundle:User')->findByGroup(array('idGroup' => 400));
                 //$param['baseUrl'] = 'http://'.$request->getHttpHost().$request->getBaseUrl().'/';
                 return $this->render('YomaahEspaceClientBundle:Main:accueilAdmin.html.twig', $param);
             }
         }
-
     }
 
     public function getSiteAction($site)
@@ -58,7 +56,6 @@ class MainController extends Controller
             $dispatcher->setSite($tmp[0]);
             $tmpsite = $this->getDoctrine()->getRepository('yomaahBundle:Site')->findOneBy(array('nomSite' => $tmp[0]));
             $dispatcher->setIdSite($tmpsite->getIdSite());
-            $dispatcher->setFromAdmin();
 
         }else if ($secure->getToken() != null && $secure->isGranted('ROLE_ADMIN'))
         {

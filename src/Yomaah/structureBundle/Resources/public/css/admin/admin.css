@@ -1,0 +1,203 @@
+﻿.admin-btn
+{
+    position : fixed;
+    display:block;
+    width: 3em;
+    float : right;
+    height:3em;
+    background-image: url('../../images/admin/btnAdmin.jpg');
+    background-size : 100% 100%;
+    top:3em;
+    z-index:100;
+}
+
+.AdminPanel
+{
+    background-color:#a5aabf;
+    top:3em;
+    position : absolute;
+    display:none;
+    width:100%;
+    height:100%;
+    left:200em;
+    padding:0.8em;
+
+}
+.navBar,
+.toolBar,
+.display
+{
+    position:relative;
+    float:left;
+    display:block;
+    background-color : #d0cbcb;
+    border : 1px solid black;
+}
+.navBar
+{
+    width : 20%;
+    height:100%;
+    padding:0.7em;
+    -webkit-border-top-left-radius: 3px;
+    -webkit-border-bottom-left-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    -moz-border-radius-bottomleft: 3px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+.toolBar
+{
+    -webkit-border-top-right-radius: 3px;
+    -moz-border-radius-topright: 3px;
+    border-top-right-radius: 3px;
+    width:80%;
+    height:4%;
+}
+.display
+{
+    width : 80%;
+    -webkit-border-bottom-right-radius: 3px;
+    -moz-border-radius-bottomright: 3px;
+    border-bottom-right-radius: 3px;
+    height:96%;
+    padding:0.6em;
+}
+
+.navBar-btn,
+.onglet,
+.content
+{
+    background-color:#a5aabf;
+}
+.ongletBar
+{
+    height : 3%;
+}
+.content
+{
+    height : 97%;
+    border : 1px solid black;
+    -webkit-border-radius: 5px;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius: 5px;
+    -moz-border-radius-topleft: 0;
+    border-radius: 5px;
+    border-top-left-radius: 0;
+    padding : 1em;
+}
+.content h2
+{
+    width : 100%;
+    height: 3em;
+    text-align : center;
+}
+.ongletBar,
+.content
+{
+    position :relative;
+    float:left;
+    width:100%;
+}
+.onglet
+{
+    width:10%;
+    border: 1px solid black;
+    height : 100%;
+    line-height:2em;
+    padding :0.5em;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.onglet h1,
+.close
+{
+    display:inline-block;
+    position : relative;
+}
+.onglet h1
+{
+    /*display:block;*/
+    width : 80%;
+    height : 100%;
+    padding-left : 1em;
+    top:-0.5em;
+    float:left;
+    font-size : 1.2em;
+}
+.close
+{
+    background-color : white;
+    width:1em;
+    height:1em;
+    top:-0.4em;
+    left : 0.3em;
+    float:right;
+    border :1px solid black;
+    padding:0.05em;
+}
+.close img
+{
+    display:block;
+    top : -0.8em;
+    height:90%;
+    width:90%;
+}
+
+.close,
+.navBar-btn
+{
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+.navBar-btn,
+.close,
+.admin-btn,
+.onglet
+{
+    cursor : pointer;
+}
+.ongletFocus
+{
+    width:12%;
+}
+.ongletFocus,
+.focus
+{
+    background-color : white;
+}
+.focus .close
+{
+    background-color :#a5aabf;
+}
+.navBar-btn,
+.onglet h1
+{
+    -webkit-transition: color .2s ease-in;
+    -moz-transition: color .2s ease-in;
+    -o-transition: color .2s ease-in;
+    transition: color .2s ease-in;
+}
+.navBar-btn
+{
+    width : 100%;
+    line-height: 3em;
+    position : relative;
+    margin-bottom:0.9em;
+    box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
+    -moz-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
+    -webkit-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
+    text-align:center;
+}
+.onglet:hover > h1
+{
+    color : #1c4ca7;
+}
+.navBar-btn:hover
+{
+    color : #1c4ca7;
+}

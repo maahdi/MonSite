@@ -1,6 +1,7 @@
 <?php
 namespace Yomaah\structureBundle\Classes;
 
+
 /**
  * Extension Twig pour remplir les variables pour le menu automatiquement
  *

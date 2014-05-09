@@ -68,4 +68,8 @@ $collection->add('ajax_imagesSearch', new Route('/ajax/imagesSearch', array(
 $collection->add('ajax_atteindre', new Route('/ajax/atteindre', array(
     '_controller' => 'YomaahajaxBundle:Ajax:atteindre'),
     array('_method' => 'POST')));
+
+$collection->add('ajax_getInterface', new Route('/ajax/getInterface', array(
+    '_controller' => 'YomaahajaxBundle:Ajax:getInterface'),
+    array('_method' => 'POST')));
 return $collection;

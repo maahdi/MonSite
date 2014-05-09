@@ -20,6 +20,10 @@ $container->setDefinition(
 
 
  */
+$container->setDefinition('_yomaahController', 
+    new Definition('Yomaah\structureBundle\Controller\MainController'));
+
+
 $gestionErreur= new Definition('Yomaah\structureBundle\Classes\GestionErreur',
     array(new Reference('templating'), new Reference('bundleDispatcher')));
 $gestionErreur->addTag('kernel.event_listener', array('event' => 'kernel.exception', 'method' => 'onKernelException'));
