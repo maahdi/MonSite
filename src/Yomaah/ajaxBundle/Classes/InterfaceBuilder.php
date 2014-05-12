@@ -16,6 +16,16 @@ class InterfaceBuilder
         return new Element($name, $contains, $class, $attributs);
     }
 
+    public function getNewForJson($id)
+    {
+        $class = $this->getByXpath('//navBar[@id="'.$id.'"]/displayContent/distinctClass');
+        $title = $this->getByXpath('//navBar[@id="'.$id.'"]/title');
+        $tmp = DisplayContent::getNewForJson((string) $class[0],(string) $title[0], $id);
+        $retour['onglet'] = $tmp['onglet']->getHtml();
+        $retour['content'] = $tmp['content']->getHtml();
+        return $retour;
+    }
+
     public function getInterface()
     {
         $tmp = array();
@@ -65,6 +75,10 @@ class InterfaceBuilder
     }
     public function getDisplayContent()
     {
+        $nav = $this->getByXpath('//navBar[@id="magasin"]');
+        foreach($nav as $html)
+        {
+        }
         
     }
     public function getNavBarButtons()

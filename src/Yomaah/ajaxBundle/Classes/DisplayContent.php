@@ -15,15 +15,20 @@ class DisplayContent extends AbsElement
             $distinctClass = 'accueil';
             $title = 'Accueil';
             $message = new Element('h2', 'Bienvenue dans l\'interface de gestion');
-            $onglet = new Element('section', new Onglet($title, $distinctClass), 'ongletBar');
+            $input = new Element('input', null, null, array('value'  => 'accueil', 'type' => 'hidden'));
+            $onglet = new Onglet($title, $distinctClass);
+            $onglet->addElement($input);
+            $ongletBar = new Element('section', $onglet , 'ongletBar');
             $content = new Element('section', $message , $distinctClass.' content');
-            parent::__construct($this->_balise, array($onglet, $content), $this->_class);
+            parent::__construct($this->_balise, array($ongletBar, $content), $this->_class);
         }
     }
 
-    public function getNewForJson($distinctClass, $title, AbsElement $element)
+    static function getNewForJson($distinctClass, $title, $id, AbsElement $element = null)
     {
+        $input = new Element('input', null, null, array('value'  => $id, 'type' => 'hidden'));
         $onglet = new Onglet($title, $distinctClass);
+        $onglet->addElement($input);
         $content = new Element('section', $element , $distinctClass.' content');
         return array('onglet' => $onglet, 'content' => $content);
     }

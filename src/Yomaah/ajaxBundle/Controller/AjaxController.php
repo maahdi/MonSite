@@ -778,14 +778,21 @@ class AjaxController extends Controller
     public function getInterfaceAction()
     {
         $interface = $this->get('interfaceBuilder');
-        $interface->loadConf();
-        $this->getContentAction();
         return new Response($interface->getInterface()->getHtml());
     }
-    public function getContentAction()
+    /* GET */
+    public function getInterfaceHtmlAction()
     {
-        $id = $this->get('request')->request->get('id');
+        $id = $this->get('request')->query->get('id');
         $interface = $this->get('interfaceBuilder');
-        $interface->getToolBar('marques');
+        $tmp = $interface->getNewForJson($id);
+        return new JsonResponse($tmp);
     }
+    //public function getContentAction()
+    //{
+        //$id = $this->get('request')->request->get('id');
+        //$interface = $this->get('interfaceBuilder');
+        //$interface->getToolBar('marques');
+        //$interface->getDisplayContent();
+    //}
 }

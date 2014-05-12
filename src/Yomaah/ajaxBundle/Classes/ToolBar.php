@@ -16,7 +16,7 @@ class ToolBar extends AbsElement
         parent::replaceElement($element);
     }
 
-    public function addElement($element)
+    public function addElement(AbsElement $element)
     {
         parent::addElement($element);
     }

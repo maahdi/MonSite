@@ -1,7 +1,7 @@
 <?php
 namespace Yomaah\ajaxBundle\Classes;
 
-class Tool implements absElement
+class Tool extends AbsElement
 {
     private $_class = 'toolBar-btn';
     private $_balise = 'section';

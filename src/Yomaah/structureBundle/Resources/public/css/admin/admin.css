@@ -71,11 +71,11 @@
 }
 .ongletBar
 {
-    height : 3%;
+    height : 5%;
 }
 .content
 {
-    height : 97%;
+    height : 95%;
     border : 1px solid black;
     -webkit-border-radius: 5px;
     -webkit-border-top-left-radius: 0;
@@ -94,17 +94,24 @@
 .ongletBar,
 .content
 {
+    display : block;
     position :relative;
     float:left;
     width:100%;
 }
+.onglet,
+.content
+{
+    z-index : 99;
+}
 .onglet
 {
+    display:inline-block;
+    position : relative;
     width:10%;
     border: 1px solid black;
-    height : 100%;
-    line-height:2em;
-    padding :0.5em;
+    height:2.7em;
+    /*padding :0.5em;*/
     -webkit-border-top-left-radius: 5px;
     -webkit-border-top-right-radius: 5px;
     -moz-border-radius-topleft: 5px;
@@ -120,24 +127,24 @@
 }
 .onglet h1
 {
-    /*display:block;*/
-    width : 80%;
-    height : 100%;
+    width : 70%;
+    height : 1.7em;
     padding-left : 1em;
-    top:-0.5em;
+    vertical-align : middle;
+    top:-0.2em;
     float:left;
-    font-size : 1.2em;
+    font-size : 1.1em;
 }
 .close
 {
     background-color : white;
-    width:1em;
-    height:1em;
-    top:-0.4em;
-    left : 0.3em;
+    width:1.2em;
+    height:1.2em;
+    top:0.12em;
+    left :-0.1em;
     float:right;
     border :1px solid black;
-    padding:0.05em;
+    padding:0.10em;
 }
 .close img
 {
@@ -169,6 +176,7 @@
 .focus
 {
     background-color : white;
+    z-index : 100;
 }
 .focus .close
 {
@@ -193,11 +201,21 @@
     -webkit-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
     text-align:center;
 }
+.onglet:hover
+{
+    box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
+    -moz-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
+    -webkit-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
+}
 .onglet:hover > h1
 {
     color : #1c4ca7;
+    font-size : 1.2em;
+    /*top:-0.4em;*/
 }
 .navBar-btn:hover
 {
+    font-size: 1.5em;
+    font-weight:bold;
     color : #1c4ca7;
 }

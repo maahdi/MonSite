@@ -1,7 +1,8 @@
-﻿<?php
+<?php
 namespace Yomaah\ajaxBundle\Classes;
 
-class Image extends absElement
+
+class Image extends AbsElement
 {
     private $_balise = 'img';
     private $attributes = array ('alt' => null, 'src' => null);
