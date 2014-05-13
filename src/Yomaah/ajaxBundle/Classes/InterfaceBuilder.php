@@ -16,14 +16,73 @@ class InterfaceBuilder
         return new Element($name, $contains, $class, $attributs);
     }
 
-    public function getNewForJson($id)
+    public function getNewInterface($id)
+    {
+        $display = new DisplayContent();
+        $class = $this->getDisplayClass($id);
+        $title = $this->getDisplayTitle($id);
+        return $display->getNewForJson($class, $title, $id);
+    }
+
+    public function getDisplayTitle($id)
+    {
+        $title = $this->getByXpath('//navBar[@id="'.$id.'"]/title');
+        //if ($title[0])
+        //{
+            return (string) $title[0];
+            
+        //}else
+        //{
+            //return false;
+        //}
+    }
+
+    public function getDisplayClass($id)
     {
         $class = $this->getByXpath('//navBar[@id="'.$id.'"]/displayContent/distinctClass');
-        $title = $this->getByXpath('//navBar[@id="'.$id.'"]/title');
-        $tmp = DisplayContent::getNewForJson((string) $class[0],(string) $title[0], $id);
-        $retour['onglet'] = $tmp['onglet']->getHtml();
-        $retour['content'] = $tmp['content']->getHtml();
+        //if ($class[0])
+        //{
+            return (string) $class[0];
+            
+        //}else
+        //{
+            //return false;
+        //}
+    }
+    public function getDisplayStructure($id)
+    {
+        $tmp['type'] = $this->getByXpath('//navBar[@id="'.$id.'"]/displayContent/type');
+        $template = $this->getByXpath('//navBar[@id="'.$id.'"]/displayContent/template');
+        $tmp['html'] = $this->confBuilder->getTemplate((string)$template[0]);
+        $tmp['srcUrl'] = $this->getByXpath('//navBar[@id="'.$id.'"]/displayContent/srcUrl');
+        $retour = array();
+        foreach($tmp as $key=>$value)
+        {
+            switch($key)
+            {
+            case 'html':
+                $retour[$key] = $value;
+                break;
+            case 'srcUrl':
+                $p = (string) $value[0];
+                $retour[$key] = '../../bundles/'.$p;
+                break;
+            default:
+                $retour[$key] = (string) $value[0];
+            }
+        }
         return $retour;
+    }
+
+    public function getNewInterfaceContentStructure($id)
+    {
+        return $this->getDisplayStructure($id);
+    }
+
+    public function getEntityName($id)
+    {
+        $entity = $this->getByXpath('//navBar[@id="'.$id.'"]/displayContent/entity');
+        return (string) $entity[0];
     }
 
     public function getInterface()

@@ -63,6 +63,7 @@
     padding:0.6em;
 }
 
+.miniature,
 .navBar-btn,
 .onglet,
 .content
@@ -154,6 +155,12 @@
     width:90%;
 }
 
+.admin-btn,
+.modifPanelContainer,
+.contentModifPanel textarea,
+.contentModifPanel input,
+.miniaturesContainer,
+.miniature,
 .close,
 .navBar-btn
 {
@@ -161,6 +168,7 @@
     -moz-border-radius: 5px;
     border-radius: 5px;
 }
+.miniature,
 .navBar-btn,
 .close,
 .admin-btn,
@@ -182,6 +190,7 @@
 {
     background-color :#a5aabf;
 }
+.miniature,
 .navBar-btn,
 .onglet h1
 {
@@ -201,6 +210,11 @@
     -webkit-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
     text-align:center;
 }
+.admin-btn,
+.modifPanelContainer,
+.contentModifPanel textarea,
+.contentModifPanel input,
+.miniaturesContainer,
 .onglet:hover
 {
     box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
@@ -213,9 +227,144 @@
     font-size : 1.2em;
     /*top:-0.4em;*/
 }
+
 .navBar-btn:hover
 {
     font-size: 1.5em;
     font-weight:bold;
     color : #1c4ca7;
+}
+.miniaturesContainer
+{
+    width:100%;
+    height:100%;
+    display:block;
+    position:relative;
+    overflow : auto;
+}
+.miniature
+{
+    width:15%;
+    margin : 1em;
+    height:10em;
+    display:inline-block;
+    position:relative;
+    padding:1em;
+    float:left;
+    -moz-box-shadow: 10px 10px 5px #656565;
+    -webkit-box-shadow: 10px 10px 5px #656565;
+    -o-box-shadow: 10px 10px 5px #656565;
+    box-shadow: 10px 10px 5px #656565;
+    filter:progid:DXImageTransform.Microsoft.Shadow(color='#6565', Direction=135, Strength=5);
+}
+.modifPanelContainer,
+.miniaturesContainer
+{
+    -moz-user-select : -moz-none; 
+    -moz-user-select : none ;
+    -o-user-select : none ;
+    -khtml-user-select : none; 
+    -webkit-user-select : none; 
+    -ms-user-select : none ;
+    user-select : none ;
+}
+.description .desc-title
+{
+    position:relative;
+    display:inline-block;
+    font-weight:bold;
+    margin-top:0;
+    margin-right : 0.5em;
+}
+.miniature img
+{
+    width:50%;
+    height:auto;
+    margin:0 auto;
+    position:relative;
+    display:block;
+    margin-top:1em;
+}
+.miniature:hover
+{
+    background-color:#909090;
+    color : #1c4ca7;
+}
+.modifPanelContainer
+{
+    display:block;
+    width:100%;
+    height:45%;
+    position:relative;
+    background-color:#909090;
+    border-top: 2px solid black;
+}
+.modifPanel
+{
+    width:100%;
+    height:100%;
+    overflow:auto;
+    position:relative;
+    display:block;
+}
+.adminLogo,
+.adminInput
+{
+    width:50%;
+    height:auto;
+    position : relative;
+    float:left;
+    padding:1em;
+}
+.contentModifPanel textarea,
+.contentModifPanel input
+{
+    width: 70%;
+}
+.contentModifPanel input
+{
+    line-height:2em;
+
+}
+.contentModifPanel textarea
+{
+    height:10em;
+    margin-bottom:1em;
+
+}
+.adminLogo img
+{
+    position:relative;
+    display:block;
+    width:40%;
+    margin-left:2em;
+    height:auto;
+}
+
+.description-text p
+{
+    position : relative;
+    display:inline-block;
+    
+}
+.description-text div p
+{
+    position : relative;
+    display:inline-block;
+    margin-bottom:0.0em;
+    margin-left:1em;
+}
+
+.description-text div .desc-title:first-child
+{
+    margin-top:0;
+}
+.description-text div .desc-title
+{
+    font-weight:bold;
+    margin-top:-2em;
+    width:100%;
+    float:left;
+    position:relative;
+    display:inline-block;
 }

@@ -80,4 +80,7 @@ $collection->add('ajax_getInterface', new Route('/ajax/getInterface', array(
 $collection->add('ajax_getInterfaceHtml', new Route('/ajax/getInterfaceHtml', array(
     '_controller' => 'YomaahajaxBundle:Ajax:getInterfaceHtml'),
     array('_method' => 'GET')));
+$collection->add('ajax_getInterfaceStructureObject', new Route('/ajax/getInterfaceStructureObject', array(
+    '_controller' => 'YomaahajaxBundle:Ajax:getInterfaceStructureObject'),
+    array('_method' => 'GET')));
 return $collection;

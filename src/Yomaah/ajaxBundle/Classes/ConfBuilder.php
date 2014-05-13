@@ -4,8 +4,10 @@ use Yomaah\structureBundle\Classes\BundleDispatcher;
 
 class ConfBuilder extends MyXml
 {
+    private $dispatcher;
     public function __construct(BundleDispatcher $dispatcher)
     {
+        $this->dispatcher = $dispatcher;
         $tmp = preg_split('/Yomaah/', __DIR__);
         $path = $tmp[0].$dispatcher->getSitePath().'/'.$dispatcher->getControllers().'/XML/'.$dispatcher->getSite().'.xml';
         parent::__construct($path);
@@ -37,23 +39,19 @@ class ConfBuilder extends MyXml
         return parent::getFile($file);
         
     }
-
-    public function getNavBar()
+    public function getTemplate($filename)
     {
-        
+        $tmp = preg_split('/src/', __DIR__);
+        $basePath = $tmp[0].'src/'.$this->dispatcher->getSitePath().'/'.$this->dispatcher->getControllers();
+        $path = $basePath.'/Resources/views/TemplateAdmin/'.$filename.'.html.twig';
+        if (file_exists($path))
+        {
+            return file_get_contents($path);
+            
+        }else
+        {
+            return false;
+        }
     }
 
-    public function getToolBar()
-    {
-        
-    }
-    public function getDisplayContent()
-    {
-        
-    }
-
-    public function getDialog()
-    {
-        
-    }
 }

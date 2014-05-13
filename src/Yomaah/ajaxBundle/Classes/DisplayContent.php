@@ -24,13 +24,13 @@ class DisplayContent extends AbsElement
         }
     }
 
-    static function getNewForJson($distinctClass, $title, $id, AbsElement $element = null)
+    public function getNewForJson($distinctClass, $title, $id, AbsElement $element = null)
     {
         $input = new Element('input', null, null, array('value'  => $id, 'type' => 'hidden'));
         $onglet = new Onglet($title, $distinctClass);
         $onglet->addElement($input);
         $content = new Element('section', $element , $distinctClass.' content');
-        return array('onglet' => $onglet, 'content' => $content);
+        return array('onglet' => $onglet->getHtml(), 'content' => $content->getHtml());
     }
 
     public function getHtml()

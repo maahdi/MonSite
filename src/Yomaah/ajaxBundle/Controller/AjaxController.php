@@ -164,7 +164,7 @@ class AjaxController extends Controller
         }
     }
 
-    public function getAdminContentAction()
+    public function getAdminrContentAction()
     {
         $bundleDispatcher = $this->get('bundleDispatcher');
         if ($bundleDispatcher->isAdmin())
@@ -173,7 +173,7 @@ class AjaxController extends Controller
             $param['lien'] = $request->query->get('lien');
             if ($bundleDispatcher->isClientSite() && preg_match('/pagesAdmin/', $param['lien']) === 0)
             {
-                $param['id'] = $this->request->get('id');
+                $param['id'] = $request->query->get('id');
                 return $this->forward($bundleDispatcher->getControllerPath().'Main:getAdminContent', array('param' => $param));
 
             }else if (preg_match('/pagesAdmin/', $param['lien']))
@@ -785,8 +785,24 @@ class AjaxController extends Controller
     {
         $id = $this->get('request')->query->get('id');
         $interface = $this->get('interfaceBuilder');
-        $tmp = $interface->getNewForJson($id);
+        $tmp = $interface->getNewInterface($id);
         return new JsonResponse($tmp);
+    }
+    public function getInterfaceStructureObjectAction()
+    {
+        $id = $this->get('request')->query->get('id');
+        $interface = $this->get('interfaceBuilder');
+        return new JsonResponse($interface->getNewInterfaceContentStructure($id));
+    }
+    public function getAdminContentAction()
+    {
+        $id = $this->get('request')->query->get('id');
+        $interface = $this->get('interfaceBuilder');
+        $dispatcher = $this->get('bundleDispatcher');
+        $entity = $interface->getEntityName($id);
+        $repo = $dispatcher->getSitePath().$dispatcher->getControllers().':'.$entity;
+        $donnees = $this->get('doctrine')->getRepository($repo)->findAll();
+        return new JsonResponse($donnees);
     }
     //public function getContentAction()
     //{
