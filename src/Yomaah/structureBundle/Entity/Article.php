@@ -2,12 +2,13 @@
 namespace Yomaah\structureBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  *@ORM\Entity(repositoryClass="ArticleRepo")
  *@ORM\Table(name="article")
  */
-class Article
+class Article implements JsonSerializable
 {
     /**
      *@ORM\Id
@@ -308,5 +309,17 @@ class Article
     public function getId()
     {
         return $this->id;
+    }
+    public function getDecodeContent()
+    {
+        return strip_tags($this->artContent);
+    }
+
+    public function jsonSerialize()
+    {
+        return array('artId' => $this->artId,
+                    'artTitle' => $this->artTitle,
+                    'artContent' => $this->getDecodeContent(),
+                    'srcUrl' => $this->png->getPngUrl()); 
     }
 }

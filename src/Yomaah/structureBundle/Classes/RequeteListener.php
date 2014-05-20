@@ -4,6 +4,8 @@ namespace Yomaah\structureBundle\Classes;
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Routing\Router;
+Use Yomaah\structureBundle\Classes\BundleDispatcher;
 /**
  * Le listener implemente un compteur de visite
  * en se basant sur l'adresse ip et la date de connexion
@@ -16,11 +18,16 @@ class RequeteListener
 {
     private $db;
     private $secure;
+    private $router;
+    private $dispatcher;
 
-    public function __construct(\Doctrine\DBAL\Connection $db,SecurityContextInterface $secure)
+    public function __construct(BundleDispatcher $dispatcher, Router $router, \Doctrine\DBAL\Connection $db,SecurityContextInterface $secure)
     {
         $this->db = $db;
+        $this->dispatcher = $dispatcher;
         $this->secure = $secure;
+        $this->router = $router;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -32,29 +39,87 @@ class RequeteListener
     public function onKernelRequest(GetResponseEvent $event)
     {
 		$request = $event->getRequest();
-		
+        $pathInfo = $request->getPathInfo();
+        $routes = $this->router->match($pathInfo);
+        if (preg_match('/web_profiler/', $routes['_controller']) === 0
+            && preg_match('/yomaah/', $pathInfo) === 0
+            && preg_match('/espace-client/', $pathInfo) === 0
+            && preg_match('/post-log/', $pathInfo))
+        {
+
+            $this->testRoute($request, $routes);
+
+        }else if (preg_match('/yomaah/', $pathInfo) && $request->getSession()->get('rescueSite'))
+        {
+            $this->dispatcher->unsetSite();
+        }
 		/*
 		* Passe 2 fois par ce script je pense lors de l'envoi de la toolbar symfony
 		*/
-		if (!($request->getSession()->has('secondPass')))
-		{
-			$request->getSession()->set('secondPass',true);
-			$this->setVisite($request);
-		}else if (!($request->getSession()->get('secondPass')))
-		{
-			$this->setVisite($request);
-			$request->getSession()->set('secondPass',true);
-		}else if ($request->getSession()->has('secondPass'))
-		{
-			$request->getSession()->set('secondPass',false);   
-		}
+		//if (!($request->getSession()->has('secondPass')))
+		//{
+			//$request->getSession()->set('secondPass',true);
+			//$this->setVisite($request);
+		//}else if (!($request->getSession()->get('secondPass')))
+		//{
+			//$this->setVisite($request);
+            //$this->testRoute($request);
+			//$request->getSession()->set('secondPass',true);
+		//}else if ($request->getSession()->has('secondPass'))
+		//{
+			//$request->getSession()->set('secondPass',false);   
+		//}
     } 
+
+    public function testRoute($request, $routes)
+    {
+        if ($request->getSession()->has('rescueSite')
+            && preg_match('/connexion/', $routes['_route']) === 0)
+        {
+            $url = $routes['_route'];
+            $tmp = explode('_', $url);
+            if ($this->secure->getToken() != null && $this->secure->isGranted('ROLE_SUPER_ADMIN'))
+            {
+                $request->getSession()->set('rescueSite', $tmp[0]);
+                $this->dispatcher->setSite($tmp[0]);
+                $this->dispatcher->setIdSite($this->getIdSite($tmp[0]));
+                $request->getSession()->set('rescueIdSite', $this->getIdSite($tmp[0]));
+
+            }else if ($this->secure->getToken() != null && $this->secure->isGranted('ROLE_ADMIN'))
+            {
+                if ($this->secure->isGranted('ROLE_ADMIN'))
+                {
+                    $user = $this->secure->getToken()->getUser();
+                    foreach($user->getSites() as $s)
+                    {
+                        if ($s->getNomSite() == $tmp[0])
+                        {
+                            $request->getSession()->set('rescueSite', $tmp[0]);
+                            $request->getSession()->set('rescueIdSite', $s->getIdSite());
+                            $this->dispatcher->setSite($tmp[0]);
+                            $this->dispatcher->setIdSite($s->getIdSite());
+                        }
+                    }
+                }
+            }
+            return $this->router->generate($url);
+        }
+    }
+    public function getIdSite($nom)
+    {
+        $sql = 'select idSite from site where nomSite = ?';
+        $result = $this->db->executeQuery($sql, array($nom));
+        $result->setFetchMode(\PDO::FETCH_OBJ);
+        foreach ($result as $r)
+        {
+            $idSite = $r->idSite;
+        }
+        return $idSite;
+    }
 
 	public function setVisite($request)
 	{
 		$sql = 'select max(dateConnexion) as date,adresseIp from visites where adresseIp = ?';
-	    //$sql = 'select dateConnexion as date,adresseIp from visites where adresseIp = ? and dateConnexion = (select max(dateConnexion) from visites)';
-	    
 	    $ip = $request->getClientIp();
 	    $result = $this->db->executeQuery($sql,array($ip));
 	    $result->setFetchMode(\PDO::FETCH_OBJ);

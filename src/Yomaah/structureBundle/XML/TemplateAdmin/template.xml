@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<template>
+    <srcImg>../../bundles/yomaah/images/admin/</srcImg>
+    <toolBar>
+        <class>toolBar-btn</class>
+        <button name="add-btn">
+            <container>figure</container>
+            <img>add.png</img>
+        </button>
+        <button name="att-btn">
+            <container>figure</container>
+            <img>refresh.png</img>
+        </button>
+    </toolBar>
+    <displayContent>
+        <type name="online">
+            <containers>
+                <element>
+                    <class>onlineContainer</class>
+                    <balise>section</balise>
+                    <contains>
+                        <elements>
+                            <element>
+                                <class>onlineMajBar</class>
+                                <balise>article</balise>
+                                <contains>
+                                    <elements>
+                                        <element>
+                                            <class>maj-btn onlineMajBar-btn</class>
+                                            <balise>section</balise>
+                                            <text>Mise à jour</text>
+                                        </element>
+                                    </elements>
+                                </contains>
+                            </element>
+                        </elements>
+                    </contains>
+                </element>
+            </containers>
+        </type>
+        <type name="miniatured">
+            <containers>
+                <element>
+                    <class>miniaturesContainer</class>
+                    <balise>section</balise>
+                </element>
+                <element>
+                    <class>modifPanelContainer</class>
+                    <balise>section</balise>
+                    <contains>
+                        <elements>
+                            <element>
+                                <class>buttonsPanel</class>
+                                <balise>article</balise>
+                                <contains>
+                                    <elements>
+                                        <element>
+                                            <class>modifPanel-btn sup-btn</class>
+                                            <balise>article</balise>
+                                            <text>Supprimer</text>
+                                        </element>
+                                        <element>
+                                            <class>modifPanel-btn maj-btn</class>
+                                            <balise>article</balise>
+                                            <text>Mise à jour</text>
+                                        </element>
+                                        <element>
+                                            <class>modifPanel-btn reset-btn</class>
+                                            <balise>article</balise>
+                                            <text>Reset</text>
+                                        </element>
+                                    </elements>
+                                </contains>
+                            </element>
+                        </elements>
+                    </contains>
+                </element>
+            </containers>
+        </type>
+        <type name="dragDrop">
+            <containers>
+                <element>
+                    <class>dragDrop</class>
+                    <balise>section</balise>
+                    <contains>
+                        <elements>
+                            <element>
+                                <class>majDragDropBar</class>
+                                <balise>article</balise>
+                                <contains>
+                                    <elements>
+                                        <element>
+                                            <class>drag-maj</class>
+                                            <balise>section</balise>
+                                            <contains>
+                                                <elements>
+                                                    <element>
+                                                        <class>modifDragDrop-btn maj-btn</class>
+                                                        <balise>article</balise>
+                                                        <text>Mise à jour</text>
+                                                    </element>
+                                                </elements>
+                                            </contains>
+                                        </element>
+                                    </elements>
+                                </contains>
+                            </element>
+                            <element>
+                                <class>dragDropActive</class>
+                                <balise>article</balise>
+                            </element>
+                            <element>
+                                <class>dragDropBar</class>
+                                <balise>section</balise>
+                                <contains>
+                                    <elements>
+                                        <element>
+                                            <class>dragDropBar-btn</class>
+                                            <balise>article</balise>
+                                            <contains>
+                                                <elements>
+                                                    <button>
+                                                        <class>drag-btn up</class>
+                                                        <container>figure</container>
+                                                        <img>up.png</img>
+                                                    </button>
+                                                    <button>
+                                                        <class>drag-btn down</class>
+                                                        <container>figure</container>
+                                                        <img>down.png</img>
+                                                    </button>
+                                                    <button>
+                                                        <class>drag-btn del</class>
+                                                        <container>figure</container>
+                                                        <img>poubelle_vide.png</img>
+                                                    </button>
+                                                    <button>
+                                                        <class>drag-btn upload</class>
+                                                        <container>figure</container>
+                                                        <img>upload.png</img>
+                                                    </button>
+                                                </elements>
+                                            </contains>
+                                        </element>
+                                    </elements>
+                                </contains>
+                            </element>
+                            <element>
+                                <class>dragDropInactive</class>
+                                <balise>article</balise>
+                            </element>
+                        </elements>
+                    </contains>
+                </element>
+            </containers>
+        </type>
+    </displayContent>
+</template>

@@ -4,6 +4,7 @@ namespace Yomaah\ajaxBundle\Classes;
 abstract class AbsElement
 {
     
+    protected $_conf;
     private $class;
     private $balise;
     private $element;
@@ -16,6 +17,16 @@ abstract class AbsElement
         $this->attributes = $attributes;
         $this->element = $value;
     }
+
+    protected function getByXpath($xpath)
+    {
+        if (isset($this->_conf))
+        {
+            $xml = $this->_conf->getInterfaceSrc();
+            return $xml->xpath($xpath);
+        }
+    }
+
     public function addElement(AbsElement $element)
     {
         if (is_array($this->element))
@@ -25,6 +36,9 @@ abstract class AbsElement
         {
             $tmp = $this->element;
             $this->element = array($tmp, $element);
+        }else if ($this->element === null)
+        {
+            $this->element = $element;
         }
     }
     public function replaceElement($element)

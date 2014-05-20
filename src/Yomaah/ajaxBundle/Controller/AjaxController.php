@@ -778,31 +778,75 @@ class AjaxController extends Controller
     public function getInterfaceAction()
     {
         $interface = $this->get('interfaceBuilder');
-        return new Response($interface->getInterface()->getHtml());
+        return new Response($interface->getNew('interface'));
     }
-    /* GET */
+    /* GET la toolbar et ses outils +
+     l'onglet correspondant + la structure du displayContent selon le type*/
     public function getInterfaceHtmlAction()
     {
         $id = $this->get('request')->query->get('id');
         $interface = $this->get('interfaceBuilder');
-        $tmp = $interface->getNewInterface($id);
-        return new JsonResponse($tmp);
+        return new JsonResponse($interface->getNew('displayContent', $id));
     }
+
+    /* selon le type renvoie le template associé pour formater les données */
     public function getInterfaceStructureObjectAction()
     {
         $id = $this->get('request')->query->get('id');
         $interface = $this->get('interfaceBuilder');
-        return new JsonResponse($interface->getNewInterfaceContentStructure($id));
+        return new JsonResponse($interface->getDisplayContentStructure($id));
     }
+
     public function getAdminContentAction()
     {
         $id = $this->get('request')->query->get('id');
         $interface = $this->get('interfaceBuilder');
         $dispatcher = $this->get('bundleDispatcher');
-        $entity = $interface->getEntityName($id);
-        $repo = $dispatcher->getSitePath().$dispatcher->getControllers().':'.$entity;
-        $donnees = $this->get('doctrine')->getRepository($repo)->findAll();
-        return new JsonResponse($donnees);
+        switch($interface->getTypeDisplay($id))
+        {
+        case 'online':
+        case 'miniatured':
+            $entity = $interface->getEntityName($id);
+            $response = $this->getFromEntity($dispatcher, $entity, $id);
+            break;
+        case 'dragDrop':
+            $dossiers = $interface->getDossier($id);
+            $files['active'] = self::imageSearch($dossiers['active'], $dispatcher->getSitePath().'/'.$dispatcher->getControllers());
+            $files['inactive'] = self::imageSearch($dossiers['inactive'], $dispatcher->getSitePath().'/'.$dispatcher->getControllers());
+            $response = $interface->getDragDropContent($files);
+            break;
+        }
+        return new JsonResponse($response);
+    }
+
+    public function getFromEntity($dispatcher, $entity, $id = null)
+    {
+        if ($entity['clientBundle'] && $entity['xml'] === false)
+        {
+            $repo = $dispatcher->getSitePath().$dispatcher->getControllers().':'.$entity['entity'];
+            $donnees = $this->get('doctrine')->getRepository($repo)->findForAdmin();
+        }else if ($entity['clientBundle'] && $entity['xml'])
+        {
+            if (isset($entity['repo']))
+            {
+                $repo = new $entity['repo']();
+                $donnees = $repo->findForAdmin();
+            }
+        }else
+        {
+            $repo = 'yomaahBundle:'.$entity['entity'];
+            if ($entity['tag'] !== false)
+            {
+                $search['tag'] = $entity['tag'];
+                $search['idSite'] = $dispatcher->getIdSite();
+                $search['champ'] = $entity['champ'];
+                $donnees = $this->get('doctrine')->getRepository($repo)->findForAdmin($search);
+            }else
+            {
+                $donnees = $this->get('doctrine')->getRepository($repo)->findForAdmin();
+            }
+        }
+        return $donnees;
     }
     //public function getContentAction()
     //{

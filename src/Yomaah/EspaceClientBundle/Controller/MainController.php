@@ -53,9 +53,11 @@ class MainController extends Controller
         $tmp = explode('_', $site);
         if ($secure->getToken() != null && $secure->isGranted('ROLE_SUPER_ADMIN'))
         {
+            $this->get('session')->set('rescueSite', $tmp[0]);
             $dispatcher->setSite($tmp[0]);
             $tmpsite = $this->getDoctrine()->getRepository('yomaahBundle:Site')->findOneBy(array('nomSite' => $tmp[0]));
             $dispatcher->setIdSite($tmpsite->getIdSite());
+            $this->get('session')->set('rescueIdSite', $tmpsite->getIdSite());
 
         }else if ($secure->getToken() != null && $secure->isGranted('ROLE_ADMIN'))
         {
@@ -66,6 +68,8 @@ class MainController extends Controller
                 {
                     if ($s->getNomSite() == $tmp[0])
                     {
+                        $this->get('session')->set('rescueSite', $tmp[0]);
+                        $this->get('session')->set('rescueIdSite', $s->getIdSite());
                         $dispatcher->setSite($tmp[0]);
                         $dispatcher->setIdSite($s->getIdSite());
                     }

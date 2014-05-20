@@ -19,6 +19,8 @@
     display:none;
     width:100%;
     height:100%;
+    min-height : 57em;
+    max-height : 57em;
     left:200em;
     padding:0.8em;
 
@@ -47,11 +49,44 @@
 }
 .toolBar
 {
+    padding : 0.2em;
     -webkit-border-top-right-radius: 3px;
     -moz-border-radius-topright: 3px;
     border-top-right-radius: 3px;
     width:80%;
-    height:4%;
+    height:6%;
+}
+.dragDropBar-btn figure:hover,
+.dragDropBar-btn figure:hover
+{
+    height : 3.5em;
+    width : 3.5em;
+    top : -0.3em;
+}
+.toolBar-btn:hover
+{
+    height : 2.8em;
+    margin-top:0;
+    opacity : 0.9;
+}
+.toolBar-btn
+{
+    margin-left:0.7em;
+    padding : 0.2em;
+    width : 4.5%;
+    height :2.6em;
+    float :left;
+    margin-top : 0.15em;
+    display : inline-block;
+    position :relative;
+}
+.toolBar-btn img
+{
+    width : 92%;
+    margin: 0 auto;
+    display:block;
+    position : relative;
+    height : 98%;
 }
 .display
 {
@@ -59,13 +94,16 @@
     -webkit-border-bottom-right-radius: 3px;
     -moz-border-radius-bottomright: 3px;
     border-bottom-right-radius: 3px;
-    height:96%;
+    height:94%;
     padding:0.6em;
 }
 
+.modifPanel-btn,
+.toolBar-btn,
 .miniature,
 .navBar-btn,
 .onglet,
+.onlinePanel,
 .content
 {
     background-color:#a5aabf;
@@ -84,7 +122,7 @@
     -moz-border-radius-topleft: 0;
     border-radius: 5px;
     border-top-left-radius: 0;
-    padding : 1em;
+    padding : 0.5em;
 }
 .content h2
 {
@@ -95,7 +133,7 @@
 .ongletBar,
 .content
 {
-    display : block;
+    display : inline-block;
     position :relative;
     float:left;
     width:100%;
@@ -109,10 +147,9 @@
 {
     display:inline-block;
     position : relative;
-    width:10%;
+    width:9em;
     border: 1px solid black;
     height:2.7em;
-    /*padding :0.5em;*/
     -webkit-border-top-left-radius: 5px;
     -webkit-border-top-right-radius: 5px;
     -moz-border-radius-topleft: 5px;
@@ -155,21 +192,34 @@
     width:90%;
 }
 
+.modifPanel-btn,
 .admin-btn,
-.modifPanelContainer,
 .contentModifPanel textarea,
 .contentModifPanel input,
 .miniaturesContainer,
 .miniature,
 .close,
-.navBar-btn
+.navBar-btn,
+.dragDropActive,
+.dragDropInactive,
+.dragDropActive figure,
+.dragDropInactive figure,
+.dragDrop,
+.toolBar-btn,
+.onlinePanel,
+.onlineContainer,
+.dragDropBar-btn figure,
+.dragDropBar-btn
 {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
 }
+.toolBar-btn,
 .miniature,
 .navBar-btn,
+.dragDropBar-btn figure,
+.modifPanel-btn,
 .close,
 .admin-btn,
 .onglet
@@ -178,7 +228,7 @@
 }
 .ongletFocus
 {
-    width:12%;
+    width:10em;
 }
 .ongletFocus,
 .focus
@@ -186,12 +236,16 @@
     background-color : white;
     z-index : 100;
 }
-.focus .close
+.dragDropBar-btn,
+.dragDropActive,
+.dragDropInactive,
+.ongletFocus .close
 {
     background-color :#a5aabf;
 }
 .miniature,
 .navBar-btn,
+.modifPanel-btn,
 .onglet h1
 {
     -webkit-transition: color .2s ease-in;
@@ -210,12 +264,18 @@
     -webkit-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
     text-align:center;
 }
+.dragDrop,
 .admin-btn,
+.modifPanel-btn,
 .modifPanelContainer,
 .contentModifPanel textarea,
 .contentModifPanel input,
+.dragDropBar-btn figure,
+.onlineContainer,
 .miniaturesContainer,
-.onglet:hover
+.onglet:hover,
+.onlinePanel,
+.toolBar-btn
 {
     box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
     -moz-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
@@ -225,7 +285,6 @@
 {
     color : #1c4ca7;
     font-size : 1.2em;
-    /*top:-0.4em;*/
 }
 
 .navBar-btn:hover
@@ -244,9 +303,11 @@
 }
 .miniature
 {
-    width:15%;
+    width:auto;
+    min-width : 10em;
+    max-width : 11em;
     margin : 1em;
-    height:10em;
+    height:11em;
     display:inline-block;
     position:relative;
     padding:1em;
@@ -256,7 +317,13 @@
     -o-box-shadow: 10px 10px 5px #656565;
     box-shadow: 10px 10px 5px #656565;
     filter:progid:DXImageTransform.Microsoft.Shadow(color='#6565', Direction=135, Strength=5);
+    overflow : hidden;
 }
+.dragDrop,
+.onglet,
+.toolBar,
+.navBar,
+.display,
 .modifPanelContainer,
 .miniaturesContainer
 {
@@ -268,18 +335,22 @@
     -ms-user-select : none ;
     user-select : none ;
 }
+.onlinePanel .desc-title,
 .description .desc-title
 {
     position:relative;
     display:inline-block;
     font-weight:bold;
+    width : 100%;
     margin-top:0;
     margin-right : 0.5em;
 }
 .miniature img
 {
-    width:50%;
+    width:auto;
     height:auto;
+    max-width : 5em;
+    max-height : 5em;
     margin:0 auto;
     position:relative;
     display:block;
@@ -288,6 +359,7 @@
 .miniature:hover
 {
     background-color:#909090;
+    opacity : 0.9;
     color : #1c4ca7;
 }
 .modifPanelContainer
@@ -297,7 +369,14 @@
     height:45%;
     position:relative;
     background-color:#909090;
-    border-top: 2px solid black;
+    border-top: 1px solid #616161;
+    -webkit-border-radius: 5px;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius: 5px;
+    -moz-border-radius-topleft: 0;
+    border-radius: 5px;
+    border-top-left-radius: 0;
+    z-index : 100;
 }
 .modifPanel
 {
@@ -311,6 +390,7 @@
 .adminInput
 {
     width:50%;
+    min-width:30em;
     height:auto;
     position : relative;
     float:left;
@@ -320,6 +400,7 @@
 .contentModifPanel input
 {
     width: 70%;
+    margin-top:1em;
 }
 .contentModifPanel input
 {
@@ -340,19 +421,24 @@
     margin-left:2em;
     height:auto;
 }
-
+.description p,
 .description-text p
 {
     position : relative;
     display:inline-block;
+    width : 100%;
+    font-size : 0.9em;
+    height:auto;
+    line-height : 1.5em;
     
 }
+.description p,
 .description-text div p
 {
     position : relative;
     display:inline-block;
-    margin-bottom:0.0em;
-    margin-left:1em;
+    margin-bottom : 0;
+    margin-left:0.9em;
 }
 
 .description-text div .desc-title:first-child
@@ -367,4 +453,184 @@
     float:left;
     position:relative;
     display:inline-block;
+}
+.buttonsPanel
+{
+    position : absolute;
+    height : 3em;
+    width : 40%;
+    top : -3.05em;
+    float:left;
+    background-color : #909090;
+    border-top : 0.5px solid #616161;
+    border-left : 0.5px solid #616161;
+    padding:0.2em;
+    -webkit-border-top-left-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    border-top-left-radius: 3px;
+}
+.buttonsPanel:after
+{
+    content : ' ';
+    background-image : url('../../images/admin/bordure.png');
+    background-size : 100% 100%;
+    width:2em;
+    height :3em;
+    position : absolute;
+    float:right;
+    left : 100%;
+    top :-0.06em;
+}
+
+.modifPanel-btn
+{
+    position : relative;
+    font-size : 0.9em;
+    display:inline-block;
+    width: 22%;
+    margin-right:0.5em;
+    height:2.8em;
+    line-height : 2.8em;
+    font-weight: bold;
+    text-align : center;
+    vertical-align : middle;
+}
+.maj-btn
+{
+    display:none;
+}
+.reset-btn
+{
+    float : right;
+    display:none;
+}
+.modifPanel-btn:hover
+{
+    width : 24%;
+    color : #1c4ca7;
+}
+.dragDrop
+{
+    padding:2em;
+    height : 100%;
+}
+.dragDropBar,
+.dragDrop,
+.dragDropActive,
+.dragDropInactive
+{
+    position : relative;
+    display : block;
+    width :100%;
+    float:left;
+}
+.dragDropActive,
+.dragDropInactive
+{
+    padding : 2em;
+    height : auto;
+    min-height : 30%;
+}
+    
+.dragDropBar
+{
+    height : 4em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+.dragDrop-min-up:hover,
+.dragDrop-min-down:hover
+{
+    opacity : 0.9;
+}
+.dragDrop-min-up,
+.dragDrop-min-down
+{
+    width : auto;
+    background-color : white;
+    max-width : 15em;
+    margin-right : 2em;
+    border: 1px solid black;
+    margin-bottom : 2em;
+    padding : 0.5em;
+    height : auto;
+    display : inline-block;
+    position : relative;
+    float : left;
+}
+.dragDrop-min-up img,
+.dragDrop-min-down img
+{
+    width : 100%;
+    height : auto;
+    display:block;
+    position : relative;
+    margin: 0 auto;
+    margin-bottom : 0.5em;
+}
+.dragDrop-min-up input[type="checkbox"],
+.dragDrop-min-down input[type="checkbox"]
+{
+    display : block;
+    margin : 0 auto;
+}
+.dragDropBar-btn
+{
+    width : 19em;
+    height : 100%;
+    padding:0.5em;
+    margin: 0 auto;
+}
+.dragDropBar-btn figure:first-child
+{
+    margin-left : 0.9em;
+}
+.dragDropBar-btn figure
+{
+    margin-right : 0.5em;
+    margin-left : 0.5em;
+    width : 3em;
+    height :100%;
+    background-color : white;
+    padding:0.1em;
+    border : 1px solid black;
+    display : inline-block;
+    position : relative;
+    float:left;
+}
+.dragDropBar-btn figure img
+{
+    width : 100%;
+    height : 100%;
+}
+
+.majDragDropBar
+{
+    display :none;
+}
+.onlineContainer
+{
+    display : inline-block;
+    width : 100%;
+    height :100%;
+    padding:1em;
+    overflow : auto;
+}
+.online-desc,
+.onlineContent,
+.onlinePanel
+{
+    width:100%;
+    height:auto;
+    display : inline-block;
+}
+.onlinePanel
+{
+    margin-bottom:1em;
+    padding:1em;
+}
+
+.onlineContent>div
+{
+    padding-left : 1em;
 }

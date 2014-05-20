@@ -54,6 +54,7 @@ class ConnexionController extends Controller
             return $this->render($dispatcher->getControllerPath().'Main:'.$tmp[1].'.html.twig', $params);
         }else
         {
+            $dispatcher->unsetSite();
             $params = $this->get('yomaahController')->getAdminParams($path, $this->getDoctrine(), $dispatcher);
             return $this->render('yomaahBundle:Main:'.$tmp[1].'.html.twig', $params);
         }

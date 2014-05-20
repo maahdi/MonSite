@@ -34,6 +34,25 @@ class ArticleRepo extends EntityRepository
         }
         return $query->getResult();
     }
+    public function findForAdmin(Array $param)
+    {
+        $sql = 'select a from yomaahBundle:Article a join a.page p where a.'.$param['champ'].' = :tag';
+        $paramSql['tag'] = $param['tag'];
+        if ($param['idSite'] === null)
+        {
+            $endSql = ' and p.site is null order by a.artId asc';
+            $paramSql['site'] = $param['idSite'];
+        }else if ($param['idSite'] === false)
+        {
+            $endSql = ' order by a.artId asc';
+        }else
+        {
+            $endSql = ' and p.site = :site order by a.artId asc';
+            $paramSql['site'] = $param['idSite'];
+        }
+        $query = $this->getEntityManager()->createQuery($sql.$endSql)->setParameters($paramSql);
+        return $query->getResult();
+    }
 
     public function findDefaultArticle(Array $param)
     {

@@ -50,6 +50,11 @@ class BundleDispatcher
         {
             if ($this->deployed === false)
             {
+                if ($this->session->has('rescueSite') && !($this->session->has('norescue')))
+                {
+                    $this->site = $this->session->get('rescueSite');
+                    $this->idSite = $this->session->get('rescueIdSite');
+                }
                 if ($secure->isGranted('ROLE_SUPER_ADMIN'))
                 {
                     $this->admin = true;

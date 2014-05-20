@@ -31,6 +31,10 @@ class MainController extends Controller
     {
         $dispatcher = $this->get('bundleDispatcher');
         $dispatcher->unsetSite();
+        if ($this->get('session')->has('rescueSite'))
+        {
+            $this->get('session')->set('norescue', true);
+        }
         if ($this->get('security.context')->getToken()!= null)
         {
             if ($this->get('security.context')->isGranted('ROLE_SUPER_ADMIN'))
@@ -42,10 +46,11 @@ class MainController extends Controller
                                                                                                 'idSite' => $dispatcher->getIdSite()));
         return $params;
     }
+
     public function getAdminParams($page, $em, $dispatcher)
     {
         $params['articles'] = $em->getRepository('yomaahBundle:Article')->findByPage(array('pageUrl' => $page, 
-                                                                                                'idSite' => $dispatcher->getIdSite()));
+                                                                                            'idSite' => $dispatcher->getIdSite()));
         return $params;
         
     }
@@ -110,6 +115,8 @@ class MainController extends Controller
         {
             $this->get('session')->remove('site');
             $this->get('session')->remove('idSite');
+            $this->get('session')->remove('rescueSite');
+            $this->get('session')->remove('rescueIdSite');
         }
         return $this->redirect($this->generateUrl('logout'),301);
     }

@@ -5,6 +5,7 @@ use Yomaah\structureBundle\Classes\BundleDispatcher;
 class ConfBuilder extends MyXml
 {
     private $dispatcher;
+
     public function __construct(BundleDispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
@@ -18,9 +19,23 @@ class ConfBuilder extends MyXml
         return parent::getFile();
     }
 
+    public function getInterfaceSrc()
+    {
+        return parent::getInterfaceSrc();
+    }
+
     public function saveConf()
     {
-        $this->saveXml($xml);
+        $this->saveXml();
+    }
+
+    public function getGeneralKeywords()
+    {
+        $keyword = $this->getByXpath('//keyword');
+        if ((bool) $keyword)
+        {
+            return (string) $keyword[0];
+        }
     }
 
     public function getByXpath($xpath)
@@ -29,23 +44,61 @@ class ConfBuilder extends MyXml
         return $xml->xpath($xpath);
     }
 
-    public function saveXml(\SimpleXmlElement $xml, $file = null)
+    public function saveXml(\SimpleXmlElement $xml = null, $fullPath = null)
     {
-        parent::saveFile($xml, $file);
+        parent::saveFile($xml, $fullPath);
     }
 
-    public function getXml($file = null)
+    public function getXml($fullPath = null)
     {
-        return parent::getFile($file);
+        return parent::getFile($fullPath);
         
     }
+
     public function getTemplate($filename)
     {
-        $tmp = preg_split('/src/', __DIR__);
-        $basePath = $tmp[0].'src/'.$this->dispatcher->getSitePath().'/'.$this->dispatcher->getControllers();
-        $path = $basePath.'/Resources/views/TemplateAdmin/'.$filename.'.html.twig';
+        $path = $this->getBasePath().'Resources/views/TemplateAdmin/'.$filename.'.html.twig';
+        $pathYomaah = $this->getSrcPath().'Yomaah/structureBundle/Resources/views/TemplateAdmin/'.$filename.'.html.twig';
+        if ($this->fileExists($path))
+        {
+            return file_get_contents($path);
+            
+        }else if ($this->fileExists($pathYomaah))
+        {
+            return file_get_contents($pathYomaah);
+        }else
+        {
+            return false;
+        }
+    }
+    private function fileExists($path)
+    {
         if (file_exists($path))
         {
+            return true;
+        }else
+        {
+            return false;
+        }
+    }
+    public function getSrcPath()
+    {
+        $tmp = preg_split('/src/', __DIR__);
+        return $tmp[0].'src/';
+        
+    }
+    private function getBasePath()
+    {
+        $tmp = preg_split('/src/', __DIR__);
+        return $tmp[0].'src/'.$this->dispatcher->getSitePath().'/'.$this->dispatcher->getControllers().'/';
+    }
+
+    public function getScript($filename)
+    {
+        $path = $this->getBasePath().'Resources/public/js/AppendOnline/'.$filename.'.js';
+        if ($this->FileExists($path))
+        {
+            //return '../../web/bundles/euroliteriestructure/js/AppendOnline/'.$filename.'.js';
             return file_get_contents($path);
             
         }else

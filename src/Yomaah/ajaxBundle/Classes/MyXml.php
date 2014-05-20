@@ -6,18 +6,33 @@ abstract class MyXml
     protected $path;
     protected static $xml;
     private $change = false;
+    private static $src;
 
     public function __construct($path)
     {
         $this->path = $path;
+
     }
+
     protected function __clone(){ }
 
-    private function singleXml($path)
+    protected function getInterfaceSrc()
+    {
+        $tmp = preg_split('/src/', __DIR__);
+        $path = $tmp[0].'src/Yomaah/structureBundle/XML/TemplateAdmin/template.xml';
+        if (!(isset(self::$src)))
+        {
+            self::$src = new \SimpleXmlElement(file_get_contents($path));
+        }
+        return self::$src;
+    }
+
+
+    private function singleXml()
     {
         if (!(isset(self::$xml)) || $this->change)
         {
-            self::$xml = new \SimpleXmlElement(file_get_contents($path));
+            self::$xml = new \SimpleXmlElement(file_get_contents($this->path));
             if ($this->change)
             {
                 $this->change = false;
@@ -26,35 +41,41 @@ abstract class MyXml
         return self::$xml;
     }
 
-    public function getFile($file = null)
+    public function getFile($fullPath = null)
     {
-        if ($file === null)
+        if ($fullPath === null)
         {
-            return $this->singleXml($this->path);
+            return $this->singleXml();
         }else
         {
-            if (preg_match('/\.xml/', $file) === 0)
-                $file = $file.'.xml';
+            if (preg_match('/\.xml/', $fullPath) === 0)
+            {
+                return false;
+            }else
+            {
+                return new \SimpleXmlElement(file_get_contents($fullPath));
+            }
 
-            return $this->singleXml($this->path.'/'.$file);
         }
     }
-    public function saveFile(\SimpleXMLElement $xml, $file = null)
+    public function saveFile(\SimpleXmlElement $xml = null, $fullPath = null)
     {
-        if ($file === null)
+        if ($fullPath === null && $xml === null)
         {
-            $xml->asXml($this->path);
+            $this->singleXml()->asXml($this->path);
+            $this->change = true;
             
-        }else
+        }else if ($file !== null && get_class($xml) === 'SimpleXmlDocument')
         {
-            if (preg_match('/\.xml/', $file) === 0)
-                $file = $file.'.xml';
-
-            $xml->asXml($this->path.'/'.$file);
-            
+            if (file_exists($fullPath) === 0)
+            {
+                return false;
+            }else
+            {
+                $xml->asXml($fullPath);
+            }
         }
-        $this->change = true;
     }
-    abstract function saveXml(\SimpleXmlElement $xml, $file = null);
-    abstract function getXml($file = null);
+    abstract function saveXml(\SimpleXmlElement $xml = null, $fullPath = null);
+    abstract function getXml($fullPath = null);
 }
